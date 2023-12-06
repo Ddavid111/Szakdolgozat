@@ -1,0 +1,44 @@
+<p>add-session works!</p>
+
+<form #addSessionForm="ngForm" (ngSubmit)="addFormData(addSessionForm)">
+
+
+    <label for="location">ZV Helyszín</label>
+    <input type="text" ngModel name="location" id="location" placeholder="ZV Helyszín">
+
+  <p></p>
+    <label for="date">Zv időpont:</label>
+    <input type="date" ngModel name="date" id="date" placeholder="ZV időpont">
+
+  <p></p>
+
+  <label for="startHour">ZV kezdete:</label>
+  <input type="number" ngModel name="startHour" id="startHour" placeholder="ZV kezdete">
+
+  <p></p>
+
+  <label for="endHour">ZV vége:</label>
+  <input type="number" ngModel name="endHour" id="endHour" placeholder="ZV vége">
+
+  <p></p>
+  Hallgató kiválasztása <br>
+  <select name="students" [(ngModel)]="selectedStudent">
+    <option *ngFor="let item of students" [value]="item[5]">
+      {{item[5]}}
+    </option>
+  </select>
+  <p></p>
+  ZV tag kiválasztása <br>
+  <select name="members" [(ngModel)]="selectedMember">
+    <option *ngFor="let item of members" [value]="item[5]">
+      {{item[5]}}
+    </option>
+  </select>
+
+  <p></p>
+  <label for="description">Megjegyzés</label>
+  <input type="text" ngModel name="description" id="description" placeholder="Megjegyzés">
+  <p></p>
+  <input type="submit" value="Felvitel">
+
+</form>

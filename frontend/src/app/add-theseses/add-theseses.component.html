@@ -1,0 +1,49 @@
+<form #addThesesesForm="ngForm" (ngSubmit)="addFormData(addThesesesForm)">
+  <label for="title">Cím</label>
+  <input type="text" ngModel name="title" id="title" placeholder="Szakdolgozat címe">
+
+  <label for="faculty">Egyetemi kar:</label>
+  <input type="text" ngModel name="faculty" id="faculty" placeholder="Egyetemi kar">
+
+  <label for="department">Tanszék:</label>
+  <input type="text" ngModel name="department" id="department" placeholder="Tanszék">
+
+  <label for="speciality">Szak:</label>
+  <input type="text"  ngModel name="speciality" id="speciality" placeholder="Szak">
+
+  <label for="language">Nyelv:</label>
+  <input type="text"  ngModel name="language" id="language" placeholder="Nyelv">
+
+  <label for="hasMscApply">MSc-re jelentkezem:</label>
+  <input type="checkbox" ngModel name="hasMscApply" id="hasMscApply" [(ngModel)]="jelentkezik">
+
+  <label for="submissionDate">Szakdolgozat benyújtási ideje:</label>
+  <input type="date" ngModel name="submissionDate" id="submissionDate" placeholder="Szakdolgozat benyújtási ideje">
+
+  <label for="answer">Megjegyzés:</label>
+  <textarea ngModel name="answer" id="answer" placeholder="Megjegyzés"></textarea>
+
+  <label for="topicScore">Tétel pontszáma:</label>
+  <input type="number" ngModel name="topicScore" id="topicScore" placeholder="Tétel pontszáma">
+
+  <label for="defenseScore">Védés pontszáma:</label>
+  <input type="number" ngModel name="defenseScore" id="defenseScore" placeholder="Védés pontszáma">
+
+  <label for="subjectScore">Tárgyra kapott pontszám:</label>
+  <input type="number" ngModel name="subjectScore" id="subjectScore" placeholder="Tárgyra kapott pontszám">
+
+  <label for="finalScore">Végső pontszám:</label>
+  <input type="number" ngModel name="finalScore" id="finalScore" placeholder="Végső pontszám">
+
+
+  Hallgató kiválasztása <br>
+  <select name="userId" [(ngModel)]="selectedStudent">
+    <option *ngFor="let item of students" [value]="item[0]">
+      {{item[5]}}
+    </option>
+  </select>
+
+
+  <input type="submit" value="Felvitel">
+
+</form>

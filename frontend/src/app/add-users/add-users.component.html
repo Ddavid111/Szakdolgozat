@@ -1,0 +1,42 @@
+<form #addUserForm="ngForm" (ngSubmit)="addFormData(addUserForm)">
+  <label for="title">Titulus</label>
+  <input type="text" ngModel name="title" id="title" placeholder="felhasználó titulusa">
+
+  <label for="birthday">Születési idő:</label>
+  <input type="date" ngModel name="birthday" id="birthday" placeholder="Születési dátum">
+
+  <label for="email">E-mail cím:</label>
+  <input type="text" ngModel name="email" id="email" placeholder="Email cím">
+
+  <label for="neptunCode">Neptunkód:</label>
+  <input type="text" ngModel name="neptunCode" id="neptunCode" placeholder="Neptunkód">
+
+  <label for="name">Név:</label>
+  <input type="text"  ngModel name="name" id="name" placeholder="Név">
+
+  <label for="password">Jelszó:</label>
+  <input type="password" ngModel name="password" id="password" placeholder="Jelszó">
+
+  <label for="birthPlace">Születési hely:</label>
+  <input type="text" ngModel name="birthPlace" id="birthPlace" placeholder="Születési hely">
+
+  <label for="mothersMaidenName">Anyja lánykori neve:</label>
+  <input type="text" ngModel name="mothersMaidenName" id="mothersMaidenName" placeholder="Anyja lánykori neve">
+
+  <label for="workplace">Munkahely:</label>
+  <input type="text" ngModel name="workplace" id="workplace" placeholder="Munkahely">
+
+  <mat-form-field class="mat-form-field-appearance-outline">
+  <mat-label >Select a role!</mat-label>
+  <mat-select name="roleId" [(ngModel)]="selectedRoleId">
+    <mat-option *ngFor="let item of rolesToDropDownList" [value]="item.roleId">{{item.role}}</mat-option>
+  </mat-select>
+  </mat-form-field>
+
+
+  <input type="submit" value="Felvitel">
+
+</form>
+
+
+

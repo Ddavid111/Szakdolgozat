@@ -1,0 +1,30 @@
+title Többszörös bírálói felkérés folyamata
+
+participant Elnök as E
+participant Hallgató as H
+participant Témavezető as T
+participant Bíráló as B
+
+E->H: Felkérés regisztrációra
+Hallgató->Elnök: Sikeres regisztráció
+Elnök->Témavezető: Felkérés bírálatra
+Témavezető->Bíráló: Felkérés bírálatra
+
+loop Több bíráló
+    alt Felkérés elfogadva
+        note left of B 
+        Elfogadva
+        end note
+    else Felkérés visszautasítva
+        note left of B 
+        Visszautasítva
+        end note
+    end
+end
+
+note right of T 
+Visszajelzés a bírálókról
+end note
+
+T -> E: Bírálat
+B -> E: Bírálat

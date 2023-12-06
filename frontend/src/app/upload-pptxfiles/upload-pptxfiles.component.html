@@ -1,0 +1,13 @@
+<h1> PPT feltöltése </h1>
+
+<h3>Szakdolgozat prezentáció feltöltése</h3>
+<input class="form-control" type="file" (change)="onFileSelected($event)">
+<p></p>
+<td> <button type="button" (click)="uploadFile()">Feltöltés</button></td>
+
+<div>
+  <h1>Generált DOCX letöltése</h1>
+  <button (click)="generateDocx()">DOCX letöltése</button>
+</div>
+
+

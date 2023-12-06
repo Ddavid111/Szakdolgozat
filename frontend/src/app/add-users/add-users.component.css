@@ -1,0 +1,14 @@
+/* Border color */
+.mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-outline {
+  color: blue;  /* Change to your desired blue color */
+}
+
+/* Font color */
+.mat-form-field-appearance-outline .mat-form-field-label {
+  color: blue;  /* Change to your desired blue color */
+}
+
+/* Input font color */
+.mat-form-field-appearance-outline .mat-input-element {
+  color: blue;  /* Change to your desired blue color */
+}

@@ -1,0 +1,40 @@
+<div>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Birthday</th>
+      <th>Email</th>
+      <th>Name</th>
+      <th>Password</th>
+      <th>Neptun ID</th>
+      <th>Mothers maiden name</th>
+      <th>Birthplace</th>
+      <th>Workplace</th>
+      <th>Role</th>
+      <th>UPDATE</th>
+      <th>DELETE</th>
+    </tr>
+    </thead>
+    <tr *ngFor="let e of data">
+      <td>{{e[0]}}</td>
+      <td>{{e[9]}}</td>
+      <td>{{e[2]}}</td>
+      <td>{{e[3]}}</td>
+      <td>{{e[5]}}</td>
+      <td>{{e[7]}}</td>
+
+      <td>{{e[6]}}</td>
+      <td>{{e[4]}}</td>
+      <td>{{e[1]}}</td>
+      <td>{{e[10]}}</td>
+      <td>{{e[8]}}</td>
+
+
+
+      <td>itt lesz az update gomb</td>
+      <td><button type="button" (click)="deleteUser(e)">Delete</button></td>
+    </tr>
+  </table>
+</div>

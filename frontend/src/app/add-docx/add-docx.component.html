@@ -1,0 +1,42 @@
+<form #addDocxForm="ngForm" (ngSubmit)="addFormData(addDocxForm)">
+<h1 style="margin: 0 auto; text-align: center;">Szakdolgozat bírálat</h1>
+
+
+
+Hallgató kiválasztása <br>
+<select name="student" [(ngModel)]="selectedStudent">
+  <option *ngFor="let item of students" [value]="item[5]">
+    {{item[5]}}
+  </option>
+</select>
+
+<p></p>
+Szakdolgozat kiválasztása <br>
+<select name="theses" [(ngModel)]="selectedTheseses">
+  <option *ngFor="let item of theses" [value]="item[14]">
+    {{item[14]}}
+  </option>
+</select>
+
+
+<label for="description">A bírálat részletes kifejtése:</label>
+<textarea ngModel name="description" id="description" placeholder="A bírálat részletes kifejtése"></textarea>
+
+<p>
+
+  <label for="gradeId">Javasolt érdemjegy:</label>
+<select id="gradeId" name="gradeId" [(ngModel)]="selectedGrade">
+  <option *ngFor="let item of gradesToDropDownList" [value]="item.gradeId">
+    {{item.grade}}
+  </option>
+</select>
+</p>
+
+<p>
+  <input type="text" ngModel name="city" id="city" placeholder="Helyszín">
+  {{LocalDate}}
+</p>
+
+<input type="submit" value="Generate">
+
+</form>

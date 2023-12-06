@@ -1,0 +1,8 @@
+    title Bírálati folyamat (optimista eset)
+
+    Elnök->Hallgató: Felkérés regisztrációra
+    Hallgató->Elnök: Sikeres reg.
+    Elnök->Témavezető: Felkérés bírálatra
+    Témavezető->Bíráló: Felkérés bírálatra
+    Bíráló->Elnök: Bírálat
+    Témavezető->Elnök: Bírálat

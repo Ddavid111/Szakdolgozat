@@ -1,0 +1,13 @@
+<h1>PDF, ZIP Fájlok feltöltése </h1>
+
+
+<h3>Szakdolgozat PDF feltöltése</h3>
+<input class="form-control" type="file" (change)="onFileSelected($event, 1)">
+<p></p>
+<td> <button type="button" (click)="uploadFile(1)">Feltöltés</button></td>
+
+<h3>Szakdolgozat melléklet (.zip) feltöltése</h3>
+<input class="form-control" type="file" (change)="onFileSelected($event, 2)">
+<p></p>
+<td> <button type="button" (click)="uploadFile(2)">Feltöltés</button></td>
+
