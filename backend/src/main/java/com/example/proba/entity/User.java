@@ -17,44 +17,47 @@ public class User {
     Set<Role> roles;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
-    Set<Review> reviews;
+    Set<Review> review;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
-    Set<Theses> theseses;
+    Set<Theses> theses;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "supervisor", cascade = CascadeType.ALL)
-    Set<Theses> thesesess;
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "supervisor", cascade = CascadeType.ALL)
+//    Set<Theses> thesesess;
 
-    /*@OneToMany(mappedBy = "reviews")
-    Set<Reviews> reviews;*/
-    
     private String email;
     private String neptunCode;
     private String password;
     private String title;
-    private String name;
+    private String username;
+    private String fullname;
     private Date birthday;
     private Integer roleId;
     private String birthPlace;
     private String mothersMaidenName;
     private String workplace;
+    private String pedigreeNumber;
+    private String post;
 
 
     @Override
     public String toString() {
         return "Users{" +
                 "userId=" + userId +
-             //   ", roles=" + roles +
+                //   ", roles=" + roles +
                 ", email='" + email + '\'' +
                 ", neptunCode='" + neptunCode + '\'' +
                 ", password='" + password + '\'' +
                 ", title='" + title + '\'' +
-                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", fullname='" + fullname + '\'' +
                 ", birthday=" + birthday +
                 ", roleId=" + roleId +
                 ", birthPlace='" + birthPlace + '\'' +
                 ", mothersMaidenName='" + mothersMaidenName + '\'' +
                 ", workplace='" + workplace + '\'' +
+                ", pedigreeNumber='" + pedigreeNumber + '\'' +
+                ", post='" + post + '\'' +
                 '}';
     }
 
@@ -98,12 +101,20 @@ public class User {
         this.title = title;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public Date getBirthday() {
@@ -146,13 +157,29 @@ public class User {
         this.workplace = workplace;
     }
 
+    public String getPedigreeNumber() {
+        return pedigreeNumber;
+    }
+
+    public void setPedigreeNumber(String pedigreeNumber) {
+        this.pedigreeNumber = pedigreeNumber;
+    }
+
+    public String getPost() {
+        return post;
+    }
+
+    public void setPost(String post) {
+        this.post = post;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
 
     public void setRoles(Role.Roles roles) {
         Set<Role> roleHashSet = new HashSet<>();
-      //  roleHashSet.add();
+        //  roleHashSet.add();
         this.roles = roleHashSet;
     }
 }

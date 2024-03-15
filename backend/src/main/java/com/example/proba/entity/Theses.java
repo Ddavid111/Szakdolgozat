@@ -6,16 +6,18 @@ import java.util.Set;
 import java.util.Date;
 
 @Entity
+
 public class Theses {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "theses", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reviewId", cascade = CascadeType.ALL)
+   // @JoinTable("Review")
     Set<Review> reviews;
 
     @ManyToOne
-    @JoinColumn(name= "sessionId", insertable = false, updatable = false)
+    @JoinColumn(name = "sessionId", insertable = false, updatable = false)
     Session session;
 
     @ManyToOne
@@ -27,12 +29,16 @@ public class Theses {
     User supervisor;
 
     @ManyToOne
+    @JoinColumn(name = "consultantId", insertable = false, updatable = false)
+    User consultant;
+
+    @ManyToOne
     @JoinColumn(name = "topicsId", insertable = false, updatable = false)
     Topic topic;
 
-
     private Integer userId;
     private Integer supervisorId;
+    private Integer consultantId;
     private String title;
     private String faculty;
     private String department;
@@ -47,6 +53,27 @@ public class Theses {
     private Integer defenseScore;
     private Integer subjectScore;
     private Integer finalScore;
+    private Boolean isUnderReview = false;
+    private Integer reviewsRemaining = 2; // azt jelenti, h van-e rá bírálat vagy még nem
+
+    public void decreaseRemainingReviews(){
+        this.reviewsRemaining --;
+
+    }
+
+    public Integer getReviewsRemaining() {
+        return reviewsRemaining;
+    }
+
+    public Boolean getUnderReview() {
+        return isUnderReview;
+    }
+
+    public void setUnderReview(Boolean underReview) {
+        isUnderReview = underReview;
+    }
+
+
 
     public Integer getId() {
         return id;
@@ -55,16 +82,6 @@ public class Theses {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    /*public Integer getSemesterId() {
-        return semesterId;
-    }
-
-    public void setSemesterId(Integer semesterId) {
-        this.semesterId = semesterId;
-    }*/
-
-
 
     public Integer getUserId() {
         return userId;
@@ -80,6 +97,22 @@ public class Theses {
 
     public void setSupervisorId(Integer supervisorId) {
         this.supervisorId = supervisorId;
+    }
+
+    public Integer getConsultantId() {
+        return consultantId;
+    }
+
+    public void setConsultantId(Integer consultantId) {
+        this.consultantId = consultantId;
+    }
+
+    public User getConsultant() {
+        return consultant;
+    }
+
+    public void setConsultant(User consultant) {
+        this.consultant = consultant;
     }
 
     public String getTitle() {
@@ -202,13 +235,13 @@ public class Theses {
         this.finalScore = finalScore;
     }
 
-    public Set<Review> getTheseses() {
-        return reviews;
-    }
-
-    public void setTheseses(Set<Review> theseses) {
-        this.reviews = theseses;
-    }
+//    public Set<Review> getTheseses() {
+//        return reviews;
+//    }
+//
+//    public void setTheseses(Set<Review> theseses) {
+//        this.reviews = theseses;
+//    }
 
     public User getUser() {
         return user;
@@ -232,5 +265,37 @@ public class Theses {
 
     public void setSessions(Session session) {
         this.session = session;
+    }
+
+    @Override
+    public String toString() {
+        return "Theses{" +
+                "id=" + id +
+                ", reviews=" + reviews +
+                ", session=" + session +
+                ", user=" + user +
+                ", supervisor=" + supervisor +
+                ", consultant=" + consultant +
+                ", topic=" + topic +
+                ", userId=" + userId +
+                ", supervisorId=" + supervisorId +
+                ", consultantId=" + consultantId +
+                ", title='" + title + '\'' +
+                ", faculty='" + faculty + '\'' +
+                ", department='" + department + '\'' +
+                ", speciality='" + speciality + '\'' +
+                ", language='" + language + '\'' +
+                ", hasMscApply=" + hasMscApply +
+                ", thesisPdfId=" + thesisPdfId +
+                ", supplementId=" + supplementId +
+                ", submissionDate=" + submissionDate +
+                ", answer='" + answer + '\'' +
+                ", topicScore=" + topicScore +
+                ", defenseScore=" + defenseScore +
+                ", subjectScore=" + subjectScore +
+                ", finalScore=" + finalScore +
+                ", isUnderReview=" + isUnderReview +
+                ", reviewsRemaining=" + reviewsRemaining +
+                '}';
     }
 }

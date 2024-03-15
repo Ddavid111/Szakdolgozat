@@ -1,150 +1,192 @@
 <div class="container">
-  <input type="text" class="form-control" placeholder="Enter thesis title to search" [(ngModel)]="title" (ngModelChange)="searchForTitle()">
-</div>
 
-<div class="container" >
-  <input class="form-control" type="text" name="student" [(ngModel)] = "student" (ngModelChange) = "searchForStudent()"
-         placeholder="Enter student name to search">
-</div>
+  <div class="container">
+    <input type="text" class="form-control" placeholder="Enter thesis title to search" [(ngModel)]="title"
+           (ngModelChange)="searchForTitle()">
+  </div>
 
-<div class="d-flex" >
-  <table class="table table-bordered">
-    <thead class="table table-bordered">
-    <tr>
-      <th (click)="sort('ID')">ID&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
-      <th (click)="sort('Name')">Name&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
-      <th (click)="sort('UserId')">userid&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
-      <th (click)="sort('Title')">Title&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
-      <th (click)="sort('Faculty')">Faculty&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
-      <th (click)="sort('Department')">Department&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
-      <th (click)="sort('Speciality')">Speciality&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
-      <th (click)="sort('Language')">Language&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
-      <th (click)="sort('MSC')">MSC&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
-      <th (click)="sort('Submission Date')">Submission Date&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
-      <th (click)="sort('Answer')">Answer&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
-      <th (click)="sort('Topic Score')">Topic Score&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
-      <th (click)="sort('Subject Score')">Subject Score&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
+  <div class="container">
+    <input class="form-control" type="text" name="student" [(ngModel)]="student" (ngModelChange)="searchForStudent()"
+           placeholder="Enter student name to search">
+  </div>
 
-      <th (click)="sort('Final Score')">Defense Score&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i></th>
-      <th (click)="sort('Final Score')">Final Score&nbsp;<span [hidden]="reverse">▼</span
-      ><span [hidden]="!reverse">▲</span> <i class="fa fa-sort"></i>
-    </tr>
-    </thead>
-    <tbody class="tbody">
-    <tr *ngFor="let e of data | orderBy: key: reverse | paginate: {itemsPerPage : 25, currentPage: p};">
-      <td>{{ e[0] }}</td>
-      <td>{{ e.studentname }}</td>
-      <td>{{ e[16] }}</td>
-      <td>{{ e[14] }}</td>
-      <td>{{ e[4] }}</td>
-      <td>{{ e[3] }}</td>
-      <td>{{ e[8] }}</td>
-      <td>{{ e[7] }}</td>
-      <td>{{ e[6] }}</td>
-      <td>{{ e[10] }}</td> <!-- date -->
-      <td>{{ e[1] }}</td>
-      <td>{{ e[15] }}</td>
-      <td>{{ e[9] }}</td>
-      <td>{{ e[2] }}</td>
-      <td>{{ e[5] }}</td>
-    </tr>
-    </tbody>
-  </table>
-
-  <div class="table-container">
-    <table>
-      <thead>
+  <div class="mt-5">
+    <table class="table table-bordered">
+      <thead class="thead">
       <tr>
+<!--        <th (click)="sort(0)">ID<span [hidden]="reverse">▲</span-->
+<!--        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>-->
+        <th (click)="sort(20)">Name<span [hidden]="reverse">▲</span
+        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+<!--        <th (click)="sort(17)">userid<span [hidden]="reverse">▲</span-->
+<!--        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>-->
+        <th (click)="sort(15)">Title<span [hidden]="reverse">▲</span
+        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort(5)">Faculty<span [hidden]="reverse">▲</span
+        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort(4)">Department<span [hidden]="reverse">▲</span
+        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort(9)">Speciality<span [hidden]="reverse">▲</span
+        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort(8)">Language<span [hidden]="reverse">▲</span
+        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort(7)">MSC<span [hidden]="reverse">▲</span
+        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort(11)">Submission Date<span [hidden]="reverse">▲</span
+        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort(1)">Answer<span [hidden]="reverse">▲</span
+        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort(16)">Topic Score<span [hidden]="reverse">▲</span
+        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+<!--        <th (click)="sort(10)">Subject Score<span [hidden]="reverse">▲</span-->
+<!--        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>-->
+
+<!--        <th (click)="sort(3)">Defense Score<span [hidden]="reverse">▲</span-->
+<!--        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>-->
+<!--        <th (click)="sort(6)">Final Score<span [hidden]="reverse">▲</span-->
+<!--        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>-->
+        <th (click)="sort(12)">Supervisor Id<span [hidden]="reverse">▲</span
+        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort(2)">Consultant Id<span [hidden]="reverse">▲</span
+        ><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+
+
         <th>UPDATE</th>
         <th>DELETE</th>
         <th>Tételhúzás</th>
-        <th>Mit húzott a hallgató?</th>
+        <th style="width: 70px">Mit húzott a hallgató?</th>
+
+
       </tr>
-
-
       </thead>
-      <tr *ngFor="let e of data">
+      <tbody class="tbody">
+      <tr *ngFor="let e of data | orderBy: key: reverse | paginate: {itemsPerPage : 25, currentPage: p};">
+<!--        <td>{{ e.id }}</td>-->
+        <td>{{ e.user.fullname }}</td>
+<!--        <td>{{ e.userId }}</td>-->
+        <td>{{ e.title }}</td>
+        <td>{{ e.faculty }}</td>
+        <td>{{ e.department }}</td>
+        <td>{{ e.speciality }}</td>
+        <td>{{ e.language }}</td>
+        <td>{{ e.hasMscApply }}</td>
+        <td>{{ e.submissionDate }}</td>
+        <td>{{ e.answer }}</td>
+        <td>{{ e.topicScore }}</td>
+<!--        <td>{{ e.subjectScore }}</td>-->
+<!--        <td>{{ e.defenseScore }}</td>-->
+<!--        <td>{{ e.finalScore }}</td>-->
+        <td> <span *ngIf="e.supervisor.title!= null">{{e.supervisor.title + ' ' }}</span> {{e.supervisor.fullname }}</td>
+        <td *ngIf="e.consultant != null; else elseBlockForNoConsultant"> <span *ngIf="e.consultant.title != null">{{e.consultant.title + ' ' }}</span> {{ e.consultant.fullname }}</td>
 
-
-        <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" (click)="edit(e)">Update</button></td>
-        <td><button type="button" (click)="deleteTheses(e)">Delete</button></td>
-        <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="addTopic(e)">Új tétel</button></td>
-        <td>{{e.selectedTopicName}}</td>
+        <td>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal"
+                  (click)="edit(e)">Update
+          </button>
+        </td>
+        <td>
+          <button type="button" (click)="deleteTheses(e)">Delete</button>
+        </td>
+        <td>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chooseTopicModal"
+                  (click)="addTopic(e)">Új tétel
+          </button>
+        </td>
+       <td *ngIf=" e.topics !== null; else elseBlock">{{ e.topics.topic }}</td>
+        <ng-template #elseBlock><td>A hallgató még nem húzott tételt.</td></ng-template>
       </tr>
+      </tbody>
     </table>
 
-    <div class="pagination-controls">
-      <pagination-controls (pageChange)="p = $event"></pagination-controls>
-    </div>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
   </div>
+<ng-template #elseBlockForNoConsultant>Nincs konzulense.</ng-template>
 
-  <div class="modal " id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" [ngStyle]="{'display':display}"
+
+
+  <div class="modal" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true"
        xmlns="http://www.w3.org/1999/html">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="updateModalLabel">Rekord módosítása</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onCloseHandled()"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
         <div class="modal-body">
 
           <form #updateThesesesForm="ngForm" (ngSubmit)="updateTheses()">
             <label for="title">Cím</label>
-            <input type="text" [(ngModel)]="thesesForUpdate.title" name="title" id="thesesTitle" placeholder="Szakdolgozat címe">
+            <input type="text" [(ngModel)]="thesesForUpdate.title" name="title" id="thesesTitle"
+                   placeholder="Szakdolgozat címe">
 
-            <p>hallgatót is tudni kéne itt módosítani</p>
+            <mat-form-field>
+              <mat-label>Hallgató kiválasztása</mat-label>
+              <mat-select name="students" [(ngModel)]="thesesForUpdate.userId">
+                <mat-option *ngFor="let item of studentlist" [value]="item.userId">{{ item.fullname }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Témavezető kiválasztása</mat-label>
+              <mat-select name="supervisor" [(ngModel)]="thesesForUpdate.supervisorId">
+                <mat-option *ngFor="let item of supervisorlist" [value]="item.userId">{{ item.fullname }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Konzulens kiválasztása</mat-label>
+              <mat-select name="consultant" [(ngModel)]="thesesForUpdate.consultantId">
+                <mat-option *ngFor="let item of consultantlist" [value]="item.userId">{{ item.fullname }}</mat-option>
+              </mat-select>
+            </mat-form-field>
 
 
             <label for="faculty">Egyetemi kar:</label>
-            <input type="text"  [(ngModel)]="thesesForUpdate.faculty" name="faculty" id="faculty" placeholder="Egyetemi kar">
+            <input type="text" [(ngModel)]="thesesForUpdate.faculty" name="faculty" id="faculty"
+                   placeholder="Egyetemi kar">
 
             <label for="department">Tanszék:</label>
-            <input type="text"  [(ngModel)]="thesesForUpdate.department" name="department" id="department" placeholder="Tanszék">
+            <input type="text" [(ngModel)]="thesesForUpdate.department" name="department" id="department"
+                   placeholder="Tanszék">
 
             <label for="speciality">Szak:</label>
-            <input type="text"   [(ngModel)]="thesesForUpdate.speciality" name="speciality" id="speciality" placeholder="Szak">
+            <input type="text" [(ngModel)]="thesesForUpdate.speciality" name="speciality" id="speciality"
+                   placeholder="Szak">
 
             <label for="language">Nyelv:</label>
-            <input type="text"  [(ngModel)]="thesesForUpdate.language" name="language" id="language" placeholder="Nyelv">
+            <input type="text" [(ngModel)]="thesesForUpdate.language" name="language" id="language" placeholder="Nyelv">
 
             <label for="hasMscApply">MSc-re jelentkezem:</label>
-            <input type="checkbox" [(ngModel)]="thesesForUpdate.hasMscApply" name="hasMscApply" id="hasMscApply" [(ngModel)]="jelentkezik">
+            <input type="checkbox" [(ngModel)]="thesesForUpdate.hasMscApply" name="hasMscApply" id="hasMscApply"
+                   [(ngModel)]="jelentkezik">
 
             <label for="submissionDate">Szakdolgozat benyújtási ideje:</label>
-            <input type="date" [(ngModel)]="thesesForUpdate.submissionDate " name="submissionDate" id="submissionDate" placeholder="Szakdolgozat benyújtási ideje">
-            <!-- value="{{thesesForUpdate.submissionDate}}" -->
+            <input type="date" [(ngModel)]="thesesForUpdate.submissionDate" name="submissionDate" id="submissionDate"
+                   placeholder="Szakdolgozat benyújtási ideje">
+
             <label for="answer">Megjegyzés:</label>
-            <textarea [(ngModel)]="thesesForUpdate.answer" name="answer" id="answer" placeholder="Megjegyzés"></textarea>
+            <textarea [(ngModel)]="thesesForUpdate.answer" name="answer" id="answer"
+                      placeholder="Megjegyzés"></textarea>
 
-            <label for="topicScore">Tétel pontszáma:</label>
-            <input type="number" [(ngModel)]="thesesForUpdate.topicScore" name="topicScore" id="topicScore" placeholder="Tétel pontszáma">
+<!--            <label for="topicScore">Tétel pontszáma:</label>-->
+<!--            <input type="number" [(ngModel)]="thesesForUpdate.topicScore" name="topicScore" id="topicScore"-->
+<!--                   placeholder="Tétel pontszáma">-->
 
-            <label for="defenseScore">Védés pontszáma:</label>
-            <input type="number" [(ngModel)]="thesesForUpdate.defenseScore" name="defenseScore" id="defenseScore" placeholder="Védés pontszáma">
+<!--            <label for="defenseScore">Védés pontszáma:</label>-->
+<!--            <input type="number" [(ngModel)]="thesesForUpdate.defenseScore" name="defenseScore" id="defenseScore"-->
+<!--                   placeholder="Védés pontszáma">-->
 
-            <label for="subjectScore">Tárgyra kapott pontszám:</label>
-            <input type="number" [(ngModel)]="thesesForUpdate.subjectScore" name="subjectScore" id="subjectScore" placeholder="Tárgyra kapott pontszám">
+<!--            <label for="subjectScore">Tárgyra kapott pontszám:</label>-->
+<!--            <input type="number" [(ngModel)]="thesesForUpdate.subjectScore" name="subjectScore" id="subjectScore"-->
+<!--                   placeholder="Tárgyra kapott pontszám">-->
 
-            <label for="finalScore">Végső pontszám:</label>
-            <input type="number" [(ngModel)]="thesesForUpdate.finalScore" name="finalScore" id="finalScore" placeholder="Végső pontszám">
+<!--            <label for="finalScore">Végső pontszám:</label>-->
+<!--            <input type="number" [(ngModel)]="thesesForUpdate.finalScore" name="finalScore" id="finalScore"-->
+<!--                   placeholder="Végső pontszám">-->
 
 
-            <input type="submit" value="Módosítás" data-bs-dismiss="Modal">
+            <input type="submit" class="btn btn-primary w-100" value="Módosítás" data-bs-dismiss="modal">
           </form>
         </div>
       </div>
@@ -152,41 +194,46 @@
   </div>
 
 
-
-
-  <!-- <div class="modal " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" [ngStyle]="{'display':display}">
+  <div class="modal" id="chooseTopicModal" tabindex="-1" aria-labelledby="chooseTopicModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Tétel adatainak megadása</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onCloseHandled()"></button>
+          <h1 class="modal-title fs-5" id="chooseTopicModalLabel">Tétel adatainak megadása</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form #updateForm="ngForm" (ngSubmit) = "chooseTopic()">
+          <form #chooseTopicForm="ngForm" (ngSubmit)="chooseTopic()">
             <div class="form-group">
-              <label for="title">Cím:</label>
-              <input type="text" disabled #title [(ngModel)]="thesisToDisplay.title" name="title" id="title" class="form-control">
+              <label for="title">Cím</label>
+              <input type="text" disabled [(ngModel)]="thesisToDisplay.title" name="title" id="title"
+                     placeholder="Szakdolgozat címe">
             </div>
 
             <div class="form-group">
-              <select name="topic" class="selectpicker" [(ngModel)]="selectedTopicId">
-                <option *ngFor="let item of topicsToDropdownList" [value]="item.id">
-                  {{item.topic}}
-                </option>
-              </select>
-            </div>
 
+              <mat-form-field style="width:400px">
+                <mat-label>Tétel kiválasztása</mat-label>
+                <mat-select name="students" [(ngModel)]="selectedTopicId">
+                  <mat-option *ngFor="let item of topicsToDropdownList" [value]="item.id">{{ item.topic }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
             <div class="form-group">
-              <input type="submit" value="OK" class="btn btn-primary w-100" data-bs-dismiss="modal" (click)="onCloseHandled()" >
-            </div>
 
+              <mat-form-field style="width:400px">
+                <mat-label>Jegy kiválasztása</mat-label>
+                <mat-select name="grade" [(ngModel)]="selectedGrade">
+                  <mat-option *ngFor="let item of gradesToDropDownList" [value]="item.gradeId">{{ item.grade }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="form-group">
+              <input type="submit" value="OK" class="btn btn-primary w-100" data-bs-dismiss="modal">
+            </div>
           </form>
         </div>
-
       </div>
     </div>
   </div>
-
-  -->
-
 </div>

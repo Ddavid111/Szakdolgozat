@@ -1,42 +1,84 @@
-<form #addDocxForm="ngForm" (ngSubmit)="addFormData(addDocxForm)">
-<h1 style="margin: 0 auto; text-align: center;">Szakdolgozat bírálat</h1>
+<form (ngSubmit)="addFormData(addDocxForm)" [formGroup]="addDocxForm">
+  <h1 style="margin: 0 auto; text-align: center;">Szakdolgozat bírálat</h1>
+
+  <mat-form-field>
+    <mat-label>Válassz ki egy hallgatót!</mat-label>
+    <mat-select formControlName="student" [(ngModel)]="selectedStudent" (ngModelChange)="onSelectStudent()">
+      <mat-option *ngFor="let student of students" [value]="student.userId">
+        {{ student.fullname }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <p></p>
+  <mat-form-field>
+  <mat-label>Szakdolgozat kiválasztása</mat-label>
+  <mat-select formControlName="theses" [(ngModel)]="selectedTheseses">
+    <mat-option *ngFor="let item of theses" [value]="item.id">
+      {{ item.title }}
+    </mat-option>
+  </mat-select>
+  </mat-form-field>
+  <br>
+
+  <textarea ngModel formControlName="description" id="description" placeholder="A bírálat részletes kifejtése"></textarea>
+  <p></p>
+
+  <mat-form-field>
+    <mat-label>Javasolt érdemjegy</mat-label>
+    <mat-select formControlName="score" [(ngModel)]="selectedScore">
+      <mat-option *ngFor="let grade of gradesToDropDownList" [value]="grade.gradeId">{{ grade.grade }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <p></p>
+  <span style="color:red;" *ngIf="addDocxForm.errors?.['cityError']">Kötelező megadni a mezőt!</span>
+  <br>
+    <input type="text" formControlName="city" id="city" placeholder="Helyszín">
+    {{ LocalDate }}
+  <p></p>
+
+<!--  <mat-form-field>-->
+<!--    <mat-label> Felkérés ideje:</mat-label>-->
+<!--  <input formControlName="invitationDate" matInput [matDatepicker]="invitationDate" id="invitationDate" >-->
+<!--    <mat-datepicker-toggle matIconSuffix [for]="invitationDate"></mat-datepicker-toggle>-->
+<!--    <mat-hint>YYYY.MM.DD</mat-hint>-->
+<!--    <mat-datepicker #invitationDate></mat-datepicker>-->
+<!--  </mat-form-field>-->
+<!--  <p></p>-->
+
+  <mat-form-field>
+    <mat-label> Felkérés elfogadás ideje:</mat-label>
+  <input formControlName="invitationAcceptionDate" matInput [matDatepicker]="invitationAcceptionDate" id="invitationAcceptionDate">
+    <mat-datepicker-toggle matIconSuffix [for]="invitationAcceptionDate"></mat-datepicker-toggle>
+    <mat-hint>YYYY.MM.DD</mat-hint>
+    <mat-datepicker #invitationAcceptionDate></mat-datepicker>
+  </mat-form-field>
+  <p></p>
+
+  <mat-form-field>
+    <mat-label> Válaszadás ideje:</mat-label>
+  <input formControlName="responseDate" matInput [matDatepicker]="responseDate" id="responseDate" >
+    <mat-datepicker-toggle matIconSuffix [for]="responseDate"></mat-datepicker-toggle>
+    <mat-hint>YYYY.MM.DD</mat-hint>
+    <mat-datepicker #responseDate></mat-datepicker>
+  </mat-form-field>
+    <p></p>
+
+<mat-form-field>
+  <mat-label> Benyújtás ideje:</mat-label>
+  <input formControlName="submissionDate" matInput [matDatepicker]="submissionDate" id="submissionDate" >
+  <mat-datepicker-toggle matIconSuffix [for]="submissionDate"></mat-datepicker-toggle>
+  <mat-hint>YYYY.MM.DD</mat-hint>
+  <mat-datepicker #submissionDate></mat-datepicker>
+</mat-form-field>
+  <p></p>
 
 
 
-Hallgató kiválasztása <br>
-<select name="student" [(ngModel)]="selectedStudent">
-  <option *ngFor="let item of students" [value]="item[5]">
-    {{item[5]}}
-  </option>
-</select>
 
-<p></p>
-Szakdolgozat kiválasztása <br>
-<select name="theses" [(ngModel)]="selectedTheseses">
-  <option *ngFor="let item of theses" [value]="item[14]">
-    {{item[14]}}
-  </option>
-</select>
+  <p></p>
 
-
-<label for="description">A bírálat részletes kifejtése:</label>
-<textarea ngModel name="description" id="description" placeholder="A bírálat részletes kifejtése"></textarea>
-
-<p>
-
-  <label for="gradeId">Javasolt érdemjegy:</label>
-<select id="gradeId" name="gradeId" [(ngModel)]="selectedGrade">
-  <option *ngFor="let item of gradesToDropDownList" [value]="item.gradeId">
-    {{item.grade}}
-  </option>
-</select>
-</p>
-
-<p>
-  <input type="text" ngModel name="city" id="city" placeholder="Helyszín">
-  {{LocalDate}}
-</p>
-
-<input type="submit" value="Generate">
+  <input type="submit" [disabled]="addDocxForm.invalid" value="Generálás">
 
 </form>

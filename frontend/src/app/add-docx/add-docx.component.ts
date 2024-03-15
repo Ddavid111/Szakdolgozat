@@ -1,66 +1,98 @@
 import {Component, OnInit} from '@angular/core';
 import {findAllUsersService} from "../_services/find-allUsers.service";
 import {ListThesesesService} from "../_services/list-theseses.service";
-import {NgForm} from "@angular/forms";
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
 import {AddDocxService} from "../_services/add-docx.service";
-
+import Swal from "sweetalert2";
 @Component({
   selector: 'app-add-docx',
   templateUrl: './add-docx.component.html',
   styleUrls: ['./add-docx.component.css']
 })
-export class AddDocxComponent implements OnInit{
 
-  selectedGrade : any
-  students: any[] = []
-  selectedStudent: any
-  theses: any[] =[]
-  selectedTheseses: any
-
+export class AddDocxComponent implements OnInit {
 
   ngOnInit() {
-    this.getThesesesToDropdown()
-    this.getStudentsToDropdown()
-
+    this.getStudentsToDropdown() // It calls getThesesesToDropdown as well
+    // this.getThesesesToDropdown() // Called at OnSelectStudent
   }
+
+  students: any
+  selectedStudent: any
+  theses: any[] = []
+  selectedTheseses: any
+  reporter: any[] = []
+  selectedScore: any
+  addDocxForm: FormGroup
+
 
   constructor(private findAllUsersService: findAllUsersService,
               private listThesesesService: ListThesesesService,
               private addDocxService: AddDocxService) {
+    this.addDocxForm = new FormGroup({
+      student: new FormControl(null,[Validators.required]),
+      theses: new FormControl(null, [Validators.required]),
+      description: new FormControl(null),
+      score: new FormControl(null,[Validators.required]),
+      city: new FormControl(null,[Validators.required]),
+      // invitationDate: new FormControl(null,[Validators.required]),
+      invitationAcceptionDate: new FormControl(null,[Validators.required]),
+      responseDate: new FormControl(null,[Validators.required]),
+      submissionDate: new FormControl(null,[Validators.required]),
+    },
+      {validators: [cityError]
+
+      })
   }
 
-  getStudentsToDropdown(){
-    this.findAllUsersService.findAllUsers().subscribe(
+  alertWithSucces()
+  {
+    Swal.fire("Köszönjük!",'Felhasználó sikeresen tárolva','success')
+  }
+
+  alertWithError(err: any) {
+    Swal.fire("Hiba", ' Error:' + err,  'error');
+  }
+
+  alertWithFileDownload(err:any){
+    Swal.fire("Error", 'Error downloading file' + err , 'error')
+  }
+
+  getStudentsToDropdown() {
+    this.findAllUsersService.findUsersByRole(0).subscribe(
       (resp) => {
-        for (let i = 0; i < Object.keys(resp).length; i++) {
-          console.log(Object.values(resp)[i])
-          if (Object.values(resp)[i][8] === 0) {
-            this.students.push(Object.values(resp)[i])
-          }
-        }
+        this.students = resp
       },
       (err) => {
-        alert(err.value)
+        this.alertWithError(err.value)
       }
     )
   }
 
+  onSelectStudent() {
+    this.theses
+    this.getThesesesToDropdown()
+    console.log(this.selectedStudent)
+  }
 
-  getThesesesToDropdown(){
-
+  getThesesesToDropdown() {
+    // TODO: SQL-ben userId-ra filterezni thesis-t, aztán akkor nem itt kell szarakodni
     this.listThesesesService.getThesesList().subscribe(
-      (resp)=>{
-        for (let i = 0; i < Object.keys(resp).length; i++) {
-
-          // Object.values(resp)[i][16]: the user_id in the Thesis table
-          // this.students[i][0]: the id of the User table
-          if (Object.values(resp)[i][16] === this.students[i][0]) {
-            this.theses.push(Object.values(resp)[i])
-          }
-        }
+      (resp) => {
+        console.log(resp)
+        let allThesis = resp as any;
+        this.theses = allThesis.filter((thesis: any) => thesis.userId == this.selectedStudent)
       },
+
       (err) => {
-        alert(err.value)
+        this.alertWithError(err.value)
       }
     )
   }
@@ -89,22 +121,41 @@ export class AddDocxComponent implements OnInit{
       gradeId: 5,
       grade: 'Jeles',
     }
-
   ]
 
-  addFormData (addDocxForm: NgForm){
-    this.addDocxService.addDocx(addDocxForm.value).subscribe(
-      (resp) => {
-        alert("Sikeresen wordbe írva!")
-        //   alert(resp)
-      },
-      (err) => {
-        alert("vmi elromlott")
-        alert(err.value)
-      }
-    )
+
+  addFormData(addDocxForm: FormGroup) {
+    let userId = localStorage.getItem('userId')
+
+    this.addDocxService.generateReview(addDocxForm.value, userId)
+      .subscribe(response => {
+        const contentDispositionHeader = response.headers.get('Content-Disposition');
+        const matches = /filename=(.+)$/.exec(contentDispositionHeader as string);
+        const filename = matches ? matches[1] : 'noname';
+        const blob = new Blob([response.body as BlobPart], {type: 'application/octet-stream'});
+        const downloadLink = document.createElement('a');
+        const url = window.URL.createObjectURL(blob);
+
+        downloadLink.href = url;
+        downloadLink.download = filename;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        window.URL.revokeObjectURL(url);
+        this.alertWithSucces()
+      }, error => {
+        this.alertWithFileDownload(error)
+      });
 
   }
 
-
+}
+export const cityError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let field = control.get('city')
+  if (field === null || field?.value === null || field?.value === "") {
+    return {
+      cityError: true
+    }
+  }
+  return null
 }

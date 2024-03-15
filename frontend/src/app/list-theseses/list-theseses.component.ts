@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ListThesesesService} from "../_services/list-theseses.service";
-import {AddUsersComponent} from "../add-users/add-users.component";
-import {AddUsersService} from "../_services/add-users.service";
 import {findAllUsersService} from "../_services/find-allUsers.service";
-import {FindAllUsersComponent} from "../find-allUsers/find-allUsers.component";
+import {NgForm} from "@angular/forms";
+import {AddTopicsService} from "../_services/add-topics.service";
 
 @Component({
   selector: 'app-list-theseses',
@@ -12,146 +11,170 @@ import {FindAllUsersComponent} from "../find-allUsers/find-allUsers.component";
 
 })
 export class ListThesesesComponent implements OnInit {
-  data= null as any;
+  data = null as any;
+  temp = null as any // copy of data for correct searching
   jelentkezik: boolean = false;
   title: any
   student: any
+  user: any
 
-  thesesForUpdate= {
+  studentlist: any
+  supervisorlist: any
+  consultantlist: any
+
+  thesesForUpdate = {
     id: '',
+    userId: '',
     title: '',
     faculty: '',
     department: '',
     speciality: '',
     language: '',
     hasMscApply: '',
-    submissionDate: new Date,
+    submissionDate: '',
     answer: '',
     topicScore: '',
     defenseScore: '',
     subjectScore: '',
-    finalScore: ''
+    finalScore: '',
+    supervisorId: '',
+    consultantId: ''
   }
 
   selectedTopicId: any
+  selectedGrade: any
 
   thesisToDisplay = {
     title: "",
-    topicName: ""
+    topicName: "",
+    id: ""
   }
 
+  topicsToDropdownList: any
 
-  topicsToDropdownList = [
+  gradesToDropDownList = [
     {
-      id: 0,
-      topic: 'OOP alapelvei',
+      gradeId: 1,
+      grade: 'Elégtelen',
     },
     {
-      id: 1,
-      topic: 'Kivételkezelés C#-ban'
+      gradeId: 2,
+      grade: 'Elégséges',
+    },
+    {
+      gradeId: 3,
+      grade: 'Közepes',
+    },
+    {
+      gradeId: 4,
+      grade: 'Jó',
+    },
+    {
+      gradeId: 5,
+      grade: 'Jeles',
     }
+
   ]
 
   constructor(private listThesesesService: ListThesesesService,
               private FindAllUsersService: findAllUsersService) {
     this.getThesesList()
   }
-  display = "none";
-  openModal() {
-    this.display = "block";
-  }
-
-  addTopic(thesis: any) {
-    this.display = "block";
-    this.thesisToDisplay = thesis
-
-  }
-
-  //searching
-  searchForTitle() {
-    if(this.title == "") {
-      this.ngOnInit();
-    } else {
-      this.data= this.data.filter((res:any) =>{
-        return res[14].toLocaleLowerCase().match(this.title.toLocaleLowerCase())
-      })
-    }
-  }
-
-  searchForStudent() {
-    if(this.student == "") {
-      this.ngOnInit();}
-    else {
-      this.data= this.data.filter((res:any) =>{
-        return res.studentname.toLocaleLowerCase().match(this.student.toLocaleLowerCase())
-      })
-    }
-  }
-
-  onCloseHandled() {
-    this.display = "none";
-  }
-
-  chooseTopic() {
-    console.log(this.selectedTopicId)
-
-    this.data.selectedTopicName = this.selectedTopicId
-  }
 
   ngOnInit() {
     this.getThesesList()
   }
 
+  // If user clicks to "Új tétel", this method invoked first
+  addTopic(thesis: any) {
+    this.thesisToDisplay.title = thesis.title
+    this.thesisToDisplay.id = thesis.id
 
-  updateTheses(){
-    this.listThesesesService.updateTheses(this.thesesForUpdate).subscribe(
-      (resp)=>{
-        this.getThesesList()
-        this.onCloseHandled()
+    // Get topic list to the dropdown
+    this.listThesesesService.getTopicList().subscribe(
+      (RTopicList) => {
+        console.log(RTopicList)
+        this.topicsToDropdownList = RTopicList
       },
-      (err)=>{
+      (ErrTopicList) => {
+        alert("Error when getting topic list: " + ErrTopicList.value)
+      }
+    )
+  }
+
+  //searching
+  searchForTitle() {
+    if (this.title == "") {
+      this.ngOnInit();
+    } else {
+      this.data = this.temp.filter((res: any) => {
+        return res.title.toLocaleLowerCase().match(this.title.toLocaleLowerCase())
+      })
+    }
+  }
+
+  searchForStudent() {
+    if (this.student == "") {
+      this.ngOnInit();
+    } else {
+      this.data = this.temp.filter((res: any) => {
+        return res.user.fullname.toLocaleLowerCase().match(this.student.toLocaleLowerCase())
+      })
+    }
+  }
+
+  // If user selects a topic and a grade and then clicks to "OK" button at #chooseTopicModal, this method invoked.
+  chooseTopic() {
+    this.data.selectedTopicName = this.selectedTopicId // Tételszámot tartalmaz mindkettő. A this.data-s azért kell, hogy meg tudja jeleníteni, a másik pedig a DB-be írásért.
+    this.listThesesesService.setTopicForStudent(this.selectedTopicId, this.thesisToDisplay.id, this.selectedGrade).subscribe(
+      (resp) => {
+        this.getThesesList()
+      },
+      (err) => {
+        alert("Error during set topic for student: " + err.value)
+      }
+    )
+  }
+
+  updateTheses() {
+    this.listThesesesService.updateTheses(this.thesesForUpdate).subscribe(
+      (resp) => {
+        this.getThesesList()
+      },
+      (err) => {
         alert('error van: ' + err.value)
       }
     )
   }
 
+  edit(theses: any) {
+    this.getStudents()
+    this.thesesForUpdate.id = theses.id
+    this.getSupervisors()
+    this.thesesForUpdate.supervisorId = theses.supervisorId
+    this.getConsultants()
+    this.thesesForUpdate.consultantId = theses.consultantId
+    this.thesesForUpdate.userId = theses.userId
+    this.thesesForUpdate.title = theses.title
+    this.thesesForUpdate.faculty = theses.faculty
+    this.thesesForUpdate.department = theses.department
+    this.thesesForUpdate.speciality = theses.speciality
+    this.thesesForUpdate.language = theses.language
+    this.thesesForUpdate.hasMscApply = theses.hasMscApply
 
-  edit(theses: any){
-    this.thesesForUpdate.id = theses[0]
-    // student name?
-    this.thesesForUpdate.title = theses[14]
-    this.thesesForUpdate.faculty = theses[4]
-    this.thesesForUpdate.department = theses[3]
-    this.thesesForUpdate.speciality = theses[8]
-    this.thesesForUpdate.language = theses[7]
-    this.thesesForUpdate.hasMscApply = theses[6]
-    this.thesesForUpdate.submissionDate = theses[10]
-    //console.log(document.getElementById("submissionDate")?.getAttribute("ng-reflect-model"))
-   // console.log("date default value: " + this.thesesForUpdate.submissionDate.setDate(2020))
-    //this.thesesForUpdate.submissionDate = new Date("2023-11-10") // ezt nem viszi be a modal-ba!
+    let dateInDbFormat = theses.submissionDate
+    let [yyyy, mm, dd] = dateInDbFormat.toString().split('.')
+    this.thesesForUpdate.submissionDate = yyyy + "-" + mm + "-" + dd // bemegy a modal-ba
 
-    let d = this.thesesForUpdate.submissionDate// ok
-    console.log("date at edit: " + d)
-    let [yyyy, mm, dd] = d.toString().split('.')
-    let x = new Date(Number(yyyy), Number(mm) - 1, Number(dd))
-    console.log("date after convert: " + x)
-   // console.log(Date.parse(d))
-
-
-
-    this.thesesForUpdate.submissionDate = d
-    this.thesesForUpdate.answer = theses[1]
-    this.thesesForUpdate.topicScore = theses[15]
-    this.thesesForUpdate.defenseScore = theses[2]
-    this.thesesForUpdate.subjectScore = theses[9]
-    this.thesesForUpdate.finalScore = theses[5]
-
-    this.openModal()
-
+    this.thesesForUpdate.answer = theses.answer
+    this.thesesForUpdate.topicScore = theses.topicScore
+    this.thesesForUpdate.defenseScore = theses.defenseScore
+    this.thesesForUpdate.subjectScore = theses.subjectScore
+    this.thesesForUpdate.finalScore = theses.finalScore
   }
 
-  deleteTheses(theses : any){
-    this.listThesesesService.deleteTheses(theses[0]).subscribe(
+  deleteTheses(theses: any) {
+    this.listThesesesService.deleteTheses(theses.id).subscribe(
       (resp) => {
         this.getThesesList()
         console.log(resp)
@@ -161,50 +184,34 @@ export class ListThesesesComponent implements OnInit {
       })
   }
 
-
+  // Get the content of the Theses table
   getThesesList() {
-    this.listThesesesService.getThesesList().subscribe(
-      (resp) => {
-        for(let i = 0; i < Object.keys(resp).length; i++) {
+    //this.listThesesesService.getThesesList().subscribe(
+    this.listThesesesService.getThesesListToDisplay().subscribe(
+      (resp: any) => {
 
-          let dateObj = new Date(Object.values(resp)[i][10])
-          let monthInCorrectForm =(dateObj.getMonth()+1).toString()
-          if(monthInCorrectForm.length == 1) {
+
+        console.log(resp)
+
+
+        // Convert date format per thesis from the DB style to fancy style to display
+        resp.forEach((resp: any) => {
+          let dateObj = new Date(resp.submissionDate) // submissionDate field from the DB
+          let monthInCorrectForm = (dateObj.getMonth() + 1).toString()
+          if (monthInCorrectForm.length == 1) {
             monthInCorrectForm = '0' + monthInCorrectForm
           }
 
           let dayInCorrectForm = dateObj.getDate().toString()
-          if(dayInCorrectForm.toString().length == 1) {
+          if (dayInCorrectForm.toString().length == 1) {
             dayInCorrectForm = "0" + dayInCorrectForm
           }
-          let dateYYYYMMDD = dateObj.getFullYear() + '.' + monthInCorrectForm + '.' + dayInCorrectForm + '.'
+          resp.submissionDate = dateObj.getFullYear() + '.' + monthInCorrectForm + '.' + dayInCorrectForm + '.'
+        })
 
-          if(Object.values(resp)[i][16] != null) {
-
-            this.FindAllUsersService.findUserById(Object.values(resp)[i][16]).subscribe(
-              (resp1) => {
-                for (let j = 0; j < Object.keys(resp1).length; j++) {
-                  this.data[i].studentname= Object.values(resp1)[j][5]
-                }
-
-                this.data[i][10] = dateYYYYMMDD
-
-              },
-              (error) =>
-              {
-                alert(error.status)
-              }
-            )
-            //   console.log("student: " + Object.keys(this.student))
-          }
-
-
-        }
 
         this.data = resp
-
-        console.log(resp)
-
+        this.temp = this.data // copy of data for correct searching
       },
       (err) => {
         alert(err)
@@ -212,27 +219,49 @@ export class ListThesesesComponent implements OnInit {
     )
   }
 
-  getStudentById(id: any) {
-    console.log("ID before call to backend: " + id)
-    this.FindAllUsersService.findUserById(id).subscribe(
-      (resp) => {
-        this.student = resp
-      },
-      (error) =>
-      {
-        alert(error.status)
-      }
-    )
-  }
 
-  key: any='data';
+  // sorting
+  key: any = 0;
   reverse: boolean = false;
+
   sort(key: any) {
     this.key = key;
     this.reverse = !this.reverse;
+    console.log(this.data)
   }
 
+  // Pagination
   p: number = 1
 
 
+  getStudents() {
+    this.FindAllUsersService.findUsersByRole(0).subscribe(
+      (resp) => {
+        this.studentlist = resp
+        console.log(this.studentlist)
+      },
+      (err) => {
+        console.log("error when get studentdata to dropdown list: " + err.value)
+      })
+  }
+
+  getSupervisors() {
+    this.FindAllUsersService.findUsersByRole(4).subscribe(
+      (resp) => {
+        this.supervisorlist = resp
+      },
+      (err) => {
+        console.log("error when get supervisordata to dropdown list: " + err.value)
+      })
+  }
+
+  getConsultants() {
+    this.FindAllUsersService.findUsersByRole(4).subscribe(
+      (resp) => {
+        this.consultantlist = resp
+      },
+      (err) => {
+        console.log("error when get consultant data to dropdown list: " + err.value)
+      })
+  }
 }

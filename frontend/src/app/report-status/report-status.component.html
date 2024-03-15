@@ -1,0 +1,276 @@
+<mat-expansion-panel hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Beadott szakdolgozatok
+    </mat-panel-title>
+    <mat-panel-description>
+      Kattintson a kinyitáshoz/összezáráshoz!
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+
+  <div class="mt-5">
+    <table class="table table-bordered">
+      <thead class="thead">
+      <tr>
+        <th>Neptunkód</th>
+        <th>Hallgató neve</th>
+        <th>Témavezető név</th>
+        <th>Bíráló név</th>
+        <th>Cím</th>
+        <th>Beadás dátuma</th>
+        <th>PDF</th>
+        <th>Melléklet</th>
+        <th>PPT</th>
+
+      </tr>
+      </thead>
+      <tbody class="tbody">
+      <tr *ngFor="let e of thesesFullData ">
+        <td>{{ e.neptunCode }}</td>
+        <td>{{ e.fullname }}</td>
+        <td>{{ e.supervisorname }}</td>
+        <td>{{ e.reviewername }}</td>
+        <td>{{ e.title }}</td>
+        <td>{{ e.submissionDate }}</td>
+        <td>
+          <button *ngIf="e.pdfUUID != null; else elseBlock" type="button" class="btn btn-light"
+                  (click)="downloadFile(e.pdfUUID)">Letöltés
+          </button>
+        </td>
+        <td>
+          <button *ngIf="e.attachmentUUID != null; else elseBlock" type="button" class="btn btn-light"
+                  (click)="downloadFile(e.attachmentUUID)">Letöltés
+          </button>
+        </td>
+        <td>
+          <button *ngIf="e.pptUUID != null; else elseBlock" type="button" class="btn btn-light"
+                  (click)="downloadFile(e.pptUUID)">Letöltés
+          </button>
+        </td>
+        <ng-template #elseBlock>Nincs</ng-template>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p></p>
+
+  <!--  <span style="color:darkred;"> <strong> Összes fájl (tájékoztató jelleggel)</strong></span>-->
+
+  <!--  <div class="mt-5" >-->
+  <!--    <table class="table table-bordered">-->
+  <!--      <thead class="thead">-->
+  <!--      <tr>-->
+  <!--        <th>Thesis ID</th>-->
+  <!--        <th>File name and path</th>-->
+  <!--        <th>UUID</th>-->
+  <!--        <th>BUTTON</th>-->
+
+  <!--      </tr>-->
+  <!--      </thead>-->
+  <!--      <tbody class="tbody">-->
+  <!--      <tr *ngFor="let thesis of files ">-->
+  <!--        <td>{{ thesis.first }}</td>-->
+  <!--        <td>{{ thesis.second }}</td>-->
+  <!--        <td>{{ thesis.third }}</td>-->
+  <!--        <td><button type="button" class="btn btn-light" (click)="downloadFile(thesis.third)">Letöltés</button></td>-->
+
+  <!--      </tr>-->
+  <!--      </tbody>-->
+  <!--    </table>-->
+  <!--  </div>-->
+
+  <p></p>
+
+  <div class="mt-5">
+    <table class="table table-bordered">
+      <thead class="thead">
+      <tr>
+        <th>ID</th>
+        <th>Student name</th>
+        <th>Title</th>
+        <th>Felkérés bírálatra</th>
+
+      </tr>
+      </thead>
+      <tbody class="tbody">
+      <tr *ngFor="let e of theses ">
+        <td>{{ e.id }}</td>
+        <td>{{ e.user.fullname }}</td>
+        <td>{{ e.title }}</td>
+        <td>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestForReviewModal"
+                  (click)="requestForReview(e)">Bíráló felkérése
+          </button>
+        </td>
+      <tr>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</mat-expansion-panel>
+
+
+<mat-expansion-panel hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Folyamatban lévő bírálatok
+    </mat-panel-title>
+    <mat-panel-description>
+      Kattintson a kinyitáshoz!
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <div class="mt-5">
+    <table class="table table-bordered">
+      <thead class="thead">
+      <tr>
+        <th>Neptunkód</th>
+        <th>Hallgató neve</th>
+        <th>Témavezető név</th>
+        <th>Bíráló név</th>
+        <th>Cím</th>
+        <th>Beadás dátuma</th>
+        <th>PDF</th>
+        <th>Melléklet</th>
+        <th>PPT</th>
+
+      </tr>
+      </thead>
+      <tbody class="tbody">
+      <tr *ngFor="let e of thesesUnderReview ">
+
+        <td>{{ e.neptunCode }}</td>
+        <td>{{ e.fullname }}</td>
+        <td>{{ e.supervisorname }}</td>
+        <td>{{ e.reviewername }}</td>
+        <td>{{e.title}}</td>
+        <td>{{ e.submissionDate }}</td>
+
+        <td>
+          <button *ngIf="e.pdfUUID != null; else elseBlock" type="button" class="btn btn-light"
+                  (click)="downloadFile(e.pdfUUID)">Letöltés
+          </button>
+        </td>
+        <td>
+          <button *ngIf="e.attachmentUUID != null; else elseBlock" type="button" class="btn btn-light"
+                  (click)="downloadFile(e.attachmentUUID)">Letöltés
+          </button>
+        </td>
+        <td>
+          <button *ngIf="e.pptUUID != null; else elseBlock" type="button" class="btn btn-light"
+                  (click)="downloadFile(e.pptUUID)">Letöltés
+          </button>
+        </td>
+        <ng-template #elseBlock>Nincs</ng-template>
+
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</mat-expansion-panel>
+
+
+<mat-expansion-panel hideToggle>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Befejezett bírálatok
+    </mat-panel-title>
+    <mat-panel-description>
+      Kattintson a kinyitáshoz!
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <div class="mt-5">
+    <table class="table table-bordered">
+      <thead class="thead">
+      <tr>
+        <th>Neptunkód</th>
+        <th>Hallgató neve</th>
+        <th>Témavezető név</th>
+        <th>Bíráló név</th>
+        <th>Cím</th>
+        <th>Beadás dátuma</th>
+        <th>PDF</th>
+        <th>Melléklet</th>
+        <th>PPT</th>
+        <th>Reviews</th>
+
+      </tr>
+      </thead>
+      <tbody class="tbody">
+      <tr *ngFor="let e of reviewedTheses ">
+        <td>{{ e.neptunCode }}</td>
+        <td>{{ e.fullname }}</td>
+        <td>{{ e.supervisorname }}</td>
+        <td>...</td>
+        <td>{{e.title}}</td>
+        <td>{{ e.submissionDate }}</td>
+
+        <td>
+          <button *ngIf="e.pdfUUID != null; else elseBlock" type="button" class="btn btn-light"
+                  (click)="downloadFile(e.pdfUUID)">Letöltés
+          </button>
+        </td>
+        <td>
+          <button *ngIf="e.attachmentUUID != null; else elseBlock" type="button" class="btn btn-light"
+                  (click)="downloadFile(e.attachmentUUID)">Letöltés
+          </button>
+        </td>
+        <td>
+          <button *ngIf="e.pptUUID != null; else elseBlock" type="button" class="btn btn-light"
+                  (click)="downloadFile(e.pptUUID)">Letöltés
+          </button>
+        </td>
+        <td>
+          <button *ngIf="e.reviewUUID != null; else elseBlock" type="button" class="btn btn-light"
+                  (click)="downloadFile(e.reviewUUID)">Letöltés
+          </button>
+        </td>
+        <ng-template #elseBlock>Nincs</ng-template>
+
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</mat-expansion-panel>
+
+<div class="modal" id="requestForReviewModal" tabindex="-1" aria-labelledby="requestForReviewModal" aria-hidden="true"
+     xmlns="http://www.w3.org/1999/html">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="requestForReviewModalLabel">Bíráló kiválasztása</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form #chooseReviewerForm="ngForm" (ngSubmit)="chooseReviewer()">
+          <div class="form-group">
+            <label for="title">Cím</label>
+            <input type="text" disabled [(ngModel)]="thesisToDisplay.title" name="title" id="title"
+                   placeholder="Szakdolgozat címe">
+          </div>
+
+          <div class="form-group">
+
+            <mat-form-field style="width:400px">
+              <mat-label>Bíráló kiválasztása</mat-label>
+              <mat-select name="students" [(ngModel)]="selectedReviewer">
+                <mat-option *ngFor="let reviewer of reviewers" [value]="reviewer.userId">{{ reviewer.fullname }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <input type="submit" value="OK" class="btn btn-primary w-100" data-bs-dismiss="modal">
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

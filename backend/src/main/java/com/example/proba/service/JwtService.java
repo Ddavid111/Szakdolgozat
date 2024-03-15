@@ -35,17 +35,17 @@ public class JwtService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { // FIND BY NAME!!
         List<User> usersList = (List<User>) usersDao.findAll();
         User user = null;
-     //   Users user = usersDao.findById(1).get();
-        for(User u: usersList) {
-            if(u.getName().equals(username)) {
+        //   Users user = usersDao.findById(1).get();
+        for (User u : usersList) {
+            if (u.getUsername().equals(username)) {
                 user = u;
             }
         }
 
-         // we need to find the user's userID by the username we got from the parameter
+        // we need to find the user's userID by the username we got from the parameter
 
-        if(user != null) {
-            return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), getAuthorities(user));
+        if (user != null) {
+            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthorities(user));
         } else {
             throw new UsernameNotFoundException("Username is not valid!");
         }
@@ -71,13 +71,13 @@ public class JwtService implements UserDetailsService {
 
         List<User> usersList = (List<User>) usersDao.findAll();
         User user = null;
-        for(User u: usersList) {
-            if(u.getName().equals(username)){
+        for (User u : usersList) {
+            if (u.getUsername().equals(username)) {
                 user = u;
             }
         }
 
-       // Users user = usersDao.findById(1).get(); // we need to find the user's userID by the username we got from line 54
+        // Users user = usersDao.findById(1).get(); // we need to find the user's userID by the username we got from line 54
 
         return new JwtResponse(user, newGeneratedToken);
 

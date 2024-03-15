@@ -2,7 +2,10 @@ package com.example.proba.entity;
 
 import javax.persistence.*;
 
+
+
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -12,8 +15,21 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "session", cascade = CascadeType.ALL)
-    Set<Theses> sessions_;
+
+    @ManyToOne
+    @JoinColumn(name = "notary")
+    private User notary;
+    @ManyToOne
+    @JoinColumn(name = "president")
+    private User president;
+
+    @ManyToMany
+    @JoinColumn(name = "members")
+    List<User> members;
+
+    @ManyToMany
+    @JoinColumn(name = "students")
+    List<User> students;
 
 
     private Date date;
@@ -21,8 +37,8 @@ public class Session {
     private Integer endHour;
     private String location;
     private String description;
-    private String members;
-    private String students;
+    private String code;
+
 
 
     public Integer getId() {
@@ -32,15 +48,6 @@ public class Session {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public Set<Theses> getSessions() {
-        return sessions_;
-    }
-
-    public void setSessions(Set<Theses> sessions) {
-        this.sessions_ = sessions;
-    }
-
 
     public Date getDate() {
         return date;
@@ -82,19 +89,44 @@ public class Session {
         this.description = description;
     }
 
-    public String getMembers() {
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+
+    public User getNotary() {
+        return notary;
+    }
+
+    public void setNotary(User notary) {
+        this.notary = notary;
+    }
+
+    public User getPresident() {
+        return president;
+    }
+
+    public void setPresident(User president) {
+        this.president = president;
+    }
+
+    public List<User> getMembers() {
         return members;
     }
 
-    public void setMembers(String members) {
+    public void setMembers(List<User> members) {
         this.members = members;
     }
 
-    public String getStudents() {
+    public List<User> getStudents() {
         return students;
     }
 
-    public void setStudents(String students) {
+    public void setStudents(List<User> students) {
         this.students = students;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.proba.controller;
 
 import com.example.proba.entity.Role;
+import com.example.proba.entity.Theses;
 import com.example.proba.entity.User;
 import com.example.proba.service.ForgottenPasswordService;
 import com.example.proba.service.UserService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UsersController {
@@ -28,15 +30,22 @@ public class UsersController {
         forgottenPasswordService.setNewPassword(username, token, newPassword);
     }
 
+    @PostMapping("/changePassword_two")
+    public void changePassword_two(@RequestParam Integer userId, @RequestParam String oldPassword, @RequestParam String newPassword) throws Exception {
+        forgottenPasswordService.setNewPassword_two(userId, oldPassword, newPassword);
+    }
+
     @GetMapping("/findUserById")
-    public List<Object> findUserById(Integer id) {
+    public User findUserById(Integer id) {
         return userService.findUserById(id);
 
     }
     @GetMapping("/findAllUsers")
-    public List<Object> findAllUsers() {
+    public List<User> findAllUsers() {
         return userService.findAllUsers();
     }
+    @GetMapping("/findAllUsersToDisplay")
+    public List<User> findAllUsersToDisplay() {return userService.findAllUsersToDisplay();}
 
     @PostMapping("/addUser")
     public User addUser(@RequestBody User users) {
@@ -46,6 +55,13 @@ public class UsersController {
     @GetMapping ("/findAllUserRoles")
     public List<Role> findAllUserRoles() {
         return userService.findAllUserRoles();
+    }
+
+    @PutMapping("/updateUsers")
+    public User updateUsers(@RequestBody User user)
+    {
+
+        return userService.updateUsers(user);
     }
 
     @DeleteMapping("/deleteUser")
@@ -61,6 +77,16 @@ public class UsersController {
     @PostMapping({"/registerNewUser"})
     public User registerNewUser(@RequestBody User user) {
         return userService.addUser(user);
+    }
+
+    @GetMapping("/findUsersByRole")
+    public List<User> findUsersByRole(@RequestParam Integer roleId) {
+        return userService.findUsersByRole(roleId);
+    }
+
+    @GetMapping("/findUsersByRoleList")
+    public List<User> findUsersByRoleList(@RequestParam List<Integer> roleIds) {
+        return userService.findUsersByRoleList(roleIds);
     }
 
 }

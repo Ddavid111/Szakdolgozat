@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthService} from "../_services/auth.service";
 import {Router} from "@angular/router";
 import {UserService} from "../_services/user.service";
@@ -10,7 +10,7 @@ import {UserService} from "../_services/user.service";
 })
 export class HeaderComponent {
 
-  constructor(private authService: AuthService, private router: Router, public userService: UserService) {
+  constructor(private authService: AuthService, private router: Router) {
   }
 
   // returns the roleId of the logged in user

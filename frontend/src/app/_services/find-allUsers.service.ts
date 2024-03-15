@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
@@ -6,7 +6,8 @@ import {HttpClient} from "@angular/common/http";
 })
 export class findAllUsersService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   API = "http://localhost:8080"
 
@@ -14,11 +15,28 @@ export class findAllUsersService {
     return this.http.get(this.API + '/findAllUsers')
   }
 
-  public deleteUser(id : any){
-    return this.http.delete(this.API + '/deleteUser?id='+id)
+  public updateUsers(users: any) {
+    return this.http.put(this.API + '/updateUsers', users)
+  }
+
+  public deleteUser(id: any) {
+    return this.http.delete(this.API + '/deleteUser?id=' + id)
   }
 
   public findUserById(id: any) {
-    return this.http.get(this.API + '/findUserById?id='+ id)
+    return this.http.get(this.API + '/findUserById?id=' + id)
   }
+
+  public findUsersByRole(roleId: number) {
+    return this.http.get(this.API + '/findUsersByRole?roleId=' + roleId)
+  }
+
+  public findUsersByRoleList(roleIds: any) {
+    return this.http.get(this.API + '/findUsersByRoleList?roleIds=' + roleIds)
+  }
+
+  public findAllUsersToDisplay(){
+    return this.http.get(this.API + '/findAllUsersToDisplay')
+  }
+
 }

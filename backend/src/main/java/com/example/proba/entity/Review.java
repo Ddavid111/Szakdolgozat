@@ -2,43 +2,54 @@ package com.example.proba.entity;
 
 
 import javax.persistence.*;
-
-
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    //private Integer reviewerId;
-    /*@ManyToOne
-    @JoinColumn(name = "reviewerId",insertable = false,updatable = false)
-    Reviews reviews;*/
+    private Integer reviewId;
 
     @ManyToOne
-    @JoinColumn(name= "reviewerId")
+    @JoinColumn(name = "reviewerId")
     User user;
 
     @ManyToOne
     @JoinColumn(name = "thesisId")
     Theses theses;
 
-    //private Integer thesisId;
     private Date invitationDate;
     private Integer Score;
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
     private String city;
     private Date invitationAcceptionDate;
     private Date responseDate;
     private Date submissionDate;
 
-    public Integer getId() {
-        return id;
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id=" + reviewId +
+                ", user=" + user.toString() +
+                ", theses=" + theses +
+                ", invitationDate=" + invitationDate +
+                ", Score=" + Score +
+                ", description='" + description + '\'' +
+                ", city='" + city + '\'' +
+                ", invitationAcceptionDate=" + invitationAcceptionDate +
+                ", responseDate=" + responseDate +
+                ", submissionDate=" + submissionDate +
+                '}';
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Integer getReviewId() {
+        return reviewId;
+    }
+
+    public void setReviewId(Integer reviewId) {
+        this.reviewId = reviewId;
     }
 
     public User getUser() {
@@ -56,14 +67,6 @@ public class Review {
     public void setTheseses(Theses theses) {
         this.theses = theses;
     }
-
-    /*public Integer getThesisId() {
-        return thesisId;
-    }
-
-    public void setThesisId(Integer thesisId) {
-        this.thesisId = thesisId;
-    }*/
 
     public Date getInvitationDate() {
         return invitationDate;

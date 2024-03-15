@@ -15,14 +15,15 @@ public class Role {
     User user;
     @Enumerated(EnumType.ORDINAL)
     private Roles roles;
-    public enum Roles {
-    Hallgato,
-    Elnok,
-    Jegyzo,
-    Biralo,
-    Temavezeto
 
-}
+    public enum Roles {
+        Hallgato,
+        Elnok,
+        Jegyzo,
+        Biralo,
+        Temavezeto
+
+    }
 
     public User getUser() {
         return user;
@@ -52,7 +53,7 @@ public class Role {
     public String toString() {
         return "UserRoles{" +
                 "userId=" + userId +
-       //         ", users=" + users +
+                //         ", users=" + users +
                 ", roles=" + roles +
                 '}';
     }

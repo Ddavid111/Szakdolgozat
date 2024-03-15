@@ -1,44 +1,97 @@
-<p>add-session works!</p>
+<div class="container">
+  <div class="card" style="padding: 15px">
+    <form (ngSubmit)="addFormData()" [formGroup]="addSessionForm">
 
-<form #addSessionForm="ngForm" (ngSubmit)="addFormData(addSessionForm)">
+      <div class="form-group">
+        <br>
+        <span style="color:red;" *ngIf="addSessionForm.errors?.['locationError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="location" id="location" placeholder="ZV Helyszín" class="form-control">
+      </div>
 
+      <div class="form-group">
+        <br>
+        <span style="color:red;" *ngIf="addSessionForm.errors?.['dateError']">Kötelező megadni a mezőt!</span>
+        <input type="date" formControlName="date" id="date" placeholder="ZV időpont" class="form-control">
+      </div>
+      <p></p>
 
-    <label for="location">ZV Helyszín</label>
-    <input type="text" ngModel name="location" id="location" placeholder="ZV Helyszín">
+      <div class="form-group">
+        <label for="startHour">ZV kezdete:</label>
+        <br>
+        <span style="color:red;" *ngIf="addSessionForm.errors?.['startHourError']">Kötelező megadni a mezőt!</span>
+        <span style="color:red;" *ngIf="addSessionForm.errors?.['startHourValueError']">Nem megfelelő időpont (6-20 óra közötti érték megfelelő)!</span>
+        <input type="number" formControlName="startHour" id="startHour" placeholder="ZV kezdete" class="form-control">
+      </div>
+      <p></p>
 
-  <p></p>
-    <label for="date">Zv időpont:</label>
-    <input type="date" ngModel name="date" id="date" placeholder="ZV időpont">
+      <div class="form-group">
+        <label for="endHour">ZV vége:</label>
+        <br>
+        <span style="color:red;" *ngIf="addSessionForm.errors?.['endHourError']">Kötelező megadni a mezőt!</span>
+        <span style="color:red;" *ngIf="addSessionForm.errors?.['endHourValueError']">Nem megfelelő időpont (8-22 óra közötti érték megfelelő)!</span>
+        <span style="color:red;" *ngIf="addSessionForm.errors?.['endHourrError']">Nem fejeződhet be hamarabb a ZV mint ahogy elkezdődött volna!</span>
+        <input type="number" formControlName="endHour" id="endHour" placeholder="ZV vége" class="form-control">
+      </div>
+      <p></p>
 
-  <p></p>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Hallgató kiválasztása</mat-label>
+          <mat-select formControlName="students" [(ngModel)]="students" multiple>
+            <mat-option *ngFor="let student of studentsToDropdown" [value]="student.userId">{{ student.fullname }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <label for="startHour">ZV kezdete:</label>
-  <input type="number" ngModel name="startHour" id="startHour" placeholder="ZV kezdete">
+      <p></p>
 
-  <p></p>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>ZV tag kiválasztása</mat-label>
+          <mat-select formControlName="members" [(ngModel)]="members" multiple>
+            <mat-option *ngFor="let member of membersToDropdown" [value]="member.userId">{{ member.fullname }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <label for="endHour">ZV vége:</label>
-  <input type="number" ngModel name="endHour" id="endHour" placeholder="ZV vége">
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Elnök kiválasztása</mat-label>
+          <mat-select formControlName="president" [(ngModel)]="presidentId">
+            <div *ngFor="let member of membersToDropdown">
+              <mat-option *ngIf="member.roleId === 1" [value]="member.userId">{{ member.fullname }}</mat-option>
+            </div>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <p></p>
-  Hallgató kiválasztása <br>
-  <select name="students" [(ngModel)]="selectedStudent">
-    <option *ngFor="let item of students" [value]="item[5]">
-      {{item[5]}}
-    </option>
-  </select>
-  <p></p>
-  ZV tag kiválasztása <br>
-  <select name="members" [(ngModel)]="selectedMember">
-    <option *ngFor="let item of members" [value]="item[5]">
-      {{item[5]}}
-    </option>
-  </select>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Jegyző kiválasztása</mat-label>
+          <mat-select formControlName="notary" [(ngModel)]="notaryId">
+            <div *ngFor="let member of membersToDropdown">
+              <mat-option *ngIf="member.roleId  === 2" [value]="member.userId">{{ member.fullname }}</mat-option>
+            </div>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-  <p></p>
-  <label for="description">Megjegyzés</label>
-  <input type="text" ngModel name="description" id="description" placeholder="Megjegyzés">
-  <p></p>
-  <input type="submit" value="Felvitel">
+      <p></p>
+      <div class="form-group">
+        <label for="description">Megjegyzés</label>
+        <input type="text" formControlName="description" id="description" placeholder="Megjegyzés" class="form-control">
+      </div>
 
-</form>
+      <div class="form-group">
+        <br>
+        <span style="color:red;" *ngIf="addSessionForm.errors?.['codeError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="code" id="code" placeholder="Záróvizsga kód" class="form-control">
+      </div>
+
+      <p></p>
+      <div class="form-group">
+        <input type="submit" (click)="waiting()" [disabled]="addSessionForm.invalid" value="Felvitel">
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,11 +1,9 @@
 package com.example.proba.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 public class File {
@@ -14,6 +12,30 @@ public class File {
     private Integer id;
     private String name;
     private Date uploadTime;
+
+    private String uuid;
+
+
+    @ManyToOne
+    @JoinColumn(name = "thesis_id")
+    private Theses thesis;
+
+    public Theses getThesis() {
+        return thesis;
+    }
+
+    public void setThesis(Theses thesis) {
+        this.thesis = thesis;
+    }
+
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     public Integer getId() {
         return id;

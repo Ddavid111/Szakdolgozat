@@ -1,12 +1,14 @@
 package com.example.proba.controller;
 
 import com.example.proba.entity.Theses;
+import com.example.proba.entity.User;
 import com.example.proba.service.ThesesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ThesisController {
@@ -14,8 +16,20 @@ public class ThesisController {
     ThesesService thesesService;
 
     @GetMapping("/getThesesList")
-    public List<Object> getThesesList() {
+    public List<Theses> getThesesList() {
         return thesesService.getThesesList();
+
+    }
+
+    @GetMapping("/getThesesListToDisplay")
+    public List<Theses> getThesesListToDisplay() {
+        return thesesService.getThesesListToDisplay();
+
+    }
+
+    @GetMapping("/findThesesById")
+    public Optional<Theses> findThesesById(Integer id) {
+        return thesesService.findThesesById(id);
 
     }
 
@@ -32,7 +46,7 @@ public class ThesisController {
     @PutMapping("/updateTheses")
     public Theses updateTheses(@RequestBody Theses theses)
     {
-
+        System.out.println(theses.toString());
         return thesesService.updateTheseses(theses);
     }
 
@@ -43,6 +57,8 @@ public class ThesisController {
         thesesService.deleteThesesById(id);
 
     }
+
+
 
 
 }

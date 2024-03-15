@@ -1,46 +1,141 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms'; // Importáljuk a NgForm-ot a Template-driven form validációhoz
 import { AddFilesService } from "../_services/add-files.service";
 import { DocumentService } from "../_services/document.service";
+import { HttpEventType } from "@angular/common/http";
+import { ListThesesesService } from "../_services/list-theseses.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-upload-pptxfiles',
   templateUrl: './upload-pptxfiles.component.html',
   styleUrls: ['./upload-pptxfiles.component.css']
 })
-export class UploadPPTXFilesComponent {
-  selectedFile: File | null | undefined;
-  constructor(private addFilesService: AddFilesService, private documentService: DocumentService) {}
+export class UploadPPTXFilesComponent implements OnInit {
+  @ViewChild('fileInput') fileInput: any;
 
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
+  selectedFile: File | null | undefined;
+  uploadProgress: number = 0;
+  message: string | undefined;
+  theses: any
+  thesesId: number | undefined
+
+  constructor(private addFilesService: AddFilesService, private documentService: DocumentService,
+              private findThesesService: ListThesesesService) {
   }
 
+  alertWithWarningFileType()
+  {
+    Swal.fire("Warning",'Invalid file type. Only pptx and ppt files are allowed..','warning')
+  }
+
+  alertWithWarningFileSize()
+  {
+    Swal.fire("Warning",'File size exceeds the limit of 24 MB.','warning')
+  }
+
+  alertWithWarningSelect()
+  {
+    Swal.fire("Warning",'Please select thesis and file.','warning')
+  }
+
+  alertWithError()
+  {
+    Swal.fire("Hiba",'Nem sikerült a fájl feltöltés.','error')
+  }
+
+  alertWithErrorMessage(err: any) {
+    Swal.fire("Hiba", ' Error:' + err,  'error');
+  }
+
+  alertWithSuccess()
+  {
+    Swal.fire("Siker",'Sikerült a fájl feltöltés.','success')
+  }
+
+  ngOnInit(): void {
+    this.getTheses();
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const extension = file.name.split('.').pop()?.toLowerCase();
+      if (extension !== 'pptx' && extension !== 'ppt') {
+        this.alertWithWarningFileType()
+        this.fileInput.nativeElement.value = ''; // Clear the file input
+        return;
+      }
+      if (file.size > 24 * 1024 * 1024) {
+        this.alertWithWarningFileSize()
+        this.fileInput.nativeElement.value = ''; // Clear the file input
+        return;
+      }
+      this.selectedFile = file;
+    }
+  }
+
+
   uploadFile() {
-    if (!this.selectedFile) {
-      console.error('No file selected.');
+    if (!this.selectedFile || !this.thesesId || this.fileInput.invalid) {
+      this.alertWithWarningSelect()
+      console.error('Invalid form or no file selected.');
       return;
     }
 
     const uploadData = new FormData();
     uploadData.append('file', this.selectedFile, this.selectedFile.name);
 
-    this.addFilesService.addFiles(uploadData)
-      .subscribe(res => {
-        console.log(res);
-        alert('Sikeresen adatbázisba írva.');
+    this.addFilesService.addFiles(uploadData, {
+      reportProgress: true,
+      observe: 'events'
+    })
+      .subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.uploadProgress = Math.round((event.loaded / (event.total ?? 1)) * 100);
+        } else if (event.type === HttpEventType.Response) {
+          console.log("fileId in the DB: ")
+          console.log(event.body) // WORKS!
+          if (event.body > 0) {
+            console.log('File (1) is completely uploaded!');
+            this.addFilesService.assembleFileIdWithStudentId(Number(event.body), Number(this.thesesId)).subscribe(
+              (resp) => {
+                this.alertWithSuccess()
+                // this.message = 'Sikeresen adatbázisba írva.';
+              },
+              (err) => {
+                this.alertWithError()
+                console.log(err.value)
+              }
+            )
+          }
+        }
       }, err => {
-        alert(err);
-        console.error(err);
+        //this.message = err.message || 'Could not upload the file!';
+        //console.error(err);
       });
   }
 
-  generateDocx() {
-    this.documentService.generateDocx().subscribe(
+  // generateDocx() {
+  //   this.documentService.generateDocx().subscribe(
+  //     (resp) => {
+  //       console.log(resp)
+  //     },
+  //     (err) => {
+  //       this.message = 'error van: ' + err.value;
+  //       console.error(err);
+  //     }
+  //   );
+  // }
+
+  getTheses() {
+    this.findThesesService.getThesesList().subscribe(
       (resp) => {
+        this.theses = resp
         console.log(resp)
       },
       (err) => {
-        alert('error van: ' + err.value)
+        this.alertWithErrorMessage(err.value)
       }
     )
   }

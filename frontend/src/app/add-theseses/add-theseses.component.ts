@@ -1,5 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {NgForm} from "@angular/forms";
+import Swal from 'sweetalert2';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
 import {AddThesesesService} from "../_services/add-theseses.service";
 import {findAllUsersService} from "../_services/find-allUsers.service";
 import {UserService} from "../_services/user.service";
@@ -10,62 +18,187 @@ import {Router} from "@angular/router";
   templateUrl: './add-theseses.component.html',
   styleUrls: ['./add-theseses.component.css']
 })
-export class AddThesesesComponent implements OnInit{
+export class AddThesesesComponent implements OnInit {
 
   jelentkezik: boolean = false;
-  students: any[] = []
+  selectedSupervisor: any
+  selectedConsultant: any
+  supervisors: any
+  consultants: any
+  students: any
   selectedStudent: any
+  addThesesForm: FormGroup
+
+  alertWithSucces()
+  {
+    Swal.fire("Köszönjük!",'Szakdolgozat sikeresen tárolva','success')
+  }
+
+  alertWithWarning()
+  {
+    Swal.fire("Figyelem!",'Only HALLGATO role can view this page.','warning')
+  }
+
+  alertWithError(err: any) {
+    Swal.fire("Hiba", ' Error:' + err,  'error');
+  }
+
   ngOnInit() { // runs before loading the component
-    if(!this.userService.roleMatch(0)) { // if the roles are not correct, navigate to login page before the component would have loaded
-      alert('Only HALLGATO role can view this page.')
+    if (!this.userService.roleMatch(0)) { // if the roles are not correct, navigate to login page before the component would have loaded
+      this.alertWithWarning()
       this.router.navigate(['/login'])
     }
-
+    this.getSupervisorToDropdown()
     this.getStudentsToDropdown()
-    console.log(this.students)
+
   }
+
+
   constructor(
-              private addThesesesService: AddThesesesService,
-              private findAllUsersService: findAllUsersService,
-              private userService: UserService,
-              private router: Router
-              ) {
+    private addThesesesService: AddThesesesService,
+    private findAllUsersService: findAllUsersService,
+    private userService: UserService,
+    private router: Router
+  ) {
+    this.addThesesForm = new FormGroup({
+        title: new FormControl(null, [Validators.required]),
+        faculty: new FormControl(null, [Validators.required]),
+        department: new FormControl(null, [Validators.required]),
+        speciality: new FormControl(null, [Validators.required]),
+        language: new FormControl(null, [Validators.required]),
+        hasMscApply: new FormControl(null),
+        submissionDate: new FormControl(null, [Validators.required]),
+        answer: new FormControl(null),
+        defenseScore: new FormControl(null),
+        subjectScore: new FormControl(null),
+        finalScore: new FormControl(null),
+        userId: new FormControl(null, [Validators.required]),
+        supervisorId: new FormControl(null, [Validators.required]),
+        consultantId: new FormControl(null)
+      },
+      {
+        validators: [titleError, facultyError, departmentError, specialityError, languageError,
+          submissionDateError, userIdError, supervisorIdError]
+
+      })
+
   }
 
-  getStudentsToDropdown(){
-    this.findAllUsersService.findAllUsers().subscribe(
-      (resp) =>{
-        for (let i = 0; i < Object.keys(resp).length; i++) {
-          console.log(Object.values(resp)[i])
-          if (Object.values(resp)[i][8] === 0) {
 
-            this.students.push(Object.values(resp)[i])
-            // console.log(Object.values(resp)[i])
-          }
-        }
-      },
-      (err) => {
-        alert('error: ' + err)
+  getSupervisorToDropdown() {
+    this.findAllUsersService.findUsersByRole(4).subscribe(
+      (resp) => {
+        this.supervisors = resp
+        this.consultants = resp
       }
     )
   }
 
-  addFormData(addThesesesForm: NgForm) {
-    this.addThesesesService.addTheseses(addThesesesForm.value).subscribe(
-
+  getStudentsToDropdown() {
+    this.findAllUsersService.findUsersByRole(0).subscribe(
       (resp) => {
-        console.log(addThesesesForm.value)
-        alert("Sikeresen adatbázisba írva!")
+        this.students = resp
+      }
+    )
+  }
+
+  addFormData() {
+    console.log(this.addThesesForm)
+
+    this.addThesesesService.addTheseses(this.addThesesForm.value).subscribe(
+      (resp) => {
+        console.log(this.addThesesForm.value)
+        this.alertWithSucces()
         //másik lapra navigálás
         this.router.navigate(['/uploadPDFZIP'])
 
       },
       (err) => {
-        alert('error: ' + err)
-        console.log(addThesesesForm.value)
+        this.alertWithError(err.value)
+        console.log(this.addThesesForm.value)
       }
     )
   }
 
 
+}
+
+export const titleError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let title = control.get('title')
+  if (title === null || title?.value === null || title?.value === "") {
+    return {
+      titleError: true
+    }
+  }
+  return null
+}
+
+export const facultyError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let faculty = control.get('faculty')
+  if (faculty === null || faculty?.value === null || faculty?.value === "") {
+    return {
+      facultyError: true
+    }
+  }
+  return null
+}
+
+export const departmentError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let department = control.get('department')
+  if (department === null || department?.value === null || department?.value === "") {
+    return {
+      departmentError: true
+    }
+  }
+  return null
+}
+
+export const specialityError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let speciality = control.get('speciality')
+  if (speciality === null || speciality?.value === null || speciality?.value === "") {
+    return {
+      specialityError: true
+    }
+  }
+  return null
+}
+
+export const languageError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let field = control.get('language')
+  if (field === null || field?.value === null || field?.value === "") {
+    return {
+      languageError: true
+    }
+  }
+  return null
+}
+
+export const submissionDateError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let field = control.get('submissionDate')
+  if (field === null || field?.value === null || field?.value === "") {
+    return {
+      submissionDateError: true
+    }
+  }
+  return null
+}
+
+export const userIdError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let field = control.get('userId')
+  if (field === null || field?.value === null || field?.value === "") {
+    return {
+      userIdError: true
+    }
+  }
+  return null
+}
+
+export const supervisorIdError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let field = control.get('supervisorId')
+  if (field === null || field?.value === null || field?.value === "") {
+    return {
+      supervisorIdError: true
+    }
+  }
+  return null
 }

@@ -2,12 +2,14 @@ package com.example.proba.service;
 
 import com.example.proba.dao.ThesesDao;
 import com.example.proba.entity.Theses;
+import com.example.proba.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ThesesService {
@@ -16,28 +18,38 @@ public class ThesesService {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
-    public List<Object> getThesesList() {
-        String query = "select * from theses";
-        var resultSet = jdbcTemplate.queryForList(query);
-        List<Object> result = new ArrayList<>();
-        resultSet.forEach((key) -> {
-            result.add(key.values());
-        });
 
-        return result;
+    public List<Theses> getThesesList() {
+        Iterable<Theses> thesesIterable = thesesDao.findAll();
+        List<Theses> theses = new ArrayList<>();
+
+        thesesIterable.forEach(theses::add);
+
+        return theses;
+    }
+
+    public List<Theses> getThesesListToDisplay() {
+        Iterable<Theses> thesesIterable = thesesDao.getThesesListToDisplay();
+        List<Theses> theses = new ArrayList<>();
+
+        thesesIterable.forEach(theses::add);
+
+        return theses;
+    }
+
+    public Optional<Theses> findThesesById(Integer id) {
+        Optional<Theses> theses = thesesDao.findById(id);
+
+        return theses;
     }
 
 
-    public Theses addTheses(Theses theses)
-    {
-
+    public Theses addTheses(Theses theses) {
         return thesesDao.save(theses);
-
     }
 
 
-    public Theses updateTheseses(Theses theses)
-    {
+    public Theses updateTheseses(Theses theses) {
         Integer id = theses.getId();
         Theses temp = thesesDao.findById(id).get();
         temp.setFinalScore(theses.getFinalScore());
@@ -58,8 +70,11 @@ public class ThesesService {
         temp.setUser(theses.getUser());
         temp.setSessions(theses.getSessions());
         temp.setTopics(theses.getTopics());
-        temp.setTheseses(theses.getTheseses());
-
+//temp.setTheseses(theses.getTheseses()); // commented out at: 2024.02.13. - why was it here?
+        temp.setUserId(theses.getUserId());
+        temp.setSupervisorId(theses.getSupervisorId());
+        temp.setConsultantId(theses.getConsultantId());
+        temp.setConsultant(theses.getConsultant());
 
 
         return thesesDao.save(theses);
@@ -67,13 +82,9 @@ public class ThesesService {
     }
 
 
-    public void deleteThesesById(Integer id){
+    public void deleteThesesById(Integer id) {
         String query = "delete from theses where id=" + id;
         jdbcTemplate.update(query);
-
-
-
-
     }
 
 }

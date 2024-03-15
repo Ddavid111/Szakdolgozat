@@ -13,9 +13,9 @@ public class Topic {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "topic", cascade = CascadeType.ALL)
     Set<Theses> theses;
-    private Integer number;
+    @Column(columnDefinition = "Varchar(7500)")
     private String topic;
-
+    //private Integer grade;
 
 
     public Integer getId() {
@@ -26,14 +26,6 @@ public class Topic {
         this.id = id;
     }
 
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
     public String getTopic() {
         return topic;
     }
@@ -41,4 +33,11 @@ public class Topic {
     public void setTopic(String topic) {
         this.topic = topic;
     }
+
+    /*public Integer getGrade() {
+        return grade;
+    }
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }*/
 }
