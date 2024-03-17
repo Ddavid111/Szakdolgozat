@@ -1,6 +1,6 @@
 \Chapter{Tervezés}
 
-Bevezető szöveg...
+A következőkben bemutatom a különböző szerepköröket és folyamatokat szekvenciadiagramok és folyamatábrák segítségével. Részletes elemzésre kerülnek a lapok közötti átmenetek és az adatmodell is. Ezek a lépések nélkülözhetetlenek a hatékony és átlátható tervezéshez, hogy sikeresen elkészülhessen a projekt.
 
 \Section{Szerepkörök leírása}
 
@@ -102,11 +102,11 @@ Az elnök bejelentkezik az alkalmazásba és kiválasztja a szakdolgozatot, amel
 
 \item \textbf{Bíráló és témavezető elkészíti a bírálatot:}
 
-Mind a bíráló, mind a témavezető bejelentkezik az alkalmazásba, ahol elérhetik a kijelölt szakdolgozatot. A bíráló és a témavezető részletesen értékeli a dolgozatot, és dokumentálja az észrevételeit, értékeléseit és esetleges javaslatait.
+Mind a bíráló, mind a témavezető bejelentkezik az alkalmazásba, ahol elérhetik a kijelölt szakdolgozatot. A bíráló és a témavezető részletesen értékeli a dolgozatot, és dokumentálja az észrevételeit.
 
 \item \textbf{Elnök kiküldi a bírálatot a hallgatónak:}
 
-Az elnök bejelentkezik az alkalmazásba, ahol hozzáfér a bírálati eredményekhez.
+Az elnök bejelentkezik a platformra, ahol hozzáfér a bírálati eredményekhez.
 Az elnök elküldi a bírálati eredményeket a hallgatónak, lehetővé téve számára azok megtekintését.
 \end{enumerate}
 
@@ -123,39 +123,36 @@ Az elnök elküldi a bírálati eredményeket a hallgatónak, lehetővé téve s
 
 \begin{enumerate}
 
-\item Bíráló belép a rendszerbe és listázza a felkéréseket:
+\item \textbf{Bíráló belép a rendszerbe és listázza a felkéréseket:}
 
-A bíráló bejelentkezik az alkalmazásba a saját hitelesítő adataival.
-Miután sikeresen bejelentkezett, a rendszer megjeleníti a bíráló számára elérhető felkéréseket listázó oldalt.
-A felkérések listája tartalmazza az összes olyan feladatot vagy munkát, amelyekre a bírálót felkérték bírálat készítésére.
+A bíráló bejelentkezik az alkalmazásba. Miután sikeresen bejelentkezett, a rendszer megjeleníti a bíráló számára elérhető felkéréseket. A felkérések listája tartalmazza az összes olyan szakdolgozatot, amelyekre a bírálót felkérték a bírálat készítésére.
 
-\item Bíráló kiválaszt egy felkérést a listából:
+\item \textbf{Bíráló kiválaszt egy felkérést a listából:}
 
-A bíráló kiválasztja a listából azt a felkérést, amelyre bírálatot szeretne készíteni.
-A felkérés részletei megjelennek a bíráló számára, például a feladat neve, a beküldési határidő stb.
+A bíráló kiválasztja a listából azt a szakdolgozatot, amelyre bírálatot szeretne készíteni.
 
-\item Bíráló elkezdi szerkeszteni a bírálatot:
+\item \textbf{Bíráló elkezdi szerkeszteni a bírálatot:}
 
-A bíráló megnyitja a kiválasztott felkérést és elkezdi szerkeszteni a bírálatot.
-A bíráló részletesen értékeli a feladatot vagy munkát, és dokumentálja az észrevételeit, pontozását vagy egyéb megjegyzéseit a bírálatban.
+Elkezdi szerkeszteni a bírálatot. Részletesen értékeli a dolgozatot és dokumentálja az észrevételeit, pontozását vagy egyéb megjegyzéseit a bírálatban.
 
-\item Bíráló beküldi a szerkesztett bírálatot:
+\item \textbf{Bíráló beküldi a szerkesztett bírálatot:}
 
 Miután a bíráló elkészítette a bírálatot, beküldi azt a rendszerbe.
 
-\item Ellenőrzés:
+\item \textbf{Ellenőrzés:}
 
 A rendszer ellenőrzi a beküldött bírálatot, hogy megfelel-e a formai követelményeknek.
-Ha a bírálat formailag nem megfelelő:
+\begin{itemize}
+\item Ha a bírálat formailag nem megfelelő:
 A rendszer hibaüzenetet jelenít meg, és figyelmezteti a bírálót a hibákra.
 A bíráló visszairányításra kerül a bírálat szerkesztéséhez, hogy kijavítsa a hibákat.
-Ha a bírálat megfelelő formában van beküldve:
-A rendszer értesítést küld a bírálónak a sikeres beküldésről.
-A beküldött bírálat letöltődik a bíráló számítógépére az archiválás és további referenciák céljából.
+\item Ha a bírálat megfelelő formában van beküldve:
+A rendszer értesítést küld a bírálónak a sikeres beküldésről, illetve a dokumentum azonnal letöltődik, amit meg tud tekinteni.
+\end{itemize}
 
-\item A folyamat véget ér:
+\item \textbf{Sikeres beküldés:}
 
-Miután a bíráló sikeresen beküldte és ellenőrizte a bírálatot, a folyamat befejeződik, és a bíráló visszatér az alkalmazás főoldalára vagy más tevékenységekhez.
+Miután a bíráló sikeresen ellenőrizte és beküldte a bírálatot, a folyamat befejeződik, és a bíráló visszatér az alkalmazás főoldalára vagy más tevékenységekhez.
 
 \end{enumerate}
 
