@@ -122,26 +122,27 @@ public class FileService {
     public int uploadFile(MultipartFile file){
         File fileTest = new File();
         String filename = file.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
 
         fileTest.setUploadTime(new Date(System.currentTimeMillis()));
-        fileTest.setUuid(UUID.randomUUID().toString());
+        fileTest.setUuid(uuid);
 
         try {
 
             if(file.getContentType().contains("presentation"))
             {
-                Files.write(Paths.get("ppts/" + filename), file.getBytes());
-                fileTest.setName("ppts/" + filename);
+                Files.write(Paths.get("ppts/" + uuid + "_"  + filename), file.getBytes());
+                fileTest.setName("ppts/" + uuid + "_"  + filename);
                 return fileDao.save(fileTest).getId();
             }
             else if(file.getContentType().equals("application/pdf")) {
-                Files.write(Paths.get("pdfs/" + filename), file.getBytes());
-                fileTest.setName("pdfs/" + filename);
+                Files.write(Paths.get("pdfs/" + uuid + "_"  + filename), file.getBytes());
+                fileTest.setName("pdfs/" + uuid + "_"  + filename);
                 return fileDao.save(fileTest).getId();
             }
             else if(file.getContentType().equals("application/zip") || file.getContentType().equals("application/x-zip-compressed")) {
-                Files.write(Paths.get("attachments/" + filename), file.getBytes());
-                fileTest.setName("attachments/" + filename);
+                Files.write(Paths.get("attachments/" + uuid + "_"  + filename), file.getBytes());
+                fileTest.setName("attachments/" + uuid + "_"  + filename);
                 return fileDao.save(fileTest).getId();
             }
             else {

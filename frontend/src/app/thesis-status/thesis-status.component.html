@@ -46,14 +46,14 @@
       <td>{{thesis.neptunCode}}</td>
       <td>{{thesis.fullname}}</td>
       <td>{{thesis.supervisorname}}</td>
-      <td>{{ thesis.reviewername }}</td>
+      <td><span *ngIf="thesis.reviewername != ''; else elseBlock">{{ thesis.reviewername }}</span></td>
       <td>{{ thesis.title }}</td>
       <td>{{thesis.submissionDate}}</td>
       <td><button *ngIf="thesis.pdfUUID != null; else elseBlock" type="button" class="btn btn-light" (click)="downloadFile(thesis.pdfUUID)">Letöltés</button></td>
       <td><button *ngIf="thesis.attachmentUUID != null; else elseBlock" type="button" class="btn btn-light" (click)="downloadFile(thesis.attachmentUUID)">Letöltés</button></td>
       <td><button *ngIf="thesis.pptUUID != null; else elseBlock" type="button" class="btn btn-light" (click)="downloadFile(thesis.pptUUID)">Letöltés</button></td>
       <td>
-        <button type="button" class="btn btn-danger" (click)="deletePdfFiles()">PDF törlése</button>
+        <button id="deletePdfButton" type="button" class="btn btn-danger" (click)="deletePdfFiles()">PDF törlése</button>
       </td>
       <td>
         <button type="button" class="btn btn-danger" (click)="deleteZipFiles()">ZIP törlése</button>

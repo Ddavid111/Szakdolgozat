@@ -40,7 +40,8 @@ export class ThesisStatusComponent implements OnInit{
   { }
 
   ngOnInit(): void {
-     this.getReviewList()
+     this.getReviewList(localStorage['userId'])
+
 
   }
 
@@ -111,6 +112,7 @@ export class ThesisStatusComponent implements OnInit{
         if(thesisId === r.theseses.id)
         {
           tempReviewerId = r.user.userId
+          console.log(tempReviewerId)
         }
       })
 
@@ -159,9 +161,24 @@ export class ThesisStatusComponent implements OnInit{
           }
         }
       })
+      let roleId = localStorage['roles']
+      let userId = localStorage['userId']
+      console.log(userId)
+      console.log(tempReviewerId)
+      console.log(dataForOneThesis)
 
-      this.thesesFullData.push(dataForOneThesis)
-      this.temp = this.thesesFullData
+      if(roleId == 3)
+      {
+        if(tempReviewerId == userId) {
+          console.log(tempReviewerId)
+          this.thesesFullData.push(dataForOneThesis)
+          this.temp = this.thesesFullData
+        }
+      }
+      else {
+        this.thesesFullData.push(dataForOneThesis)
+        this.temp = this.thesesFullData
+      }
     })
 
   }
@@ -188,14 +205,24 @@ export class ThesisStatusComponent implements OnInit{
       });
   }
 
-  getDownloadableThesisFiles() {
+  getDownloadableThesisFiles(thesesIds?: any[], roleId?: any) {
     this.reportStatusService.getDownloadableThesisFiles().subscribe(
-      (resp) => {
+      (resp : any) => {
+        if((roleId == 0 || roleId == 4) && thesesIds !== undefined){
+        // let tempResp: any = resp
+        resp.forEach((x:any)=>{
+          if(thesesIds?.includes(x.first)){
+            this.files.push(x)
+          }
+        })
+          this.correctTable()
+        }
+        else{
         console.log(resp)
         this.files = resp
 
         this.correctTable()
-
+        }
       },
       (err) => {
         console.error(err)
@@ -203,11 +230,38 @@ export class ThesisStatusComponent implements OnInit{
     )
   }
 
-  getThesesList() {
+  getThesesList(userId?: number, roleId?: number) {
     this.listThesesService.getThesesList().subscribe(
-      (resp) => {
-        this.theses = resp
-        this.getDownloadableThesisFiles()
+      (resp : any) => {
+        console.log(resp)
+        if(roleId == 0){
+        // let tempResp: any = resp
+        this.theses = resp.filter((x: any) =>
+            x.userId == userId
+        )
+          console.log(userId)
+          console.log(this.theses)
+          // @ts-ignore
+          let thesesIds = this.theses.map(({id}) => id)
+          console.log(thesesIds)
+        this.getDownloadableThesisFiles(thesesIds,roleId)
+        }
+        else if(roleId == 4){
+          // let tempResp: any = resp
+          this.theses = resp.filter((x: any) =>
+            x.supervisor.userId == userId
+          )
+          console.log(userId)
+          console.log(this.theses)
+          // @ts-ignore
+          let thesesIds = this.theses.map(({id}) => id)
+          console.log(thesesIds)
+          this.getDownloadableThesisFiles(thesesIds,roleId)
+        }
+        else{
+          this.theses = resp
+          this.getDownloadableThesisFiles(undefined, roleId)
+        }
       },
       (err) =>
       {
@@ -216,11 +270,38 @@ export class ThesisStatusComponent implements OnInit{
     )
   }
 
-  getUsersList(){
+  getUsersList(userId?: number, roleId?: number){
     this.findallUsersService.findAllUsers().subscribe(
-      (resp) => {
-        this.users = resp
-        this.getThesesList()
+      (resp : any) => {
+        if(roleId == 0){
+          // let tempResp : any = resp
+          console.log(resp)
+          this.users = resp.filter((x: any) =>
+              (x.userId == userId && x.roleId == 0) ||  x.roleId == 3 || x.roleId == 4
+          )
+          this.getThesesList(userId, roleId)
+        }
+        else if(roleId == 4){
+          // let tempResp : any = resp
+          console.log(resp)
+          this.users = resp.filter((x: any) =>
+            (x.userId == userId && x.roleId == 4) ||  x.roleId == 3 || x.roleId == 0
+          )
+          this.getThesesList(userId, roleId)
+        }
+        else if(roleId == 3){
+          // let tempResp : any = resp
+          console.log(resp)
+          this.users = resp.filter((x: any) =>
+            x.roleId == 0 || (x.userId == userId && x.roleId == 3) ||  x.roleId == 4
+          )
+          this.getThesesList(userId, roleId)
+        }
+        else{
+          this.users = resp
+          this.getThesesList()
+        }
+
       },
       (err) => {
         alert(err.value)
@@ -228,14 +309,52 @@ export class ThesisStatusComponent implements OnInit{
     )
   }
 
-  getReviewList(){
+  getReviewList(userId: number){
+    console.log(userId)
+    let roleId = localStorage['roles']
+
     this.reportStatusService.getReviewData().subscribe(
-      (resp) => {
-        this.reviews = resp
+      (resp: any) => {
+        if(roleId == 0)
+        {
+          // let tempResp : any = resp
+        this.reviews = resp.filter((element: any) =>
+            element.theseses.userId == userId
+        )
         console.log("reviews:")
         console.log(resp)
 
-        this.getUsersList()
+        this.getUsersList(userId, roleId)
+          }
+        else if(roleId == 4)
+        {
+          // let tempResp : any = resp
+          this.reviews = resp.filter((element: any) =>
+            element.theseses.supervisor.userId == userId
+          )
+          console.log("reviews:")
+          console.log(resp)
+
+          this.getUsersList(userId, roleId)
+        }
+        else if(roleId == 3)
+        {
+          // let tempResp : any = resp
+          this.reviews = resp.filter((element: any) =>
+            element.user.userId == userId
+          )
+          console.log("reviews:")
+          console.log(this.reviews)
+
+          this.getUsersList(userId, roleId)
+        }
+        else{
+          this.reviews = resp
+          console.log("reviews:")
+          console.log(resp)
+
+          this.getUsersList()
+        }
       },
       (err) => {
         alert(err.value)
@@ -263,7 +382,12 @@ export class ThesisStatusComponent implements OnInit{
       }
     }
     if (!pdfFileFound) {
-      this.showErrorMessage()
+      // // @ts-ignore
+      // this.showErrorMessage()
+      (<HTMLInputElement> document.getElementById("deletePdfButton")).disabled = true;
+    }
+    else {
+      (<HTMLInputElement> document.getElementById("deletePdfButton")).disabled = false;
     }
   }
 

@@ -67,9 +67,10 @@ export class LoginComponent {
         console.log("loginnál user role id: " + response.user.roleId)
         this.authService.setToken(response.jwtToken)
 
-        if (response.user.id === 0) {
+        if (response.user.roleId === 0) {
           this.router.navigate(['/listTheseses']); // ide rak miután a login sikeres és ha roleid 0
-        } else {
+        }
+        else {
           this.router.navigate(['/findAllUsers']); // ide rak miután a login sikeres
         }
 

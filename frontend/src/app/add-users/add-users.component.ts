@@ -78,7 +78,7 @@ export class AddUsersComponent {
         workplace: new FormControl(null),
         pedigreeNumber: new FormControl(null),
         roleId: new FormControl(null, [Validators.required]),
-        post: new FormControl( null,[Validators.required])
+        post: new FormControl( null)
       },
       {
         validators: [birthdayError, emailError, neptunCodeError, usernameError, fullnameError,
