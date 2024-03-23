@@ -1,6 +1,6 @@
 \Chapter{Tervezés}
 
-A következőkben bemutatom a különböző szerepköröket és folyamatokat szekvenciadiagramok és folyamatábrák segítségével. Részletes elemzésre kerülnek a lapok közötti átmenetek és az adatmodell is. Ezek a lépések nélkülözhetetlenek a hatékony és átlátható tervezéshez, hogy sikeresen elkészülhessen a projekt.
+A következőkben bemutatom a különböző szerepköröket és folyamatokat a szekvenciadiagramok és folyamatábrák segítségével. Részletes elemzésre kerülnek a lapok közötti átmenetek és az adatmodell is. Ezek a lépések nélkülözhetetlenek a hatékony és átlátható tervezéshez, hogy sikeresen elkészülhessen a projekt.
 
 \Section{Szerepkörök leírása}
 
@@ -67,16 +67,16 @@ A webalkalmazás kialakítása során hat különböző szerepkört határoztam 
 
 \end{enumerate}
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.5]{images/Use_case_diagram.png}
+\begin{figure}[ht]
+\includegraphics[width=1.5\textwidth, margin=0pt 0pt 0pt 0pt]{images/UseCaseDiagram1.png}
 \caption{Az alkalmazás use case diagramja}
 \label{fig:usecase}
 \end{figure}
+\newpage
 
 \Section{Folyamatok ábrázolása}
 
-Az alkalmazás tervezésekor több folyamatot is figyelembe kellett vennem, mint például a bírálati folyamat és a bírálat feltöltésének lépései. Ezeket a folyamatokat szekvenciadiagramon és folyamatábrán ábrázoltam.
+Az alkalmazás tervezésekor több folyamatot is figyelembe kellett vennem, mint például a bírálati folyamatot és a bírálat feltöltésének lépéseit. Ezeket a folyamatokat szekvenciadiagramon és folyamatábrán ábrázoltam.
 
 \subsection{Bírálati folyamat}
 
@@ -98,11 +98,11 @@ Az adminisztrátor rögzíti a bíráló adatait az alkalmazásban, beleértve a
 
 \item \textbf{Elnök felkéri a témavezetőt és a bírálót a bírálatra:}
 
-Az elnök bejelentkezik az alkalmazásba és kiválasztja a szakdolgozatot, amelyre bírálatot kíván kérni. Az elnök elküldi a felkérést mind a témavezetőnek, mind a kiválasztott bírálónak a bírálat elvégzésére.
+Az elnök bejelentkezik az alkalmazásba és kiválasztja a szakdolgozatot, amelyre bírálatot kíván kérni. Az elnök elküldi a felkérést a bírálat elvégzésére a témavezetőnek, és a kiválasztott bírálónak.
 
-\item \textbf{Bíráló és témavezető elkészíti a bírálatot:}
+\item \textbf{Bíráló és a témavezető elkészíti a bírálatot:}
 
-Mind a bíráló, mind a témavezető bejelentkezik az alkalmazásba, ahol elérhetik a kijelölt szakdolgozatot. A bíráló és a témavezető részletesen értékeli a dolgozatot, és dokumentálja az észrevételeit.
+A bíráló és a témavezető bejelentkezik az alkalmazásba, ahol elérhetik a kijelölt szakdolgozatot. A bíráló és a témavezető részletesen értékeli a dolgozatot, és dokumentálja az észrevételeit.
 
 \item \textbf{Elnök kiküldi a bírálatot a hallgatónak:}
 
@@ -162,3 +162,91 @@ Miután a bíráló sikeresen ellenőrizte és beküldte a bírálatot, a folyam
 \caption{Bírálati feltöltéseinek lépései}
 \label{fig:birala_feltoltese}
 \end{figure}
+
+\newpage
+
+\Section{Lapok közötti átmenetek}
+
+Az alábbi ábrák és a leírások különböző szerepkörök nézőpontjából ábrázolják, hogy melyik oldalhoz férhetnek hozzá.
+
+\subsection{Elnök és Jegyző}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{images/Elnok.png}
+\caption{A webalkalmazás az elnök szemszögéből}
+\label{fig:elnok}
+\end{figure}
+
+\begin{itemize}
+
+\item \textbf{Bejelentkezés:} Minden felhasználó lehetőséget kap a belépésre az alkalmazásba, ahhoz hogy azonosíthassák magukat és hozzáférjenek a rendszerhez. Ehhez felhasználónevet és jelszót kell megadniuk.
+
+\item \textbf{Elfelejtett jelszó:} Ha a felhasználók elfelejtik a jelszót, lehetőségük van új igénylésére. Erre az Elfelejtett jelszó menüpont szolgál, amely segítségével új jelszó kérése vagy generálása lehetséges.
+
+\item \textbf{Jelszó változtatás:}Az alkalmazás felhasználói képesek megváltoztatni jelszavukat, ha szükségük van rá. Erre a Jelszó változtatás lap szolgál, ahol lehetőség van a jelszó módosítására.
+
+\item \textbf{Szakdolgozatok listázása:} Az elnök és a jegyző is képes kilistázni a rendszerben található összes szakdolgozatot. Ez lehetőséget ad arra, hogy áttekintsék a szakdolgozatok részleteit.
+
+\item \textbf{Záróvizsgák létrehozása és listázása:} Mindkét szerepkörnek lehetősége van létrehozni és kilistáztatni záróvizsgákat a platformon.
+
+\item \textbf{Szakdolgozatok státusza:} Az elnök és a jegyző képes megtekinteni a szakdolgozatok aktuális státuszát az alkalmazásban. Ez lehetőséget ad számukra, hogy nyomon kövessék a dolgozatok előrehaladást.
+
+\item \textbf{Bírálat státusza:} Az elnök és a jegyző bírálókat tud felkérni a szakdolgozatok értékelésére, valamint nyomon tudják követni a bírálati folyamatot. Ezenkívül lehetőségük van letölteni a bírálatokat és e-mailben elküldeni a hallgatóknak.
+
+\item \textbf{Záróvizsga jegyzőkönyv generálása} (jegyző számára): A jegyző külön lehetőséget kap arra, hogy generáljon záróvizsga jegyzőkönyveket az alkalmazásban, ami segíti az adminisztrációt és a dokumentációt a záróvizsgákhoz kapcsolódóan.
+\end{itemize}
+
+
+
+\subsection{Bíráló és Témavezető}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{images/Biralo.png}
+\caption{A webalkalmazás a bíráló és témavezető szemszögéből}
+\label{fig:biralo_temavezeto}
+\end{figure}
+
+\begin{itemize}
+
+\item \textbf{Bírálat írása:} A témavezető és a bíráló bírálatokat tud írni a szakdolgozatokról. Fontos megjegyezni, hogy csak azokra a dolgozatokra tudnak bírálatot írni, amelyekre fel lettek kérve. A bírálatok általában értékelést és észrevételeket tartalmaznak a dolgozat tartalmával kapcsolatban.
+
+\item \textbf{Szakdolgozatok státusza:} Mindkét felhasználó képes megtekinteni azokat a szakdolgozatokat, amelyekre fel lettek felkérve. Ez lehetőséget ad számukra, hogy letölthessék és megtekintsék a dolgozatokat.
+
+\end{itemize}
+
+\subsection{Hallgató}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{images/Hallgato.png}
+\caption{A webalkalmazás a hallgató szemszögéből}
+\label{fig:hallgato}
+\end{figure}
+
+\begin{itemize}
+
+\item \textbf{Szakdolgozat adatainak kitöltése:} A hallgatónak a feltöltött szakdolgozathoz kapcsolódó adatokat kell megadnia, például a dolgozat címét, szerzőjét, konzulensét stb. Ez lehetőséget ad az adminisztrátornak és a többi felhasználónak a dolgozat könnyebb azonosítására és kezelésére.
+
+\item \textbf{Szakdolgozat feltöltése:} A hallgatónak lehetősége van a szakdolgozatát feltölteni az alkalmazásba. A szakdolgozat adatainak kitöltése után a rendszer átnavigálja a hallgatót erre a felületre, ahol feltöltheti a szakdolgozat dokumentumát és a csatolmányt.
+
+\item \textbf{Szakdolgozat státusza:} A hallgatónak lehetősége van megtekinteni a feltöltött szakdolgozatának aktuális státuszát az alkalmazásban. 
+
+\item \textbf{Prezentáció feltöltése:} Ez egy olyan funkció, ami lehetőséget biztosít a hallgatónak arra, hogy a szakdolgozatának megvédéséhez szükséges prezentációt is feltölthesse az alkalmazásba.
+
+
+\end{itemize}
+
+
+\subsection{Adminisztrátor}
+
+Az adminisztrátor szerepe az alkalmazásban a legteljesebb hozzáférést biztosítja az összes funkcionalitáshoz, valamint az alábbi plusz feladatokat látja el:
+
+\begin{itemize}
+
+\item \textbf{Felhasználók felvitele:} Az adminisztrátornak lehetősége nyílik új felhasználókat regisztrációjára.
+
+\item \textbf{Felhasználók listázása és kezelése:} Az admin képes kilistázni az összes felhasználót az alkalmazásban. Lehetősége van az adatokat megtekinteni, módosítani és törölni.
+
+\end{itemize}
