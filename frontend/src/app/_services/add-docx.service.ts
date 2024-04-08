@@ -11,9 +11,9 @@ export class AddDocxService {
 
   API = 'http://localhost:8080'
 
-  public generateReview(docxData: any, userId: any) {
+  public generateReview(docxData: any, Id: any) {
 
-    docxData.userId = userId
+    docxData.Id = Id
     console.log(docxData)
     return this.http.post(this.API + '/generateReview' , docxData, {
       responseType: 'arraybuffer',
@@ -21,8 +21,8 @@ export class AddDocxService {
     })
   }
 
-  public addDocx(docxData: any, userId: any) {
-    docxData.userId = userId
+  public addDocx(docxData: any, Id: any) {
+    docxData.Id = Id
     console.log(docxData)
     return this.http.post(this.API + '/generateDocx', docxData, {
       responseType: 'arraybuffer',

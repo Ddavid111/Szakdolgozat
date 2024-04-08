@@ -2,10 +2,11 @@ package com.example.proba.service;
 
 import com.example.proba.dao.FileDao;
 import com.example.proba.dao.ReviewDao;
-import com.example.proba.dao.ThesesDao;
+import com.example.proba.dao.ThesisDao;
 import com.example.proba.dao.UserDao;
 import com.example.proba.entity.Review;
-import com.example.proba.entity.Theses;
+import com.example.proba.entity.Role;
+import com.example.proba.entity.Thesis;
 import com.example.proba.entity.User;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
@@ -15,17 +16,12 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcBorders;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STBorder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -37,7 +33,7 @@ public class ReviewService {
     private ReviewDao reviewDao;
 
     @Autowired
-    private ThesesDao thesesDao;
+    private ThesisDao thesisDao;
 
     @Autowired
     private FileDao fileDao;
@@ -53,11 +49,11 @@ public class ReviewService {
 
     public Review addReview(Review review) throws Exception {
 
-        Optional<User> user = userDao.findById(review.getUser().getUserId());
-        Optional<Theses> thesis = thesesDao.findById(review.getTheseses().getId()); //.iterator().next().getId());
+        Optional<User> user = userDao.findById(review.getUser().getId());
+        Optional<Thesis> thesis = thesisDao.findById(review.getTheseses().getId()); //.iterator().next().getId());
         if(user.isPresent() && thesis.isPresent()) {
             review.setUser(user.get());
-            Theses thesis_ = thesis.get();
+            Thesis thesis_ = thesis.get();
             System.out.println(thesis_);
 
             thesis_.decreaseRemainingReviews();
@@ -66,7 +62,7 @@ public class ReviewService {
                 thesis_.setUnderReview(false);
             }
             System.out.println(thesis_);
-            System.out.println(thesesDao.save(thesis_));
+            System.out.println(thesisDao.save(thesis_));
             return reviewDao.save(review);
         }
 
@@ -80,6 +76,28 @@ public class ReviewService {
         reviewIterable.forEach(reviews::add);
 
         return reviews;
+    }
+
+    public List<Thesis> findThesesByUserIdAndReviewerId(Integer userId, Integer reviewerId) {
+        List<Thesis> theses = new ArrayList<>();
+
+
+        if (userDao.findById(reviewerId).get().getRole().equals(Role.Bíráló))
+        {
+            Iterable<Review> reviewIterable = reviewDao.findThesesByUserIdAndReviewerId(userId, reviewerId);
+        for (Review review : reviewIterable) {
+            if (review.getScore() == null) {
+                theses.add(review.getTheseses());
+            }
+        }
+        }
+        else if (userDao.findById(reviewerId).get().getRole().equals(Role.Témavezető))
+        {
+            Iterable<Thesis> thesesIterable = thesisDao.findThesesBySupervisorId(reviewerId);
+            thesesIterable.forEach(theses::add);
+        }
+
+        return theses;
     }
 
 
@@ -113,10 +131,6 @@ public class ReviewService {
             remaining = objectInString.split(", description=");
             String thesisTitle = remaining[0];
 
-//            objectInString = remaining[1];
-//            remaining = objectInString.split(", score=");
-//            String description = remaining[0];
-
             objectInString = remaining[1];
             remaining = objectInString.split(", score=");
             String description = remaining[0];
@@ -125,27 +139,12 @@ public class ReviewService {
             remaining = objectInString.split(", city=");
             String score = remaining[0];
 
-//            objectInString = remaining[1];
-//            remaining = objectInString.split(", invitationDate=");
-//            String city = remaining[0];
 
             objectInString = remaining[1];
-            remaining = objectInString.split(", invitationAcceptionDate=");
+            remaining = objectInString.split(", Id=");
             String city = remaining[0];
 
-            objectInString = remaining[1];
-            remaining = objectInString.split(", responseDate=");
-            String invitationAcceptionDate = remaining[0];
-
-            objectInString = remaining[1];
-            remaining = objectInString.split(", submissionDate=");
-            String responseDate = remaining[0];
-
-            objectInString = remaining[1];
-            remaining = objectInString.split(", userId=");
-            String submissionDate = remaining[0];
-
-            System.out.println(score + "\t" + invitationAcceptionDate + "\t" + responseDate + "\t" + submissionDate);
+            System.out.println(score + "\t");
 
             String userId = remaining[1];
 
@@ -154,33 +153,49 @@ public class ReviewService {
 
 
             // THESES ID megy már a thesisTitle-be fentebb az angular form-ból
-            Theses theses = thesesDao.findById(Integer.parseInt(thesisTitle)).get();
+            Thesis thesis = thesisDao.findById(Integer.parseInt(thesisTitle)).get();
 //            review.setTheseses(theses);
 
             // Review table:
+            User user_ = userService.findUserById(userIdInt);
+            Review review = new Review();
+            if(user_.getRole().equals(Role.Témavezető)) {
+                review.setInvitationDate(new Date());
+                review.setUser(user_);
 
-            Review review = reviewDao.findReviewByThesisIdAndReviewerId(Integer.parseInt(thesisTitle), userIdInt);
-            review.setScore(Integer.parseInt(score));
-            review.setDescription(description);
-            review.setCity(city);
-            review.setTheseses(theses);
+            }
+            else {
+                List <Review> reviewList = reviewDao.findReviewsByThesisIdAndReviewerId(Integer.parseInt(thesisTitle), userIdInt);
+                if(reviewList.size() > 1)
+                {
+                    for(Review tempReview : reviewList) {
+                        if(tempReview.getScore() == null)
+                        {
+                            review = tempReview;
+                        }
+                    }
+                }
+                else{
+                    review = reviewDao.findReviewByThesisIdAndReviewerId(Integer.parseInt(thesisTitle), userIdInt);
+                }
+            }
+                review.setScore(Integer.parseInt(score));
+                review.setDescription(description);
+                review.setCity(city);
+                review.setTheseses(thesis);
 
-            theses.decreaseRemainingReviews();
-            if(theses.getReviewsRemaining() < 1)
+            thesis.decreaseRemainingReviews();
+            if(thesis.getReviewsRemaining() < 1)
             {
-                theses.setUnderReview(false);
+                thesis.setUnderReview(false);
             }
 
-            thesesDao.save(theses);
+            thesisDao.save(thesis);
 
-            thesisTitle = theses.getTitle();
+            thesisTitle = thesis.getTitle();
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-//            review.setInvitationDate(dateFormat.parse(invitationDate));
-            review.setInvitationAcceptionDate(dateFormat.parse(invitationAcceptionDate));
-            review.setResponseDate(dateFormat.parse(responseDate));
-            review.setSubmissionDate(dateFormat.parse(submissionDate));
+            review.setSubmissionDate(new Date());
 
             System.out.println(studentName + " " + thesisTitle + " " + description + " " + city + " " + userId);
 
@@ -191,7 +206,7 @@ public class ReviewService {
             User user = userService.findUserById(userIdInt);
             String biraloname = user.getFullname();
             String workplace = user.getWorkplace();
-            String post = user.getPost();
+            String post = user.getPosition();
 
             review.setUser(user);
             reviewDao.save(review);
@@ -382,7 +397,7 @@ public class ReviewService {
             file.setUploadTime(new Date());
 
             file.setUuid(uuid.toString());
-            file.setThesis(theses);
+            file.setThesis(thesis);
 
             fileDao.save(file);
 

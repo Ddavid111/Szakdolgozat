@@ -1,133 +1,136 @@
+<h1 style="text-align: center">Felhasználói adatok listázása</h1>
+
+<div class="container">
+  <input type="text" class="form-control" placeholder="Keresés felhasználó teljes neve alapján" [(ngModel)]="student" (ngModelChange)="searchForStudent()">
+</div>
+<div class="container">
+  <input type="text" class="form-control" placeholder="Keresés felhasználó neptunkódja alapján" [(ngModel)]="neptunCode" (ngModelChange)="searchForNeptunCode()">
+</div>
+<div class="container">
+  <input type="text" class="form-control" placeholder="Keresés felhasználó email címe alapján" [(ngModel)]="email" (ngModelChange)="searchForEmail()">
+</div>
+<div class="container">
+  <input type="text" class="form-control" placeholder="Keresés felhasználó munkahelye alapján" [(ngModel)]="workplace" (ngModelChange)="searchForWorkplace()">
+</div>
+
 <div class="mt-5">
   <table class="table table-bordered">
     <thead class="thead">
     <tr>
-<!--      <th>ID</th>-->
-      <th>Title</th>
-<!--      <th>Birthday</th>-->
-      <th>Email</th>
-      <th>Username</th>
-      <th>Fullname</th>
-<!--      <th>Password</th>-->
-      <th>Neptun ID</th>
-<!--      <th>Mothers maiden name</th>-->
-<!--      <th>Birthplace</th>-->
-      <th>Workplace</th>
-<!--      <th>PedigreeNumber</th>-->
-      <th>Post</th>
-      <th>Role</th>
+      <th (click)="sort('title')">Title<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+      <th (click)="sort('fullname')">Fullname<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+      <th (click)="sort('username')">Username<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+      <th (click)="sort('email')">Email<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+      <th (click)="sort('neptunCode')">Neptun ID<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+      <th (click)="sort('workplace')">Workplace<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+      <th (click)="sort('position')">position<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+      <th (click)="sort('role')">Role<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
       <th>UPDATE</th>
       <th>DELETE</th>
     </tr>
     </thead>
     <tbody class="tbody">
     <tr *ngFor="let e of data | orderBy: key: reverse | paginate: {itemsPerPage : 25, currentPage: p};">
-<!--      <td>{{ e.userId }}</td>-->
-      <td>{{ e.title }}</td>
-<!--      <td>{{ e.birthday }}</td>-->
-      <td>{{ e.email }}</td>
-      <td>{{ e.username }}</td>
+      <td><span *ngIf="e.title != ''; else elseBlock">{{ e.title }}</span></td>
       <td>{{ e.fullname }}</td>
-<!--      <td>{{ e.password }}</td>-->
+      <td>{{ e.username }}</td>
+      <td>{{ e.email }}</td>
       <td>{{ e.neptunCode }}</td>
-<!--      <td>{{ e.mothersMaidenName }}</td>-->
-<!--      <td>{{ e.birthplace }}</td>-->
-      <td>{{ e.workplace }}</td>
-<!--      <td>{{ e.pedigreeNumber }}</td>-->
-      <td>{{ e.post }}</td>
-      <td>{{ roleMatching(e.roleId) }}</td>
-
+      <td><span *ngIf="e.workplace != ''; else elseBlock">{{ e.workplace }}</span></td>
+      <td><span *ngIf="e.position != null; else elseBlock">{{ e.position }}</span></td>
+      <td>{{ e.role }}</td>
       <td>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal"
                 (click)="edit(e)">Update
         </button>
       </td>
       <td>
-        <button type="button" (click)="deleteUser(e)">Delete</button>
+        <button type="button" class="btn btn-danger btn-sm" (click)="deleteUser(e)">
+          Delete
+        </button>
       </td>
+      <ng-template #elseBlock>Nincs</ng-template>
     </tr>
     </tbody>
   </table>
   <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </div>
 
-<div class="modal " id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel"
-     xmlns="http://www.w3.org/1999/html">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="updateModalLabel">Rekord módosítása</h1>
+      <div class="modal-header" style="background-color: #007bff; color: #ffffff;">
+        <h2 class="modal-title" id="updateModalLabel">Felhasználó módosítása</h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <div class="modal-body">
 
-        <form #updateThesesesForm="ngForm" (ngSubmit)="updateUsers()">
+        <form #updateUsersForm="ngForm" (ngSubmit)="updateUsers()">
 
-          <label for="title">Cím</label>
-          <input type="text" [(ngModel)]="usersForUpdate.title" name="title" id="userTitle"
-                 placeholder="Felhasználó titulusa">
-
-<!--          <label for="birthday">Születésnap:</label>-->
-<!--          <input type="date" [(ngModel)]="usersForUpdate.birthday" name="birthday" id="birthday"-->
-<!--                 placeholder="Születésnap">-->
-
-          <label for="email">Email:</label>
-          <input type="text" [(ngModel)]="usersForUpdate.email" name="email" id="email" placeholder="Email">
-
-          <label for="username">FelhasználóNév:</label>
-          <input type="text" [(ngModel)]="usersForUpdate.username" name="username" id="username"
-                 placeholder="FelhasználóNév">
-
-          <label for="fullname">Teljes név:</label>
-          <input type="text" [(ngModel)]="usersForUpdate.fullname" name="fullname" id="fullname"
-                 placeholder="Teljes név">
-
-          <label for="neptunCode">Neptun kód:</label>
-          <input type="text" [(ngModel)]="usersForUpdate.neptunCode" name="neptunCode" id="neptunCode"
-                 placeholder="Neptunkód">
-
-<!--          <label for="mothersMaidenName">Anyja neve:</label>-->
-<!--          <input type="text" [(ngModel)]="usersForUpdate.mothersMaidenName" name="mothersMaidenName"-->
-<!--                 id="mothersMaidenName" placeholder="Anyja neve">-->
-
-<!--          <label for="birthPlace">Születési hely:</label>-->
-<!--          <input type="text" [(ngModel)]="usersForUpdate.birthPlace" name="birthPlace" id="birthPlace"-->
-<!--                 placeholder="Születési hely">-->
-
-          <label for="workplace">Munkahely:</label>
-          <input type="text" [(ngModel)]="usersForUpdate.workplace" name="workplace" id="workplace"
-                 placeholder="Munkahely">
-
-<!--          <label for="pedigreeNumber">Törzskönyvi szám:</label>-->
-<!--          <input type="text" [(ngModel)]="usersForUpdate.pedigreeNumber" name="pedigreeNumber" id="pedigreeNumber"-->
-<!--                 placeholder="Törzskönyvi szám">-->
-
-          <mat-form-field>
-            <mat-select name="roleId" [(ngModel)]="usersForUpdate.roleId" (ngModelChange)="onRoleChange()">
-              <mat-option *ngFor="let item of rolesToDropDownList" [value]="item.roleId">{{ item.role }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <div *ngIf="isVisiblePostField">
-
-            <label for="post">Beosztás:</label>
-            <input type="text" name="post" [(ngModel)]="usersForUpdate.post" id="post" placeholder="Beosztás">
+          <div class="mb-3">
+            <label for="title" class="form-label">Cím</label>
+            <input type="text" [(ngModel)]="usersForUpdate.title" name="title" id="userTitle" class="form-control"
+                   placeholder="Felhasználó titulusa">
           </div>
 
-          <div *ngIf="isDropdownList">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="text" [(ngModel)]="usersForUpdate.email" name="email" id="email" class="form-control"
+                   placeholder="Email">
+          </div>
 
+          <div class="mb-3">
+            <label for="username" class="form-label">Felhasználónév:</label>
+            <input type="text" [(ngModel)]="usersForUpdate.username" name="username" id="username" class="form-control"
+                   placeholder="Felhasználónév">
+          </div>
+
+          <div class="mb-3">
+            <label for="fullname" class="form-label">Teljes név:</label>
+            <input type="text" [(ngModel)]="usersForUpdate.fullname" name="fullname" id="fullname" class="form-control"
+                   placeholder="Teljes név">
+          </div>
+
+          <div class="mb-3">
+            <label for="neptunCode" class="form-label">Neptun kód:</label>
+            <input type="text" [(ngModel)]="usersForUpdate.neptunCode" name="neptunCode" id="neptunCode" class="form-control"
+                   placeholder="Neptunkód">
+          </div>
+
+          <div class="mb-3">
+            <label for="workplace" class="form-label">Munkahely:</label>
+            <input type="text" [(ngModel)]="usersForUpdate.workplace" name="workplace" id="workplace" class="form-control"
+                   placeholder="Munkahely">
+          </div>
+
+          <div class="mb-3">
             <mat-form-field>
-              <mat-label>Select a post!</mat-label>
-              <mat-select name="post" [(ngModel)]="usersForUpdate.post">
-                <mat-option *ngFor="let item of postsToDropDownList" [value]="item.post">{{ item.post }}</mat-option>
-              </mat-select>
+              <mat-label>Szerepkör:</mat-label>
+            <mat-select name="roleId" [(ngModel)]="usersForUpdate.role" (ngModelChange)="onRoleChange()">
+              <mat-option *ngFor="let item of rolesToDropDownList" [value]="item.role">{{ item.role }}</mat-option>
+            </mat-select>
             </mat-form-field>
-
           </div>
 
+          <div *ngIf="isVisiblepositionField" class="mb-3">
+            <label for="position" class="form-label">Beosztás:</label>
+            <input type="text" name="position" [(ngModel)]="usersForUpdate.position" id="position" class="form-control"
+                   placeholder="Beosztás">
+          </div>
 
-          <input type="submit" value="Módosítás" data-bs-dismiss="modal">
+          <div *ngIf="isDropdownList" class="mb-3">
+            <label class="form-label">Válassz beosztást!</label>
+            <select class="form-select" name="position" [(ngModel)]="usersForUpdate.position">
+              <option *ngFor="let item of positionsToDropDownList" [value]="item.position">{{ item.position }}</option>
+            </select>
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="submit" class="btn btn-primary me-md-2" data-bs-dismiss="modal">Módosítás</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+          </div>
+
         </form>
       </div>
     </div>

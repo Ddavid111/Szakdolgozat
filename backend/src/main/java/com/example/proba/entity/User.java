@@ -1,7 +1,5 @@
 package com.example.proba.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 import java.util.*;
@@ -10,21 +8,17 @@ import java.util.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer userId;
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
-    Set<Role> roles;
+    private Integer id;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     Set<Review> review;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
-    Set<Theses> theses;
+    Set<Thesis> theses;
 
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "supervisor", cascade = CascadeType.ALL)
-//    Set<Theses> thesesess;
 
+    @Enumerated(EnumType.ORDINAL)
+    private Role role;
     private String email;
     private String neptunCode;
     private String password;
@@ -32,19 +26,17 @@ public class User {
     private String username;
     private String fullname;
     private Date birthday;
-    private Integer roleId;
     private String birthPlace;
     private String mothersMaidenName;
     private String workplace;
     private String pedigreeNumber;
-    private String post;
-
+    private String position;
 
     @Override
     public String toString() {
-        return "Users{" +
-                "userId=" + userId +
-                //   ", roles=" + roles +
+        return "User{" +
+                "userId=" + id +
+                ", role=" + role +
                 ", email='" + email + '\'' +
                 ", neptunCode='" + neptunCode + '\'' +
                 ", password='" + password + '\'' +
@@ -52,21 +44,20 @@ public class User {
                 ", username='" + username + '\'' +
                 ", fullname='" + fullname + '\'' +
                 ", birthday=" + birthday +
-                ", roleId=" + roleId +
                 ", birthPlace='" + birthPlace + '\'' +
                 ", mothersMaidenName='" + mothersMaidenName + '\'' +
                 ", workplace='" + workplace + '\'' +
                 ", pedigreeNumber='" + pedigreeNumber + '\'' +
-                ", post='" + post + '\'' +
+                ", post='" + position + '\'' +
                 '}';
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer userId) {
+        this.id = userId;
     }
 
     public String getEmail() {
@@ -125,14 +116,6 @@ public class User {
         this.birthday = birthday;
     }
 
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
     public String getBirthPlace() {
         return birthPlace;
     }
@@ -165,21 +148,23 @@ public class User {
         this.pedigreeNumber = pedigreeNumber;
     }
 
-    public String getPost() {
-        return post;
+    public String getPosition() {
+        return position;
     }
 
-    public void setPost(String post) {
-        this.post = post;
+    public void setPosition(String post) {
+        this.position = post;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Role.Roles roles) {
-        Set<Role> roleHashSet = new HashSet<>();
-        //  roleHashSet.add();
-        this.roles = roleHashSet;
+    public void setRole(Role role) {
+        this.role = role;
     }
+
+
+
+
 }

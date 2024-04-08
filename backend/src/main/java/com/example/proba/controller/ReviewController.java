@@ -1,6 +1,7 @@
 package com.example.proba.controller;
 
 import com.example.proba.entity.Review;
+import com.example.proba.entity.Thesis;
 import com.example.proba.service.FileService;
 import com.example.proba.service.ReviewService;
 import com.example.proba.service.StatusService;
@@ -13,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-
+import javax.mail.MessagingException;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,7 +47,7 @@ public class ReviewController {
     }
 
     @PostMapping("/generateReview")
-    public ResponseEntity<FileSystemResource> generateReview(@RequestBody Object docxData)  {
+    public ResponseEntity<FileSystemResource> generateReview(@RequestBody Object docxData) {
         System.out.println(docxData);
         UUID uuid = reviewService.Proba(docxData);
 
@@ -59,4 +60,16 @@ public class ReviewController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(fileService.getFile(fileService.getFilenameByUUID(uuid)));
     }
+
+    @GetMapping("/findThesesByUserIdAndReviewerId")
+    public List<Thesis> findThesesByUserIdAndReviewerId(Integer userId, Integer reviewerId)
+    {
+        return reviewService.findThesesByUserIdAndReviewerId(userId, reviewerId);
+    }
+
+    @GetMapping("/findFilesByThesesId")
+    public void findFilesByThesesId(@RequestParam Integer thesisId) throws MessagingException {
+        statusService.findFilesByThesesId(thesisId);
+    }
+
 }

@@ -27,6 +27,11 @@ export class findAllUsersService {
     return this.http.get(this.API + '/findUserById?id=' + id)
   }
 
+  public findStudentsByLoggedInReviewer(id: number)
+  {
+    return this.http.get(this.API + '/findStudentsByLoggedInReviewer?userId=' + id)
+  }
+
   public findUsersByRole(roleId: number) {
     return this.http.get(this.API + '/findUsersByRole?roleId=' + roleId)
   }

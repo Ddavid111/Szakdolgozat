@@ -4,7 +4,7 @@
   <mat-form-field>
     <mat-label>Válassz ki egy hallgatót!</mat-label>
     <mat-select formControlName="student" [(ngModel)]="selectedStudent" (ngModelChange)="onSelectStudent()">
-      <mat-option *ngFor="let student of students" [value]="student.userId">
+      <mat-option *ngFor="let student of students" [value]="student.id">
         {{ student.fullname }}
       </mat-option>
     </mat-select>
@@ -37,44 +37,6 @@
     <input type="text" formControlName="city" id="city" placeholder="Helyszín">
     {{ LocalDate }}
   <p></p>
-
-<!--  <mat-form-field>-->
-<!--    <mat-label> Felkérés ideje:</mat-label>-->
-<!--  <input formControlName="invitationDate" matInput [matDatepicker]="invitationDate" id="invitationDate" >-->
-<!--    <mat-datepicker-toggle matIconSuffix [for]="invitationDate"></mat-datepicker-toggle>-->
-<!--    <mat-hint>YYYY.MM.DD</mat-hint>-->
-<!--    <mat-datepicker #invitationDate></mat-datepicker>-->
-<!--  </mat-form-field>-->
-<!--  <p></p>-->
-
-  <mat-form-field>
-    <mat-label> Felkérés elfogadás ideje:</mat-label>
-  <input formControlName="invitationAcceptionDate" matInput [matDatepicker]="invitationAcceptionDate" id="invitationAcceptionDate">
-    <mat-datepicker-toggle matIconSuffix [for]="invitationAcceptionDate"></mat-datepicker-toggle>
-    <mat-hint>YYYY.MM.DD</mat-hint>
-    <mat-datepicker #invitationAcceptionDate></mat-datepicker>
-  </mat-form-field>
-  <p></p>
-
-  <mat-form-field>
-    <mat-label> Válaszadás ideje:</mat-label>
-  <input formControlName="responseDate" matInput [matDatepicker]="responseDate" id="responseDate" >
-    <mat-datepicker-toggle matIconSuffix [for]="responseDate"></mat-datepicker-toggle>
-    <mat-hint>YYYY.MM.DD</mat-hint>
-    <mat-datepicker #responseDate></mat-datepicker>
-  </mat-form-field>
-    <p></p>
-
-<mat-form-field>
-  <mat-label> Benyújtás ideje:</mat-label>
-  <input formControlName="submissionDate" matInput [matDatepicker]="submissionDate" id="submissionDate" >
-  <mat-datepicker-toggle matIconSuffix [for]="submissionDate"></mat-datepicker-toggle>
-  <mat-hint>YYYY.MM.DD</mat-hint>
-  <mat-datepicker #submissionDate></mat-datepicker>
-</mat-form-field>
-  <p></p>
-
-
 
 
   <p></p>

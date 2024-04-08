@@ -32,6 +32,7 @@ export class ThesisStatusComponent implements OnInit{
 
   selectedReviewer: any
 
+
   constructor(
     private reportStatusService: ReportStatusService,
     private listThesesService: ListThesesesService,
@@ -84,13 +85,13 @@ export class ThesisStatusComponent implements OnInit{
       let thesisId = x.id
       let thesisTitle = x.title
       let submissionDate_ = x.submissionDate
-      let studentId = x.user.userId
+      let studentId = x.user.id
       // let supervisorId = ''
       // if(x.supervisor !== undefined && x.supervisor !== null) {
-      //   supervisorId = x.supervisor.userId
+      //   supervisorId = x.supervisor.id
       // }
 
-      let supervisorId = x.supervisor.userId
+      let supervisorId = x.supervisor.id
 
       let dataForOneThesis = { // lokálisan az aktuális thesishez tartozó cuccokat ebbe szedjük össze
         neptunCode: '',
@@ -101,7 +102,10 @@ export class ThesisStatusComponent implements OnInit{
         title: '',
         pdfUUID: null,
         pptUUID: null,
-        attachmentUUID: null
+        attachmentUUID: null,
+        reviewUUID: null,
+        secondReviewUUID: null,
+        zvUUID: null
       }
       dataForOneThesis.submissionDate = submissionDate_
       dataForOneThesis.title = thesisTitle
@@ -109,36 +113,35 @@ export class ThesisStatusComponent implements OnInit{
       let tempReviewerId: any = null
 
       this.reviews.forEach((r: any) => { // bíráló megkeresése
-        if(thesisId === r.theseses.id)
-        {
-          tempReviewerId = r.user.userId
+        if (thesisId === r.theseses.id && r.user.role == 'Bíráló') {
+          tempReviewerId = r.user.id
           console.log(tempReviewerId)
         }
       })
 
 
-      this.users.forEach((a: any)=> { // hallgató nevének, neptun kódjának megkeresése
+      this.users.forEach((a: any) => { // hallgató nevének, neptun kódjának megkeresése
 
-        console.log(a)
-        if(studentId === a.userId) {
+        // console.log(a)
+        if (studentId === a.id) {
           dataForOneThesis.fullname = a.fullname
           dataForOneThesis.neptunCode = a.neptunCode
         }
 
-        if(supervisorId == a.userId) {         // thesishez tartozó témavezető megkeresése
+        if (supervisorId == a.id) {         // thesishez tartozó témavezető megkeresése
           dataForOneThesis.supervisorname = a.fullname
         }
 
-        if(tempReviewerId != null && tempReviewerId ==  a.userId) {
+        if (tempReviewerId != null && tempReviewerId == a.id) {
           dataForOneThesis.reviewername = a.fullname // bíráló neve
         }
       })
-
+      let reviewCount = 0
       // console.log("current thesis ID and title: " + thesisId + " " + thesisTitle + " reviewer id: " + tempReviewerId)
       console.log(dataForOneThesis)
       this.files.forEach((y: any) => {
         console.log(y)
-        if(y.first === thesisId) {
+        if (y.first === thesisId) {
           // ekkor megvan az aktuális thesis a file táblában
           let fileType = y.second.substring(0, 2) // pd: pdf, at: zip, pp: ppt
           switch (fileType) {
@@ -154,6 +157,20 @@ export class ThesisStatusComponent implements OnInit{
               dataForOneThesis.pptUUID = y.third
               break
             }
+            case 'zv': { // zv
+              dataForOneThesis.zvUUID = y.third
+              break
+            }
+            case 're': {
+              if (reviewCount == 0) {
+                dataForOneThesis.reviewUUID = y.third
+              }
+              else {
+                dataForOneThesis.secondReviewUUID = y.third
+              }
+              reviewCount++
+              break
+            }
             default: {
               this.alertWithFileType()
               break
@@ -161,21 +178,20 @@ export class ThesisStatusComponent implements OnInit{
           }
         }
       })
+
       let roleId = localStorage['roles']
       let userId = localStorage['userId']
       console.log(userId)
       console.log(tempReviewerId)
       console.log(dataForOneThesis)
 
-      if(roleId == 3)
-      {
-        if(tempReviewerId == userId) {
+      if (roleId == 3) {
+        if (tempReviewerId == userId) {
           console.log(tempReviewerId)
           this.thesesFullData.push(dataForOneThesis)
           this.temp = this.thesesFullData
         }
-      }
-      else {
+      } else {
         this.thesesFullData.push(dataForOneThesis)
         this.temp = this.thesesFullData
       }
@@ -209,7 +225,6 @@ export class ThesisStatusComponent implements OnInit{
     this.reportStatusService.getDownloadableThesisFiles().subscribe(
       (resp : any) => {
         if((roleId == 0 || roleId == 4) && thesesIds !== undefined){
-        // let tempResp: any = resp
         resp.forEach((x:any)=>{
           if(thesesIds?.includes(x.first)){
             this.files.push(x)
@@ -235,7 +250,6 @@ export class ThesisStatusComponent implements OnInit{
       (resp : any) => {
         console.log(resp)
         if(roleId == 0){
-        // let tempResp: any = resp
         this.theses = resp.filter((x: any) =>
             x.userId == userId
         )
@@ -247,7 +261,6 @@ export class ThesisStatusComponent implements OnInit{
         this.getDownloadableThesisFiles(thesesIds,roleId)
         }
         else if(roleId == 4){
-          // let tempResp: any = resp
           this.theses = resp.filter((x: any) =>
             x.supervisor.userId == userId
           )
@@ -274,26 +287,23 @@ export class ThesisStatusComponent implements OnInit{
     this.findallUsersService.findAllUsers().subscribe(
       (resp : any) => {
         if(roleId == 0){
-          // let tempResp : any = resp
           console.log(resp)
           this.users = resp.filter((x: any) =>
-              (x.userId == userId && x.roleId == 0) ||  x.roleId == 3 || x.roleId == 4
+              (x.id == userId && x.roleId == 0) ||  x.roleId == 3 || x.roleId == 4
           )
           this.getThesesList(userId, roleId)
         }
         else if(roleId == 4){
-          // let tempResp : any = resp
           console.log(resp)
           this.users = resp.filter((x: any) =>
-            (x.userId == userId && x.roleId == 4) ||  x.roleId == 3 || x.roleId == 0
+            (x.id == userId && x.roleId == 4) ||  x.roleId == 3 || x.roleId == 0
           )
           this.getThesesList(userId, roleId)
         }
         else if(roleId == 3){
-          // let tempResp : any = resp
           console.log(resp)
           this.users = resp.filter((x: any) =>
-            x.roleId == 0 || (x.userId == userId && x.roleId == 3) ||  x.roleId == 4
+            x.roleId == 0 || (x.id == userId && x.roleId == 3) ||  x.roleId == 4
           )
           this.getThesesList(userId, roleId)
         }
@@ -317,7 +327,6 @@ export class ThesisStatusComponent implements OnInit{
       (resp: any) => {
         if(roleId == 0)
         {
-          // let tempResp : any = resp
         this.reviews = resp.filter((element: any) =>
             element.theseses.userId == userId
         )
@@ -328,7 +337,6 @@ export class ThesisStatusComponent implements OnInit{
           }
         else if(roleId == 4)
         {
-          // let tempResp : any = resp
           this.reviews = resp.filter((element: any) =>
             element.theseses.supervisor.userId == userId
           )
@@ -339,9 +347,8 @@ export class ThesisStatusComponent implements OnInit{
         }
         else if(roleId == 3)
         {
-          // let tempResp : any = resp
           this.reviews = resp.filter((element: any) =>
-            element.user.userId == userId
+            element.user.id == userId
           )
           console.log("reviews:")
           console.log(this.reviews)

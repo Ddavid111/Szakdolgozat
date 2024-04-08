@@ -42,8 +42,8 @@ export class AuthService {
     return localStorage.getItem('jwtToken');
   }
 
-  public getUserId() {
-    return localStorage.getItem('userId')
+  public getId() {
+    return localStorage.getItem('Id')
 
   }
 

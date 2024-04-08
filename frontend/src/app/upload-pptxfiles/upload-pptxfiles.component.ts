@@ -54,7 +54,7 @@ export class UploadPPTXFilesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getTheses();
+    this.getTheses(localStorage["userId"]);
   }
 
   onFileSelected(event: any) {
@@ -128,8 +128,8 @@ export class UploadPPTXFilesComponent implements OnInit {
   //   );
   // }
 
-  getTheses() {
-    this.findThesesService.getThesesList().subscribe(
+  getTheses(userId: number) {
+    this.addFilesService.findThesesByLoggedInStudent(userId).subscribe(
       (resp) => {
         this.theses = resp
         console.log(resp)

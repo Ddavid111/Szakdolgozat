@@ -48,4 +48,9 @@ export class ReportStatusService {
     return this.http.delete(this.API + '/deleteFile?uuid=' + uuid)
   }
 
+
+  public findFilesByThesesId(thesisId: number){
+    return this.http.get(this.API + '/findFilesByThesesId?thesisId=' + thesisId)
+  }
+
 }

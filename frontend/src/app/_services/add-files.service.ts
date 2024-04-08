@@ -23,4 +23,10 @@ export class AddFilesService {
       .append("thesisId", thesisId)
     return this.http.post(this.API + '/assembleFileWithStudent', httpParams)
   }
+
+  public findThesesByLoggedInStudent(id: number)
+  {
+    return this.http.get(this.API + '/findThesesByLoggedInStudent?userId=' + id)
+  }
+
 }

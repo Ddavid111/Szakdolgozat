@@ -10,17 +10,14 @@ import java.util.*;
 
 import com.example.proba.dao.FileDao;
 import com.example.proba.dao.ReviewDao;
-import com.example.proba.dao.ThesesDao;
+import com.example.proba.dao.ThesisDao;
 import com.example.proba.dao.UserDao;
 import com.example.proba.entity.*;
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
 import org.apache.poi.xwpf.usermodel.*;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-
-import javax.mail.internet.MimeMessage;
 
 import static java.lang.Math.round;
 
@@ -45,7 +42,7 @@ public class GenerateDocxService {
     UserDao userDao;
 
     @Autowired
-    private ThesesDao thesesDao;
+    private ThesisDao thesisDao;
 
     @Autowired
     private FileDao fileDao;
@@ -110,7 +107,7 @@ public class GenerateDocxService {
             String gradeId = remaining[0];
 
             objectInString = remaining[1];
-            remaining = objectInString.split(", userId=");
+            remaining = objectInString.split(", Id=");
             String description = remaining[0];
 
             String userId = remaining[1];
@@ -159,7 +156,7 @@ public class GenerateDocxService {
 
 
             // A dropdownból kiválasztott szakdolgozatok adatai
-            Theses theses = thesesService.findThesesById(thesisIdInt).get();
+            Thesis theses = thesesService.findThesesById(thesisIdInt);
 
             List<Review> review = reviewService.findReviewByThesisId(thesisIdInt);
 
@@ -208,21 +205,21 @@ public class GenerateDocxService {
             // A dropdownból kiválasztott session adatai
             Session session1 = sessionService.findSessionById(sessionIdInt).get();
 
-            User president = session1.getPresident();// elnök név alapján kikeresés
+            User president = session1.getChairman();// elnök név alapján kikeresés
 
             String fullname = president.getFullname();
             String presidentTitle = president.getTitle();
-            String presidentPost = president.getPost();
+            String presidentPost = president.getPosition();
             String presidentWorkplace = president.getWorkplace();
 
             List<User> members = session1.getMembers();
 
 
 
-            User notary = session1.getNotary();
+            User secretary = session1.getSecretary();
 
-            String notaryName = notary.getFullname();
-            String notaryTitle = notary.getTitle();
+            String secretaryName = secretary.getFullname();
+            String secretaryTitle = secretary.getTitle();
 
             String code = session1.getCode();
             Date date = session1.getDate();
@@ -390,7 +387,7 @@ public class GenerateDocxService {
 
                 if (user != null) {
                     String title = user.getTitle();
-                    String post = user.getPost();
+                    String post = user.getPosition();
                     String name = user.getFullname();
                     String workplace = user.getWorkplace();
 
@@ -1186,10 +1183,10 @@ public class GenerateDocxService {
             run18.setFontFamily("Times New Roman");
             run18.setFontSize(12);
 
-            if(notaryTitle != null) {
-                run18.setText(notaryTitle + " " + notaryName);
+            if(secretaryTitle != null) {
+                run18.setText(secretaryTitle + " " + secretaryName);
             } else {
-                run18.setText(notaryName);
+                run18.setText(secretaryName);
             }
 
 
@@ -1295,7 +1292,11 @@ public class GenerateDocxService {
             emailBody += "\nMegérkezett a záróvizsga jegyzőkönyve amit a mellékletben talál.";
             emailBody += "\n";
             emailBody += "\nÜdvözlettel: Adminisztrátor";
-            emailSenderService.sendEmailWithAttachment(email, emailSubject, emailBody, filename);
+
+            List<String> attachmentPaths = new ArrayList<>();
+            attachmentPaths.add(filename);
+
+            emailSenderService.sendEmailWithAttachments(email, emailSubject, emailBody, attachmentPaths);
 
             return uuid;
 

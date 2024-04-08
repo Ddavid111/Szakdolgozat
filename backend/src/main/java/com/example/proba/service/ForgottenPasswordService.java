@@ -106,7 +106,7 @@ public class ForgottenPasswordService {
 
     public void setNewPassword_two(Integer userId, String oldPassword, String newPassword) { //throws Exception {
        User user = userService.findUserById(userId);
-           if(isValidPassword(user.getUserId(), oldPassword)) {
+           if(isValidPassword(user.getId(), oldPassword)) {
                userService.changePassword_two(user, newPassword);
            }
 

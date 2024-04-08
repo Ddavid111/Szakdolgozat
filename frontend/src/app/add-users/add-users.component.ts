@@ -4,8 +4,7 @@ import Swal from 'sweetalert2';
 import {
   AbstractControl,
   FormControl,
-  FormGroup, isFormGroup,
-  NgForm,
+  FormGroup,
   ValidationErrors,
   ValidatorFn,
   Validators
@@ -19,47 +18,45 @@ import {
 
 export class AddUsersComponent {
 
-  selectedRoleId: any
-  isVisiblePostField: any
+  selectedRole: any
+  isVisiblepositionField: any
   isDropdownList: any
   addUserForm: FormGroup
 
   rolesToDropDownList = [
     {
-      roleId: 0,
       role: 'Hallgató',
     },
     {
-      roleId: 1,
       role: 'Elnök'
     },
     {
-      roleId: 2,
       role: 'Jegyző'
     },
     {
-      roleId: 3,
       role: 'Bíráló'
     },
     {
-      roleId: 4,
       role: 'Témavezető'
+    },
+    {
+      role: 'ADMIN'
     }
 
   ]
 
-  postsToDropDownList = [
+  positionsToDropDownList = [
     {
-      post: 'egyetemi tanársegéd',
+      position: 'egyetemi tanársegéd',
     },
     {
-      post: 'egyetemi adjunktus',
+      position: 'egyetemi adjunktus',
     },
     {
-      post: 'egyetemi docens',
+      position: 'egyetemi docens',
     },
     {
-      post: 'egyetemi tanár',
+      position: 'egyetemi tanár',
     },
   ];
 
@@ -67,7 +64,7 @@ export class AddUsersComponent {
   constructor(private addUserService: AddUsersService) {
     this.addUserForm = new FormGroup({
         title: new FormControl(null),
-        birthday: new FormControl(null),
+        birthday: new FormControl(null,),
         email: new FormControl(null, [Validators.required]),
         neptunCode: new FormControl(null),
         username: new FormControl(null, [Validators.required]),
@@ -77,13 +74,13 @@ export class AddUsersComponent {
         mothersMaidenName: new FormControl(null),
         workplace: new FormControl(null),
         pedigreeNumber: new FormControl(null),
-        roleId: new FormControl(null, [Validators.required]),
-        post: new FormControl( null)
+        role: new FormControl(null, [Validators.required]),
+        position: new FormControl( null)
       },
       {
         validators: [birthdayError, emailError, neptunCodeError, usernameError, fullnameError,
           passwordError, birthPlaceError,
-          mothersMaidenNameError, workplaceError, pedigreeNumberError, roleIdError, postError]
+          mothersMaidenNameError, workplaceError, pedigreeNumberError, roleError, positionError]
       })
   }
 
@@ -98,30 +95,27 @@ export class AddUsersComponent {
 
 
   onRoleChange() {
-    console.log(this.selectedRoleId)
-    this.isVisiblePostField = false
+    console.log(this.selectedRole)
+    this.isVisiblepositionField = false
     this.isDropdownList = false
-    if (this.selectedRoleId === 0) //hallgató
+    if (this.selectedRole === "Hallgató")
     {
-      this.isVisiblePostField = false;
+      this.isVisiblepositionField = false;
 
     }
-    else if (this.selectedRoleId === 1 || this.selectedRoleId === 2 || this.selectedRoleId === 4)
+    else if (this.selectedRole === "Elnök" || this.selectedRole === "Jegyző" || this.selectedRole === "Témavezető")
     {
-      this.isVisiblePostField = false
+      this.isVisiblepositionField = false
       this.isDropdownList = true;
     }
-    else if(this.selectedRoleId === 3)
+    else if(this.selectedRole === "Bíráló")
     {
-      this.isVisiblePostField = true
+      this.isVisiblepositionField = true
     }
   }
 
 
   addFormData(addUserForm: FormGroup) {
-    if (addUserForm.value.roleId === 0) {
-      addUserForm.value.post = "hallgató"
-    }
     this.addUserService.addUser(addUserForm.value).subscribe(
       (resp) => {
         this.alertWithSucces()
@@ -136,8 +130,8 @@ export class AddUsersComponent {
 
 export const birthdayError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   let birthday = control.get('birthday')
-  let selectedRoleId = control.get('roleId')?.value;
-  if (selectedRoleId === 0 && (birthday === null || birthday?.value === null || birthday?.value === "")) {
+  let selectedRole = control.get('role')?.value;
+  if (selectedRole === "Hallgató" && (birthday === null || birthday?.value === null || birthday?.value === "")) {
     return {
       birthdayError: true
     }
@@ -152,13 +146,19 @@ export const emailError: ValidatorFn = (control: AbstractControl): ValidationErr
       emailError: true
     }
   }
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRegex.test(email.value)) {
+    return { invalidEmail: true };
+  }
+
   return null
 }
 
 export const neptunCodeError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   let neptunCode = control.get('neptunCode')
-  let selectedRoleId = control.get('roleId')?.value;
-  if (selectedRoleId === 0 && (neptunCode === null || neptunCode?.value === null || neptunCode?.value === "")) {
+  let selectedRoleId = control.get('role')?.value;
+  if (selectedRoleId === "Hallgató" && (neptunCode === null || neptunCode?.value === null || neptunCode?.value === "")) {
     return {
       neptunCodeError: true
     }
@@ -198,8 +198,8 @@ export const passwordError: ValidatorFn = (control: AbstractControl): Validation
 
 export const birthPlaceError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   let birthPlace = control.get('birthPlace')
-  let selectedRoleId = control.get('roleId')?.value;
-  if (selectedRoleId === 0 && (birthPlace === null || birthPlace?.value === null || birthPlace?.value === "")) {
+  let selectedRoleId = control.get('role')?.value;
+  if (selectedRoleId === "Hallgató" && (birthPlace === null || birthPlace?.value === null || birthPlace?.value === "")) {
     return {
       birthPlaceError: true
     }
@@ -209,19 +209,19 @@ export const birthPlaceError: ValidatorFn = (control: AbstractControl): Validati
 
 export const mothersMaidenNameError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   let mothersMaidenName = control.get('mothersMaidenName')
-  let selectedRoleId = control.get('roleId')?.value;
-    if (selectedRoleId === 0 && (mothersMaidenName === null || mothersMaidenName?.value === null || mothersMaidenName?.value === "")) {
+  let selectedRoleId = control.get('role')?.value;
+    if (selectedRoleId === "Hallgató" && (mothersMaidenName === null || mothersMaidenName?.value === null || mothersMaidenName?.value === "")) {
       return {
         mothersMaidenNameError: true
       }
     }
     return null
 }
-//selectedRoleId === 1 || selectedRoleId === 2 || selectedRoleId === 3 || selectedRoleId === 4
+
 export const workplaceError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   let workplace = control.get('workplace')
-  let selectedRoleId = control.get('roleId')?.value;
-  if ((selectedRoleId === 1 || selectedRoleId === 2 || selectedRoleId === 3 || selectedRoleId === 4) && (workplace === null || workplace?.value === null || workplace?.value === "")) {
+  let selectedRoleId = control.get('role')?.value;
+  if ((selectedRoleId === "Elnök" || selectedRoleId === "Jegyző" || selectedRoleId === "Bíráló" || selectedRoleId === "Témavezető") && (workplace === null || workplace?.value === null || workplace?.value === "")) {
     return {
       workplaceError: true
     }
@@ -231,8 +231,8 @@ export const workplaceError: ValidatorFn = (control: AbstractControl): Validatio
 
 export const pedigreeNumberError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   let pedigreeNumber = control.get('pedigreeNumber')
-  let selectedRoleId = control.get('roleId')?.value;
-  if (selectedRoleId === 0 && (pedigreeNumber === null || pedigreeNumber?.value === null || pedigreeNumber?.value === "")) {
+  let selectedRoleId = control.get('role')?.value;
+  if (selectedRoleId === "Hallgató" && (pedigreeNumber === null || pedigreeNumber?.value === null || pedigreeNumber?.value === "")) {
     return {
       pedigreeNumberError: true
     }
@@ -240,24 +240,24 @@ export const pedigreeNumberError: ValidatorFn = (control: AbstractControl): Vali
   return null
 }
 
-export const roleIdError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  let roleId = control.get('roleId')
-  if (roleId === null || roleId?.value === null || roleId?.value === "") {
+export const roleError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let role = control.get('role')
+  if (role === null || role?.value === null || role?.value === "") {
     return {
-      roleIdError: true
+      roleError: true
     }
   }
   return null
 }
 
-export const postError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  let post = control.get('post')
-  let selectedRoleId = control.get('roleId')?.value;
-  if (selectedRoleId !== 0)
+export const positionError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let position = control.get('position')
+  let selectedRoleId = control.get('role')?.value;
+  if (selectedRoleId !== "Hallgató")
   {
-    if (post === null || post?.value === null || post?.value === "") {
+    if (position === null || position?.value === null || position?.value === "") {
       return {
-        postError: true
+        positionError: true
       }
     }
   }

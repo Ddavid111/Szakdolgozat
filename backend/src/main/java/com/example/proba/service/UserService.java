@@ -1,8 +1,11 @@
 package com.example.proba.service;
 
-import com.example.proba.dao.RoleDao;
+import com.example.proba.dao.ReviewDao;
+import com.example.proba.dao.ThesisDao;
 import com.example.proba.dao.UserDao;
+import com.example.proba.entity.Review;
 import com.example.proba.entity.Role;
+import com.example.proba.entity.Thesis;
 import com.example.proba.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,14 +21,55 @@ public class UserService {
     private UserDao userDao;
 
     @Autowired
-    private RoleDao roleDao;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ReviewDao reviewDao;
+
+    @Autowired
+    private ThesisDao thesisDao;
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    public User addUser(User users)
+    {
+        users.setPassword(getEncodedPassword(users.getPassword()));
+
+        return userDao.save(users);
+    }
+
+    public User updateUsers(User user)
+    {
+        Integer id = user.getId();
+        User temp = userDao.findById(id).get();
+
+        temp.setTitle(user.getTitle());
+        temp.setBirthday(user.getBirthday());
+        temp.setEmail(user.getEmail());
+        temp.setUsername(user.getUsername());
+        temp.setFullname(user.getFullname());
+        temp.setNeptunCode(user.getNeptunCode());
+        temp.setMothersMaidenName(user.getMothersMaidenName());
+        temp.setBirthPlace(user.getBirthPlace());
+        temp.setWorkplace(user.getWorkplace());
+        temp.setPedigreeNumber(user.getPedigreeNumber());
+        temp.setRole(user.getRole());
+        if(user.getRole() == Role.Hallgató) {
+            temp.setPosition(null);
+        }
+        else{
+            temp.setPosition(user.getPosition());
+        }
+
+        return userDao.save(temp);
+    }
+
+    public void deleteUserById(Integer id){
+        String userQuery = "delete from user where id = " + id;
+
+        jdbcTemplate.update(userQuery);
+    }
 
     public List<User> findAllUsers(){
         Iterable<User> optionalUsers = userDao.findAll();
@@ -42,8 +86,6 @@ public class UserService {
         return userList;
     }
 
-
-
     public List<User> findUsersByRole(Integer roleId) {
         Iterable<User> userIterable = userDao.findUsersByRole(roleId);
         List<User> userList = new ArrayList<>();
@@ -52,8 +94,13 @@ public class UserService {
         return userList;
     }
 
-    public List<User> findUsersByRoleList(List<Integer> roleIds) {
-        Iterable<User> userIterable = userDao.findUsersByRoleList(roleIds);
+    public List<User> findUsersByRoleList(List<String> roleIds) {
+        List<Integer> roleIdsInt = new ArrayList<>();
+        for (String roleId : roleIds) {
+            roleIdsInt.add(Role.valueOf(roleId).ordinal());
+        }
+
+        Iterable<User> userIterable = userDao.findUsersByRoleList(roleIdsInt);
         List<User> userList = new ArrayList<>();
 
         userIterable.forEach(userList::add);
@@ -61,13 +108,7 @@ public class UserService {
     }
 
     public User findUserByName(String username) {
-        List<User> users = (List<User>) userDao.findAll();
-        for (User user : users) {
-            if(user.getUsername().equals(username)) {
-                return user;
-            }
-        }
-        return null;
+        return userDao.findUserByUsername(username);
     }
 
     public User findUserById (Integer id) {
@@ -85,19 +126,38 @@ public class UserService {
         }
     }
 
-
-    public User addUser(User users)
+    public List<User> findStudentsByLoggedInReviewer (Integer userId)
     {
-        users.setPassword(getEncodedPassword(users.getPassword()));
-        User user = userDao.save(users);
-
-        String query = "INSERT INTO ROLE VALUES (" + user.getUserId() + ", " + user.getRoleId() + ")";
-        jdbcTemplate.update(query);
-
-
-//        userRolesDao.save(actualUserRole);
-
-        return user;
+        User user = findUserById(userId);
+        Role role = user.getRole();
+        switch(role){
+            case Bíráló:{
+                List<Review> reviews = reviewDao.findReviewsByReviewerId(userId);
+                List<User> students = new ArrayList<>();
+                for(Review review: reviews)
+                {
+                    if(review.getScore() == null) {
+                        User student = review.getTheseses().getUser();
+                        if (!students.contains(student)) {
+                            students.add(student);
+                        }
+                    }
+                }
+                return students;
+            }
+            case Témavezető:{
+                List<Thesis> theses = thesisDao.findThesesBySupervisorId(userId);
+                List<User> students = new ArrayList<>();
+                for(Thesis thesis: theses)
+                {
+                    students.add(findUserById(thesis.getUser().getId()));
+                }
+                return students;
+            }
+            default:{
+                return null;
+            }
+        }
 
     }
 
@@ -115,19 +175,13 @@ public class UserService {
         user.setWorkplace("Kreml");
         user.setPedigreeNumber("T46898");
         //user.setPost(); // hallgatónak nincs beosztása
-        user.setRoleId(0); // hallgato
         user.setNeptunCode("ABC123");
         user.setBirthday(new Date());
 
-        User savedUser =  userDao.save(user);
+        user.setRole(Role.Hallgató);
 
-        Role actualUserRole = new Role();
-        actualUserRole.setUser(savedUser);
-        actualUserRole.setRoles(Role.Roles.values()[savedUser.getRoleId()]);
-        actualUserRole.setUserId(savedUser.getUserId());
+        userDao.save(user);
 
-        String query = "INSERT INTO ROLE VALUES (" + savedUser.getUserId() + ", " + savedUser.getRoleId() + ")";
-        jdbcTemplate.update(query);
 
         // TEMAVEZETO felvitele
 
@@ -141,75 +195,45 @@ public class UserService {
         user.setBirthPlace("Bukarest");
         user.setWorkplace("Parlament");
         user.setPedigreeNumber("T34434");
-        user.setPost("egyetemi adjunktus");
-        user.setRoleId(4); // témavezető
+        user.setPosition("egyetemi adjunktus");
         user.setNeptunCode("BCD123");
         user.setBirthday(new Date());
 
-        savedUser = userDao.save(user);
+        user.setRole(Role.Témavezető);
 
-        actualUserRole = new Role();
-        actualUserRole.setUser(savedUser);
-        actualUserRole.setRoles(Role.Roles.values()[savedUser.getRoleId()]);
-        actualUserRole.setUserId(savedUser.getUserId());
+        userDao.save(user);
 
-        query = "INSERT INTO ROLE VALUES (" + savedUser.getUserId() + ", " + savedUser.getRoleId() + ")";
-        jdbcTemplate.update(query);
+        // ADMIN felvitele
 
+        user = new User();
+        user.setPassword(getEncodedPassword("admin"));
+        user.setTitle("Dr.");
+        user.setUsername("admin");
+        user.setFullname("Minta Admin");
+        user.setEmail("zalman2020201@gmail.com");
+        user.setMothersMaidenName("admin anyja neve");
+        user.setBirthPlace("Lyukóbánya");
+        user.setWorkplace("Cigánysor");
+        user.setPedigreeNumber("T34458");
+        user.setPosition("egyetemi tanár");
+        user.setNeptunCode("ABCDEF");
+        user.setBirthday(new Date());
 
-    }
+        user.setRole(Role.ADMIN);
 
-    public List<Role> findAllUserRoles(){
+        userDao.save(user);
 
-      return (List<Role>) roleDao.findAll();
-    }
-
-    public User updateUsers(User user)
-    {
-        Integer id = user.getUserId();
-        User temp = userDao.findById(id).get();
-        Role tempp = roleDao.findById(id).get();
-
-        temp.setTitle(user.getTitle());
-        temp.setBirthday(user.getBirthday());
-        temp.setEmail(user.getEmail());
-        temp.setUsername(user.getUsername());
-        temp.setFullname(user.getFullname());
-        temp.setNeptunCode(user.getNeptunCode());
-        temp.setMothersMaidenName(user.getMothersMaidenName());
-        temp.setBirthPlace(user.getBirthPlace());
-        temp.setWorkplace(user.getWorkplace());
-        temp.setPedigreeNumber(user.getPedigreeNumber());
-        if(user.getRoleId() == 0) {
-            temp.setPost(null);
-        }
-        else{
-            temp.setPost(user.getPost());
-        }
-        tempp.setRoles(tempp.getRoles().values()[user.getRoleId()]);
-        temp.setRoleId(user.getRoleId());
-
-        roleDao.save(tempp);
-        return userDao.save(temp);
-    }
-
-    public void deleteUserById(Integer id){
-        String roleQuery = "delete from role where user_id = " + id;
-        String userQuery = "delete from user where user_id = " + id;
-
-        jdbcTemplate.update(roleQuery);
-        jdbcTemplate.update(userQuery);
     }
 
     public void changePassword(User user, String newPassword) {
-        String query = "UPDATE USER SET PASSWORD = '" + passwordEncoder.encode(newPassword) + "' WHERE user_id = " + user.getUserId();
+        String query = "UPDATE USER SET PASSWORD = '" + passwordEncoder.encode(newPassword) + "' WHERE id = " + user.getId();
         jdbcTemplate.update(query);
 
         System.out.println("Pw changed for user " + user.getUsername());
     }
 
     public void changePassword_two(User user, String newPassword) {
-        String query = "UPDATE USER SET PASSWORD = '" + passwordEncoder.encode(newPassword) + "' WHERE user_id = " + user.getUserId();
+        String query = "UPDATE USER SET PASSWORD = '" + passwordEncoder.encode(newPassword) + "' WHERE id = " + user.getId();
         jdbcTemplate.update(query);
 
         System.out.println("Pw changed for user " + user.getPassword());

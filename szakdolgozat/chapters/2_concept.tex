@@ -29,13 +29,13 @@ A legtöbb \textit{kurzuskezelő szoftver} online alapú, ami lehetővé teszi a
 \\
 Ezek a szoftverek hatékony eszköztárat kínálnak az oktatási és képzési folyamatok digitalizálására és automatizálására, ami segít az adminisztratív terhek csökkentésében és a tanulási élmények javításában.
 
-\subsection{\textbf{ETR (Egységes Tanulmányi Rendszer)}}
+\subsection{ETR (Egységes Tanulmányi Rendszer) }
 
 A Magyarországon elterjedt felsőoktatási szoftverek egyike, az \textit{Egységes Tanulmányi Rendszer (ETR)} \cite{etr}, lehetővé tette a diákok számára, hogy online platformon keresztül intézzék az oktatási intézménnyel kapcsolatos ügyeiket. Az \textit{ETR} keretében minden regisztrált hallgatónak lehetősége nyílt személyes és tanulmányi adatainak megtekintésére, pénzügyeik nyomon követésére, valamint vizsgákra jelentkezésre és kurzusok felvételére. Az \textit{ETR} technológiai alapjai az adott fejlesztőcsapat vagy az egyetem preferenciáitól függnek, így pontos fejlesztési technológiát nem lehet egyértelműen megállapítani.\\
 \\
 2015-től kezdve az \textit{ETR} funkcionalitása fokozatosan beépült a \textit{Neptun.NET} \cite{neptun} tanulmányi rendszerbe, és az \textit{ETR}-t használó felsőoktatási intézmények 2018-ig áttértek a \textit{Neptun} rendszerére.
 
-\subsection{\textbf{Neptun}}
+\subsection{Neptun}
 
 A \textit{Neptun} \cite{neptun} egy egyetemi tanulmányi adminisztrációs alkalmazás, amely \textit{.NET} \cite{.NET} technológiával készült.  A rendszer támogatja a bírálati folyamatot és a záróvizsga menedzselését is a felsőoktatási intézményekben. A bírálati folyamat során az oktatók számos feladatot végeznek, például tanulmányi eredmények értékelése, visszajelzések megadása, valamint a hallgatók előrehaladásának nyomon követése. A rendszer lehetőséget biztosít az oktatóknak arra, hogy ezeket a feladatokat hatékonyan elvégezzék, beleértve az eredmények rögzítését és a visszajelzések megadását is.\\
 \\
@@ -51,7 +51,7 @@ A \textit{Neptun} szolgáltatás általában rugalmas konfigurációs lehetősé
 \end{figure}
 
 \newpage
-\subsection{\textbf{KRÉTA}}
+\subsection{KRÉTA}
 
 A \textit{KRÉTA (Köznevelési Regisztrációs és Tanulmányi Alaprendszer)} \cite{kreta} kurzuskezelő szoftver számos funkciót kínál a tanulmányi folyamatok hatékony kezelésére és adminisztrációjára, ami PHP \cite{PHP} technológiával készült. Az oktatók számára lehetőség van a tanulmányi eredmények értékelésére, visszajelzések megadására, valamint a diákok teljesítményének nyomon követésére. Ezáltal az oktatók hatékonyan tudják értékelni a diákok munkáját és fejlődését, és szükség esetén visszajelzést adni nekik a további fejlődés érdekében.\\
 \\
@@ -65,7 +65,7 @@ A bírálati folyamatok integrációja a \textit{KRÉTA} kurzuskezelő rendszer�
 \label{fig:kreta}
 \end{figure}
 \newpage
-\subsection{\textbf{Blackboard Learn}}
+\subsection{Blackboard Learn}
 
 A \textit{Blackboard Learn} \cite{blackboard_learn} egy kifinomult e-learning platform, melyet széles körben használnak oktatási intézmények világszerte. Ez az alkalmazás lehetővé teszi az oktatók számára, hogy létrehozzanak és kezeljenek online tananyagokat, interaktív kurzusokat, valamint feladatokat és teszteket. A hallgatók számára a \textit{Blackboard Learn} egy hozzáférhető, felhasználóbarát felületet biztosít, ahol könnyen hozzáférhetnek a tananyagokhoz, kommunikálhatnak az oktatókkal és társaikkal, valamint beadhatják feladataikat és vizsgáikat.\\
 \\ Az oktatók az alkalmazáson keresztül képesek értékelni a hallgatók munkáját, visszajelzéseket adni nekik, valamint nyomon követni az előrehaladásukat és teljesítményüket. Emellett a \textit{Blackboard Learn} lehetőséget biztosít az intézményeknek a vizsgák szervezésére, menedzselésére és értékelésére. Ez az alkalmazás segít az oktatási folyamatok digitalizálásában és hatékonyabbá tételében, elősegítve a hallgatók és oktatók közötti interakciót és együttműködést.
@@ -91,7 +91,7 @@ Az adatbázis-kezeléshez a MySQL Community Edition csomag részeként könnyen 
 A \textit{MySQL} helyett választható lett volna például az \textit{SQLite}, \textit{MariaDB}. Emellett az adatok nyilvántartására maximálisan alkalmas a \textit{NoSQL} \textit{MongoDB} is, mivel a kezelendő információk nem teszik elengedhetetlenné relációs adatbázis választását.
 
 
-\subsection{\textbf{Java Spring Boot}}
+\subsection{Java Spring Boot}
 
 A webalkalmazásom backend részéhez a \textit{Java} \cite{java} programozási nyelvet választottam. A \textit{Java} egy kiválóan használható, objektumorientált nyelv, amely széles körben elterjedt a fejlesztői közösségben.\\
 \\
@@ -114,7 +114,7 @@ Az \textit{MVC} modell három fő logikai egységből áll melyek a következők
 
 Bár más technológiák is elérhetőek lettek volna, mint például a \textit{Node.js}, a \textit{Python} \textit{Django} vagy a \textit{C\# ASP.NET Core},  azonban tapasztalataim alapján a \textit{Java} \cite{java} és kifejezetten a \textit{Spring Boot} \cite{spring_boot} a legmegfelelőbb választásnak tűnt a projekt szempontjából.
 
-\subsection{\textbf{Angular}}
+\subsection{Angular}
 
 A fejlesztett webalkalmazás vékony kliens alapú, ami azt jelenti, hogy a szükséges funkciókat és üzleti logikát a távoli szerveroldalon, vagyis a backenden kerül implementálásra. A kommunikáció a kliens és a szerver között \textit{HTTP} \cite{http} protokollon keresztül zajlik, ami egy alkalmazás szintű, állapotmentes kérés-válasz alapú protokoll elosztott rendszerek számára. Emellett a kliensoldalon a GET, POST, PUT és DELETE \textit{HTTP} metódusokat használom az adatok kezelésére.\\
 \\

@@ -1,6 +1,6 @@
 package com.example.proba.controller;
 
-import com.example.proba.entity.Theses;
+import com.example.proba.entity.Thesis;
 import com.example.proba.service.ReportStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,13 +23,13 @@ public class ReportStatusController {
     }
 
     @GetMapping("/findThesesUnderReview")
-    public List<Theses> findThesesUnderReview(@RequestParam Boolean isUnderReview)
+    public List<Thesis> findThesesUnderReview(@RequestParam Boolean isUnderReview)
     {
         return reportStatusService.findThesesUnderReview(isUnderReview);
     }
 
     @GetMapping("/findReviewedTheses")
-    public List<Theses> findReviewedTheses(){
+    public List<Thesis> findReviewedTheses(){
         return reportStatusService.findReviewedTheses();
 
     }

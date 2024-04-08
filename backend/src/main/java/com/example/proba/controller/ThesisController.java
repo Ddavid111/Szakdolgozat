@@ -1,14 +1,12 @@
 package com.example.proba.controller;
 
-import com.example.proba.entity.Theses;
-import com.example.proba.entity.User;
+import com.example.proba.entity.Thesis;
 import com.example.proba.service.ThesesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class ThesisController {
@@ -16,38 +14,38 @@ public class ThesisController {
     ThesesService thesesService;
 
     @GetMapping("/getThesesList")
-    public List<Theses> getThesesList() {
+    public List<Thesis> getThesesList() {
         return thesesService.getThesesList();
 
     }
 
     @GetMapping("/getThesesListToDisplay")
-    public List<Theses> getThesesListToDisplay() {
+    public List<Thesis> getThesesListToDisplay() {
         return thesesService.getThesesListToDisplay();
 
     }
 
     @GetMapping("/findThesesById")
-    public Optional<Theses> findThesesById(Integer id) {
+    public Thesis findThesesById(Integer id) {
         return thesesService.findThesesById(id);
 
     }
 
 
     @PostMapping("/addTheseses")
-    public Theses addTheseses(@RequestBody Theses theses) throws ParseException {
+    public Thesis addTheseses(@RequestBody Thesis thesis) throws ParseException {
 
-        return thesesService.addTheses(theses);
+        return thesesService.addTheses(thesis);
 
 
     }
 
 
     @PutMapping("/updateTheses")
-    public Theses updateTheses(@RequestBody Theses theses)
+    public Thesis updateTheses(@RequestBody Thesis thesis)
     {
-        System.out.println(theses.toString());
-        return thesesService.updateTheseses(theses);
+        System.out.println(thesis.toString());
+        return thesesService.updateTheseses(thesis);
     }
 
 
@@ -56,6 +54,12 @@ public class ThesisController {
     public void deleteTheses(@RequestParam Integer id){
         thesesService.deleteThesesById(id);
 
+    }
+
+    @GetMapping("/findThesesByUserId")
+    public List<Thesis> findThesesByUserId(@RequestParam Integer userId)
+    {
+        return thesesService.findThesesByUserId(userId);
     }
 
 

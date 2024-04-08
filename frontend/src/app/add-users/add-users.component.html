@@ -9,17 +9,25 @@
 
       <div class="form-group">
         <br>
-        <label for="birthday">Születési dátum:</label>
-        <br>
         <span style="color:red;" *ngIf="addUserForm.errors?.['birthdayError']">Kötelező megadni a mezőt!</span>
-        <input type="date" formControlName="birthday" id="birthday" placeholder="Születési dátum" class="form-control">
+        <br>
+        <mat-form-field>
+        <mat-label>Születési dátum:</mat-label>
+          <input formControlName ="birthday" matInput [matDatepicker]="birthday" id="birthday" >
+          <mat-datepicker-toggle matSuffix [for]="birthday"></mat-datepicker-toggle>
+          <mat-hint>YYYY.MM.DD</mat-hint>
+          <mat-datepicker #birthday></mat-datepicker>
+        </mat-form-field>
+        <br>
       </div>
 
       <div class="form-group">
         <br>
         <span style="color:red;" *ngIf="addUserForm.errors?.['emailError']">Kötelező megadni a mezőt!</span>
+        <span style="color:red;" *ngIf="addUserForm.errors?.['invalidEmail']">Érvénytelen email cím!</span>
         <input type="text" formControlName="email" id="email" placeholder="Email cím" class="form-control">
       </div>
+
 
       <div class="form-group">
         <br>
@@ -72,25 +80,25 @@
       <div class="form-group">
         <mat-form-field>
           <mat-label>Select a role!</mat-label>
-          <mat-select formControlName="roleId" [(ngModel)]="selectedRoleId" (ngModelChange)="onRoleChange()">
-            <mat-option *ngFor="let item of rolesToDropDownList" [value]="item.roleId">{{ item.role }}</mat-option>
+          <mat-select formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onRoleChange()">
+            <mat-option *ngFor="let item of rolesToDropDownList" [value]="item.role">{{ item.role }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
       <div class="form-group">
-        <div *ngIf="isVisiblePostField">
-          <label for="post">Beosztás:</label>
-          <input type="text" formControlName="post" id="post" placeholder="Beosztás" class="form-control">
+        <div *ngIf="isVisiblepositionField">
+          <label for="position">Beosztás:</label>
+          <input type="text" formControlName="position" id="position" placeholder="Beosztás" class="form-control">
         </div>
       </div>
 
       <div class="form-group">
         <div *ngIf="isDropdownList">
           <mat-form-field>
-            <mat-label>Select a post!</mat-label>
-            <mat-select formControlName="post">
-              <mat-option *ngFor="let item of postsToDropDownList" [value]="item.post">{{ item.post }}</mat-option>
+            <mat-label>Select a position!</mat-label>
+            <mat-select formControlName="position">
+              <mat-option *ngFor="let item of positionsToDropDownList" [value]="item.position">{{ item.position }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -99,7 +107,7 @@
       <br>
 
      <div class="form-group">
-        <input type="submit" [disabled]="addUserForm.invalid" value="Felvitel">
+        <input type="submit" [disabled]="addUserForm.invalid" value="Felvitel" class="submit-button">
      </div>
 
     </form>

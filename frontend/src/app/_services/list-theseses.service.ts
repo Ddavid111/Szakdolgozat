@@ -40,4 +40,14 @@ export class ListThesesesService {
     return this.http.get(this.API + '/getTopics')
   }
 
+  public findThesesByUserId(userId: number)
+  {
+    return this.http.get(this.API + '/findThesesByUserId?userId=' + userId)
+  }
+
+  public findThesesByUserIdAndReviewerId(userId: number, reviewerId: number)
+  {
+    return this.http.get(this.API + '/findThesesByUserIdAndReviewerId?userId=' + userId + '&reviewerId=' + reviewerId)
+  }
+
 }

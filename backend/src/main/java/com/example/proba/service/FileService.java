@@ -1,9 +1,9 @@
 package com.example.proba.service;
 
 import com.example.proba.dao.FileDao;
-import com.example.proba.dao.ThesesDao;
-import com.example.proba.entity.File;
-import com.example.proba.entity.Theses;
+import com.example.proba.dao.ThesisDao;
+import com.example.proba.dao.UserDao;
+import com.example.proba.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,18 +23,24 @@ public class FileService {
     private FileDao fileDao;
 
     @Autowired
-    private ThesesDao thesesDao;
+    private ThesisDao thesisDao;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ThesesService thesesService;
 
     @Autowired
     JdbcTemplate jdbcTemplate;
 
     public void assembleFileWithStudent(int fileId, int thesisId) {
         Optional<File> file = fileDao.findById(fileId);
-        Optional<Theses> theses = thesesDao.findById(thesisId);
+        Optional<Thesis> theses = thesisDao.findById(thesisId);
 
         if(file.isPresent() && theses.isPresent()) {
             File f = file.get();
-            Theses t = theses.get();
+            Thesis t = theses.get();
             f.setThesis(t);
             fileDao.save(f);
         }
@@ -48,20 +54,89 @@ public class FileService {
         }
     }
 
-    public String getFilenameByUUID(UUID uuid) {
-        String query = "select name from file where uuid='"+ uuid.toString() + "'";
-        var resultSet = jdbcTemplate.queryForList(query);
-        List<Object> result = new ArrayList<>();
-        resultSet.forEach((key) -> {
-            result.add(key.values());
-        });
+//    public List<Thesis> findThesesByLoggedInStudent (Integer userId)
+//    {
+//        User user = userService.findUserById(userId);
+//        Role role = user.getRole();
+//        List<Thesis> thesis = thesesService.findThesesByUserId(userId);
+//        switch(role) {
+//            case Hallgató: {
+//                List<Thesis> theseses = new ArrayList<>();
+//                for (Thesis theses : thesis) {
+//                    Integer id = theses.getId();
+//                    List<File> file = fileDao.findFilesByThesesId(id);
+//                    if(file.isEmpty())
+//                    {
+//                        theseses.add(theses);
+//                    }
+//                    else if (file.size() < 3){
+//                        for (File files : file) {
+//                            if (files.getName().startsWith("attachments") && !files.getName().startsWith("pdfs")) {
+//                                {
+//                                    theseses.add(theses);
+//                                }
+//                            }
+//                            else if (!files.getName().startsWith("attachments") && files.getName().startsWith("pdfs")) {
+//                                theseses.add(theses);
+//                            }
+//                            else if (files.getName().startsWith("attachments") && files.getName().contains("pdfs")) {
+//                                theseses.clear();
+//                            }
+//                        }
+//                    }
+//                    return theseses;
+//                }
+//            }
+//                default: {
+//                    return null;
+//                }
+//        }
+//    }
 
+    public List<Thesis> findThesesByLoggedInStudent(Integer userId) {
+        User user = userService.findUserById(userId);
+        Role role = user.getRole();
+        List<Thesis> theses = thesesService.findThesesByUserId(userId);
 
-        String filename = result.get(0).toString();
-        filename = filename.replace("[", "");
-        filename = filename.replace("]", "");
-        System.out.println("Filename: " + filename);
-        return filename;
+        switch (role) {
+            case Hallgató: {
+                List<Thesis> theseses = new ArrayList<>();
+                for (Thesis thesis : theses) {
+                    Integer thesisId = thesis.getId();
+                    List<File> files = fileDao.findFilesByThesesId(thesisId);
+                    boolean attachmentFound = false;
+                    boolean pdfFound = false;
+                    boolean pptFound = false;
+
+                    for (File file : files) {
+                        if (file.getName().startsWith("attachments")) {
+                            attachmentFound = true;
+                        } else if (file.getName().startsWith("pdfs")) {
+                            pdfFound = true;
+                        } else if (file.getName().startsWith("ppts")) {
+                            pptFound = true;
+                        }
+                    }
+
+                    if ((attachmentFound && pdfFound && !pptFound) ||
+                            (attachmentFound && !pdfFound && pptFound) ||
+                            (!attachmentFound && pdfFound && pptFound) ||
+                            (!attachmentFound && !pdfFound && pptFound)) {
+                        theseses.add(thesis);
+                    } else if (files.isEmpty() ||
+                            (attachmentFound && !pdfFound && !pptFound) ||
+                            (!attachmentFound && pdfFound && !pptFound) ||
+                            (!attachmentFound && !pdfFound && !pptFound)) {
+                        theseses.add(thesis);
+                    }
+
+                }
+                return theseses;
+            }
+            default: {
+                return null;
+            }
+        }
     }
 
 
@@ -84,6 +159,22 @@ public class FileService {
         }
     }
 
+    public String getFilenameByUUID(UUID uuid) {
+        String query = "select name from file where uuid='"+ uuid.toString() + "'";
+        var resultSet = jdbcTemplate.queryForList(query);
+        List<Object> result = new ArrayList<>();
+        resultSet.forEach((key) -> {
+            result.add(key.values());
+        });
+
+
+        String filename = result.get(0).toString();
+        filename = filename.replace("[", "");
+        filename = filename.replace("]", "");
+        System.out.println("Filename: " + filename);
+        return filename;
+    }
+
     public String getFilenameTwoByUUID(String uuid) {
         String query = "select name from file where uuid='"+ uuid + "'";
         var resultSet = jdbcTemplate.queryForList(query);
@@ -99,7 +190,6 @@ public class FileService {
         System.out.println("Filename: " + filename);
         return filename;
     }
-
 
     public void deleteFileById(String uuid){
 
@@ -160,6 +250,7 @@ public class FileService {
         }
 
     }
+
 
 
 }

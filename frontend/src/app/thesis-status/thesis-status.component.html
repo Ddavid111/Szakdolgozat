@@ -34,6 +34,8 @@
       <th>PDF</th>
       <th>Melléklet</th>
       <th>PPT</th>
+      <th>Review</th>
+      <th>Review2</th>
       <th>PDF törlése</th>
       <th>Melléklet törlése</th>
       <th>PPT törlése</th>
@@ -52,6 +54,8 @@
       <td><button *ngIf="thesis.pdfUUID != null; else elseBlock" type="button" class="btn btn-light" (click)="downloadFile(thesis.pdfUUID)">Letöltés</button></td>
       <td><button *ngIf="thesis.attachmentUUID != null; else elseBlock" type="button" class="btn btn-light" (click)="downloadFile(thesis.attachmentUUID)">Letöltés</button></td>
       <td><button *ngIf="thesis.pptUUID != null; else elseBlock" type="button" class="btn btn-light" (click)="downloadFile(thesis.pptUUID)">Letöltés</button></td>
+      <td><button *ngIf="thesis.reviewUUID != null; else elseBlock" type="button" class="btn btn-light" (click)="downloadFile(thesis.reviewUUID)">Letöltés</button></td>
+      <td><button *ngIf="thesis.secondReviewUUID != null; else elseBlock" type="button" class="btn btn-light" (click)="downloadFile(thesis.secondReviewUUID)">Letöltés</button></td>
       <td>
         <button id="deletePdfButton" type="button" class="btn btn-danger" (click)="deletePdfFiles()">PDF törlése</button>
       </td>

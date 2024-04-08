@@ -1,10 +1,10 @@
 package com.example.proba.service;
 
 import com.example.proba.dao.ReviewDao;
-import com.example.proba.dao.ThesesDao;
+import com.example.proba.dao.ThesisDao;
 import com.example.proba.dao.UserDao;
 import com.example.proba.entity.Review;
-import com.example.proba.entity.Theses;
+import com.example.proba.entity.Thesis;
 import com.example.proba.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReportStatusService {
@@ -27,7 +26,7 @@ public class ReportStatusService {
     ThesesService thesesService;
 
     @Autowired
-    ThesesDao thesesDao;
+    ThesisDao thesisDao;
 
     @Autowired
     ReviewDao reviewDao;
@@ -40,19 +39,19 @@ public class ReportStatusService {
         User userFromSql = userService.findUserById(userId);
         User user;
 
-        Optional<Theses> thesesFromSql = thesesService.findThesesById(thesisId);
-        Theses theses;
+        Thesis thesisFromSql = thesesService.findThesesById(thesisId);
+        Thesis thesis;
 
         Review review = new Review();
 
         review.setInvitationDate(new Date());
         review.setUser(userDao.findById(userId).get());
-        review.setTheseses(thesesDao.findById(thesisId).get());
+        review.setTheseses(thesisDao.findById(thesisId).get());
 
-        if(thesesFromSql.isPresent()) {
+        if(thesisFromSql != null) {
             user = userFromSql;
-            theses = thesesFromSql.get();
-            String thesisTitle = theses.getTitle();
+            thesis = thesisFromSql;
+            String thesisTitle = thesis.getTitle();
 
 
             String email = user.getEmail();
@@ -63,8 +62,8 @@ public class ReportStatusService {
 
             emailSenderService.sendEmail(email, emailSubject, emailBody);
 
-            theses.setUnderReview(true);
-            thesesDao.save(theses);
+            thesis.setUnderReview(true);
+            thesisDao.save(thesis);
             reviewDao.save(review);
         }
 
@@ -79,10 +78,10 @@ public class ReportStatusService {
         }
     }
 
-    public List<Theses> findThesesUnderReview (Boolean isUnderReview)
+    public List<Thesis> findThesesUnderReview (Boolean isUnderReview)
     {
-        Iterable<Theses> thesesIterable = thesesDao.findThesesUnderReview(isUnderReview);
-        List<Theses> theses = new ArrayList<>();
+        Iterable<Thesis> thesesIterable = thesisDao.findThesesUnderReview(isUnderReview);
+        List<Thesis> theses = new ArrayList<>();
 
         thesesIterable.forEach(theses::add);
 
@@ -91,10 +90,10 @@ public class ReportStatusService {
 
     }
 
-    public List<Theses> findReviewedTheses ()
+    public List<Thesis> findReviewedTheses ()
     {
-        Iterable<Theses> thesesIterable = thesesDao.findReviewedTheses();
-        List<Theses> theses = new ArrayList<>();
+        Iterable<Thesis> thesesIterable = thesisDao.findReviewedTheses();
+        List<Thesis> theses = new ArrayList<>();
 
         thesesIterable.forEach(theses::add);
 

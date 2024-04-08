@@ -1,7 +1,5 @@
 package com.example.proba.controller;
 
-import com.example.proba.entity.Role;
-import com.example.proba.entity.Theses;
 import com.example.proba.entity.User;
 import com.example.proba.service.ForgottenPasswordService;
 import com.example.proba.service.UserService;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class UsersController {
@@ -52,15 +49,10 @@ public class UsersController {
         return userService.addUser(users);
     }
 
-    @GetMapping ("/findAllUserRoles")
-    public List<Role> findAllUserRoles() {
-        return userService.findAllUserRoles();
-    }
 
     @PutMapping("/updateUsers")
     public User updateUsers(@RequestBody User user)
     {
-
         return userService.updateUsers(user);
     }
 
@@ -85,8 +77,13 @@ public class UsersController {
     }
 
     @GetMapping("/findUsersByRoleList")
-    public List<User> findUsersByRoleList(@RequestParam List<Integer> roleIds) {
+    public List<User> findUsersByRoleList(@RequestParam List<String> roleIds) {
         return userService.findUsersByRoleList(roleIds);
+    }
+
+    @GetMapping("/findStudentsByLoggedInReviewer")
+    public List<User> findStudentsByLoggedInReviewer(@RequestParam Integer userId) {
+        return userService.findStudentsByLoggedInReviewer(userId);
     }
 
 }

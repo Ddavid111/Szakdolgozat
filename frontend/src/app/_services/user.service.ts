@@ -34,9 +34,13 @@ export class UserService {
     // console.log("current userRole:")
     // console.log(userRoles)
 
-    if (userRoles === allowedRoles) {
-      isMatch = true
-    }
+    allowedRoles.forEach((role: any)=>{
+      if (userRoles === role) {
+        isMatch = true
+      }
+    })
+
+
 
     // if(userRoles != null && userRoles) {
     //   for(let i = 0; i < userRoles.length; i++) {

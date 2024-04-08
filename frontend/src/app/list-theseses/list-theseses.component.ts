@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ListThesesesService} from "../_services/list-theseses.service";
 import {findAllUsersService} from "../_services/find-allUsers.service";
-import {NgForm} from "@angular/forms";
-import {AddTopicsService} from "../_services/add-topics.service";
 
 @Component({
   selector: 'app-list-theseses',
@@ -15,6 +13,7 @@ export class ListThesesesComponent implements OnInit {
   temp = null as any // copy of data for correct searching
   jelentkezik: boolean = false;
   title: any
+  submissionDate: any
   student: any
   user: any
 
@@ -109,6 +108,19 @@ export class ListThesesesComponent implements OnInit {
     } else {
       this.data = this.temp.filter((res: any) => {
         return res.title.toLocaleLowerCase().match(this.title.toLocaleLowerCase())
+      })
+    }
+  }
+
+  searchForSubmissionDate() {
+    if (!this.submissionDate) {
+      this.ngOnInit();
+    } else {
+      const searchDate = new Date(this.submissionDate)
+      this.data = this.temp.filter((res: any) => {
+        const submissionDate = new Date(res.submissionDate)
+        return submissionDate.toDateString() === searchDate.toDateString()
+        // return res.submissionDate.match(this.submissionDate)
       })
     }
   }
@@ -225,10 +237,12 @@ export class ListThesesesComponent implements OnInit {
   reverse: boolean = false;
 
   sort(key: any) {
+    console.log(this.key)
     this.key = key;
     this.reverse = !this.reverse;
     console.log(this.data)
   }
+
 
   // Pagination
   p: number = 1

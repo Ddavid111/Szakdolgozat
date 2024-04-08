@@ -9,8 +9,8 @@
       <th>Start hour</th>
       <th>End hour</th>
       <th>Location</th>
-      <th>Notary</th>
-      <th>President</th>
+      <th>Secretary</th>
+      <th>Chairman</th>
       <th>Students</th>
       <th>Members</th>
     </tr>
@@ -25,8 +25,8 @@
       <td>{{ e.startHour }}</td>
       <td>{{ e.endHour }}</td>
       <td>{{ e.location }}</td>
-      <td>{{ e.notary.fullname }}</td>
-      <td>{{ e.president.fullname }}</td>
+      <td>{{ e.secretary.fullname }}</td>
+      <td>{{ e.chairman.fullname }}</td>
       <td> <span *ngFor="let student of e.students"> {{ student.fullname}}<span *ngIf="e.students.length !== (e.students.indexOf(student)+1) ">,</span> </span> </td>
       <td> <span *ngFor="let member of e.members"> {{ member.fullname }}<span *ngIf="e.members.length !== (e.members.indexOf(member)+1) ">,</span> </span> </td>
 

@@ -22,8 +22,8 @@ export class AddSessionComponent implements OnInit {
   students : any
   membersToDropdown: any
   members: any
-  presidentId: any
-  notaryId: any
+  chairmanId: any
+  secretaryId: any
   addSessionForm: FormGroup
 
   constructor(private addSessionService: AddSessionService,
@@ -36,14 +36,14 @@ export class AddSessionComponent implements OnInit {
         endHour: new FormControl(null, [Validators.required]),
         students: new FormControl(null, [Validators.required]),
         members: new FormControl(null,[Validators.required]),
-        president: new FormControl(null,[Validators.required]),
-        notary: new FormControl(null,[Validators.required]),
+        chairman: new FormControl(null,[Validators.required]),
+        secretary: new FormControl(null,[Validators.required]),
         description: new FormControl(null),
         code: new FormControl(null, [Validators.required])
       },
       {
         validators: [locationError, dateError, startHourError, startHourValueError, endHourError, endHourValueError, endHourrError,
-          studentsError, membersError, presidentError, notaryError, codeError]
+          studentsError, membersError, chairmanError, secretaryError, codeError]
       }
     )
 
@@ -74,9 +74,10 @@ export class AddSessionComponent implements OnInit {
   }
 
   getMembersToDropdown() {
-    let roleIds = [1, 2, 3, 4] // roleIds of members
+    let roleIds = ["Elnök","Jegyző","Bíráló","Témavezető","ADMIN"] // roleIds of members
     this.findAllUsersService.findUsersByRoleList(roleIds).subscribe(
       (resp) => {
+        console.log(resp)
         this.membersToDropdown = resp
       }
     )
@@ -84,7 +85,7 @@ export class AddSessionComponent implements OnInit {
 
 
   getStudentsToDropdown() {
-    this.findAllUsersService.findUsersByRole(0).subscribe(
+    this.findAllUsersService.findUsersByRoleList(["Hallgató"]).subscribe(
       (resp) => {
         this.studentsToDropdown = resp
       }
@@ -93,24 +94,24 @@ export class AddSessionComponent implements OnInit {
 
   addFormData() {
 
-
+    console.log(this.addSessionForm)
     this.addSessionForm.value.students = [] as any
     this.addSessionForm.value.members = [] as any
-    this.addSessionForm.value.president = {userId: this.presidentId}
-    this.addSessionForm.value.notary = {userId: this.notaryId}
+    this.addSessionForm.value.chairman = {id: this.chairmanId}
+    this.addSessionForm.value.secretary = {id: this.secretaryId}
 
 
     this.students.forEach((userId: any) =>
      {
        this.addSessionForm.value.students.push({
-         userId: userId
+         id: userId
        })
     })
 
     this.members.forEach((userId: any) =>
     {
       this.addSessionForm.value.members.push({
-        userId: userId
+        id: userId
       })
     })
 
@@ -229,21 +230,21 @@ export const membersError: ValidatorFn = (control: AbstractControl): ValidationE
   return null
 }
 
-export const presidentError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  let president = control.get('president')
-  if (president === null || president?.value === null || president?.value === "") {
+export const chairmanError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let chairman = control.get('chairman')
+  if (chairman === null || chairman?.value === null || chairman?.value === "") {
     return {
-      presidentError: true
+      chairmanError: true
     }
   }
   return null
 }
 
-export const notaryError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  let notary = control.get('notary')
-  if (notary === null || notary?.value === null || notary?.value === "") {
+export const secretaryError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  let secretary = control.get('secretary')
+  if (secretary === null || secretary?.value === null || secretary?.value === "") {
     return {
-      notaryError: true
+      secretaryError: true
     }
   }
   return null

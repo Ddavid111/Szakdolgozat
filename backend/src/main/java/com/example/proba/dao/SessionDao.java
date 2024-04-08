@@ -10,7 +10,7 @@ import java.util.List;
 public interface SessionDao extends CrudRepository<Session, Integer> {
 
     
-    @Query (value = "SELECT code, date, id, description, end_hour, location, notary, president, start_hour FROM SESSION", nativeQuery = true)
+    @Query (value = "SELECT code, date, id, description, end_hour, location, secretary_id, chairman_id, start_hour FROM SESSION", nativeQuery = true)
     List<Session> getSessionsListToDisplay();
 
 

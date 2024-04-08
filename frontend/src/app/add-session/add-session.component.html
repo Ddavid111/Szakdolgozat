@@ -7,13 +7,23 @@
         <span style="color:red;" *ngIf="addSessionForm.errors?.['locationError']">Kötelező megadni a mezőt!</span>
         <input type="text" formControlName="location" id="location" placeholder="ZV Helyszín" class="form-control">
       </div>
-
-      <div class="form-group">
-        <br>
-        <span style="color:red;" *ngIf="addSessionForm.errors?.['dateError']">Kötelező megadni a mezőt!</span>
-        <input type="date" formControlName="date" id="date" placeholder="ZV időpont" class="form-control">
-      </div>
       <p></p>
+<!--      <div class="form-group">-->
+<!--        <br>-->
+<!--        <span style="color:red;" *ngIf="addSessionForm.errors?.['dateError']">Kötelező megadni a mezőt!</span>-->
+<!--        <input type="date" formControlName="date" id="date" placeholder="ZV időpont" class="form-control">-->
+<!--      </div>-->
+<!--      <p></p>-->
+
+            <div class="form-group">
+              <mat-form-field>
+                <mat-label>Zv időpontja:</mat-label>
+                <input formControlName ="date" matInput [matDatepicker]="date" id="date" >
+                <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                <mat-hint>YYYY.MM.DD</mat-hint>
+                <mat-datepicker #date></mat-datepicker>
+              </mat-form-field>
+            </div>
 
       <div class="form-group">
         <label for="startHour">ZV kezdete:</label>
@@ -38,7 +48,7 @@
         <mat-form-field>
           <mat-label>Hallgató kiválasztása</mat-label>
           <mat-select formControlName="students" [(ngModel)]="students" multiple>
-            <mat-option *ngFor="let student of studentsToDropdown" [value]="student.userId">{{ student.fullname }}</mat-option>
+            <mat-option *ngFor="let student of studentsToDropdown" [value]="student.id">{{ student.fullname }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -49,7 +59,7 @@
         <mat-form-field>
           <mat-label>ZV tag kiválasztása</mat-label>
           <mat-select formControlName="members" [(ngModel)]="members" multiple>
-            <mat-option *ngFor="let member of membersToDropdown" [value]="member.userId">{{ member.fullname }}</mat-option>
+            <mat-option *ngFor="let member of membersToDropdown" [value]="member.id">{{ member.fullname }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -57,9 +67,9 @@
       <div class="form-group">
         <mat-form-field>
           <mat-label>Elnök kiválasztása</mat-label>
-          <mat-select formControlName="president" [(ngModel)]="presidentId">
+          <mat-select formControlName="chairman" [(ngModel)]="chairmanId">
             <div *ngFor="let member of membersToDropdown">
-              <mat-option *ngIf="member.roleId === 1" [value]="member.userId">{{ member.fullname }}</mat-option>
+              <mat-option *ngIf="member.role === 'Elnök'" [value]="member.id">{{ member.fullname }}</mat-option>
             </div>
           </mat-select>
         </mat-form-field>
@@ -68,9 +78,9 @@
       <div class="form-group">
         <mat-form-field>
           <mat-label>Jegyző kiválasztása</mat-label>
-          <mat-select formControlName="notary" [(ngModel)]="notaryId">
+          <mat-select formControlName="secretary" [(ngModel)]="secretaryId">
             <div *ngFor="let member of membersToDropdown">
-              <mat-option *ngIf="member.roleId  === 2" [value]="member.userId">{{ member.fullname }}</mat-option>
+              <mat-option *ngIf="member.role  === 'Jegyző'" [value]="member.id">{{ member.fullname }}</mat-option>
             </div>
           </mat-select>
         </mat-form-field>

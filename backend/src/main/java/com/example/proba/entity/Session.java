@@ -2,11 +2,9 @@ package com.example.proba.entity;
 
 import javax.persistence.*;
 
-
-
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
 
 @Entity
 public class Session {
@@ -17,11 +15,11 @@ public class Session {
 
 
     @ManyToOne
-    @JoinColumn(name = "notary")
-    private User notary;
+    @JoinColumn(name = "secretaryId")
+    private User secretary;
     @ManyToOne
-    @JoinColumn(name = "president")
-    private User president;
+    @JoinColumn(name = "chairmanId")
+    private User chairman;
 
     @ManyToMany
     @JoinColumn(name = "members")
@@ -98,20 +96,20 @@ public class Session {
     }
 
 
-    public User getNotary() {
-        return notary;
+    public User getSecretary() {
+        return secretary;
     }
 
-    public void setNotary(User notary) {
-        this.notary = notary;
+    public void setSecretary(User secretary) {
+        this.secretary = secretary;
     }
 
-    public User getPresident() {
-        return president;
+    public User getChairman() {
+        return chairman;
     }
 
-    public void setPresident(User president) {
-        this.president = president;
+    public void setChairman(User president) {
+        this.chairman = president;
     }
 
     public List<User> getMembers() {

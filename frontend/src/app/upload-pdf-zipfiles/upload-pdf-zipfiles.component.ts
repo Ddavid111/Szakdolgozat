@@ -22,7 +22,7 @@ export class UploadPDFZIPFilesComponent implements OnInit {
   constructor(private addFilesService: AddFilesService, private findThesesService: ListThesesesService) {}
 
   ngOnInit(): void {
-    this.getTheses();
+    this.getTheses(localStorage['userId']);
   }
 
   alertWithWarningFileType()
@@ -54,8 +54,8 @@ export class UploadPDFZIPFilesComponent implements OnInit {
     Swal.fire("Siker",'Sikerült a fájl feltöltés.','success')
   }
 
-  getTheses() {
-    this.findThesesService.getThesesList().subscribe(
+  getTheses(userId: number) {
+    this.addFilesService.findThesesByLoggedInStudent(userId).subscribe(
       (resp) => {
         this.theses = resp;
         console.log(resp);

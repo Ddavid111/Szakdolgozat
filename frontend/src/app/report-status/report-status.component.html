@@ -197,6 +197,7 @@
         <th>Melléklet</th>
         <th>PPT</th>
         <th>Reviews</th>
+        <th>Review2</th>
 
       </tr>
       </thead>
@@ -229,6 +230,17 @@
                   (click)="downloadFile(e.reviewUUID)">Letöltés
           </button>
         </td>
+        <td>
+          <button *ngIf="e.secondReviewUUID != null; else elseBlock" type="button" class="btn btn-light"
+                  (click)="downloadFile(e.secondReviewUUID)">Letöltés
+          </button>
+        </td>
+        <td>
+          <button type="button" class="btn btn-primary"
+                  (click)="findFilesByThesesId(e.thesisId)">Bírálat küldése
+          </button>
+        </td>
+
         <ng-template #elseBlock>Nincs</ng-template>
 
       </tr>
@@ -259,7 +271,7 @@
             <mat-form-field style="width:400px">
               <mat-label>Bíráló kiválasztása</mat-label>
               <mat-select name="students" [(ngModel)]="selectedReviewer">
-                <mat-option *ngFor="let reviewer of reviewers" [value]="reviewer.userId">{{ reviewer.fullname }}
+                <mat-option *ngFor="let reviewer of reviewers" [value]="reviewer.id">{{ reviewer.fullname }}
                 </mat-option>
               </mat-select>
             </mat-form-field>

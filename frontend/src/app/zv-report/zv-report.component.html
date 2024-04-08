@@ -4,7 +4,7 @@
   <mat-form-field>
     <mat-label>Válassz ki egy hallgatót!</mat-label>
     <mat-select formControlName="student" [(ngModel)]="selectedStudent" (ngModelChange)="onSelectStudent()">
-      <mat-option *ngFor="let student of students" [value]="student.userId">
+      <mat-option *ngFor="let student of students" [value]="student.id">
         {{ student.fullname }}
       </mat-option>
     </mat-select>

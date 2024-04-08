@@ -2,17 +2,11 @@ package com.example.proba.service;
 
 import com.example.proba.dao.SessionDao;
 import com.example.proba.entity.Session;
-import com.example.proba.entity.Theses;
 import com.example.proba.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,20 +48,20 @@ public class SessionService {
         Optional<Session> sessionFromSql = sessionService.findSessionById(sessionId);
         List<User> membersFromSession = session.getMembers();
         for(User member : membersFromSession){
-            User memberWithEmail = userService.findUserById(member.getUserId());
+            User memberWithEmail = userService.findUserById(member.getId());
             membersFromSession.set(membersFromSession.indexOf(member), memberWithEmail);
 
         }
         List<User> studentsFromSession = session.getStudents();
         for(User student: studentsFromSession)
         {
-            User studentWithEmail = userService.findUserById(student.getUserId());
+            User studentWithEmail = userService.findUserById(student.getId());
             studentsFromSession.set(studentsFromSession.indexOf(student), studentWithEmail);
         }
-        User president = session.getPresident();
-        president = userService.findUserById(president.getUserId());
-        User notary = session.getNotary();
-        notary = userService.findUserById(notary.getUserId());
+        User chairman = session.getChairman();
+        chairman = userService.findUserById(chairman.getId());
+        User secretary = session.getSecretary();
+        secretary = userService.findUserById(secretary.getId());
 
 
         String zvLocation = session.getLocation();
@@ -109,20 +103,20 @@ public class SessionService {
                 emailSenderService.sendEmail(email, emailSubject, emailBody);
             }
 
-            String emailToNotary = notary.getEmail();
-            String emailSubjectToNotary = "Záróvizsga időpontja";
-            String emailBodyToNotary = "Önt felkérték, hogy vegyen részt a következő záróvizsgán.(notary)";
-            emailBodyToNotary += "\nA Záróvizsga helye: " + zvLocation;
+            String emailToSecretary = secretary.getEmail();
+            String emailSubjectToSecretary = "Záróvizsga időpontja";
+            String emailBodyToSecretary = "Önt felkérték, hogy vegyen részt a következő záróvizsgán.(secretary)";
+            emailBodyToSecretary += "\nA Záróvizsga helye: " + zvLocation;
 
-            emailSenderService.sendEmail(emailToNotary, emailSubjectToNotary, emailBodyToNotary);
-
-
+            emailSenderService.sendEmail(emailToSecretary, emailSubjectToSecretary, emailBodyToSecretary);
 
 
 
-            String email = president.getEmail();
+
+
+            String email = chairman.getEmail();
             String emailSubject = "Záróvizsga időpontja";
-            String emailBody = "Önt felkérték, hogy vegyen részt a következő záróvizsgán.(president)";
+            String emailBody = "Önt felkérték, hogy vegyen részt a következő záróvizsgán.(chairman)";
             emailBody += "\nA Záróvizsga helye: " + zvLocation;
 
             emailSenderService.sendEmail(email, emailSubject, emailBody);
@@ -158,25 +152,25 @@ public class SessionService {
         sessionIterable.forEach((actualSession) ->
         {
 
-            User notary = actualSession.getNotary();
-            User tempNotary = new User();
-            tempNotary.setUserId(notary.getUserId());
-            tempNotary.setFullname(notary.getFullname());
+            User secretary = actualSession.getSecretary();
+            User tempSecretary = new User();
+            tempSecretary.setId(secretary.getId());
+            tempSecretary.setFullname(secretary.getFullname());
 
-            User president = actualSession.getPresident();
+            User president = actualSession.getChairman();
             User tempPresident = new User();
-            tempPresident.setUserId(president.getUserId());
+            tempPresident.setId(president.getId());
             tempPresident.setFullname(president.getFullname());
 
-            actualSession.setPresident(tempPresident);
-            actualSession.setNotary(tempNotary);
+            actualSession.setChairman(tempPresident);
+            actualSession.setSecretary(tempSecretary);
 
             List<User> students = actualSession.getStudents();
             List<User> tempStudents = new ArrayList<>();
             for(User student: students)
             {
                User tempStudent = new User();
-               tempStudent.setUserId(student.getUserId());
+               tempStudent.setId(student.getId());
                tempStudent.setFullname(student.getFullname());
 
                tempStudents.add(tempStudent);
@@ -190,7 +184,7 @@ public class SessionService {
             for(User member: members)
             {
                 User tempMember = new User();
-                tempMember.setUserId(member.getUserId());
+                tempMember.setId(member.getId());
                 tempMember.setFullname(member.getFullname());
 
                 tempMembers.add(tempMember);

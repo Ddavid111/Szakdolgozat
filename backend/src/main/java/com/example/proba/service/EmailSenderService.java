@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.core.io.FileSystemResource;
 
 import java.io.File;
+import java.util.List;
 
 
 @Service
@@ -21,8 +22,7 @@ public class EmailSenderService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendEmailWithAttachment(String toEmail, String subject, String body, String pathToAttachment) throws MessagingException {
-
+    public void sendEmailWithAttachments(String toEmail, String subject, String body, List<String> attachmentPaths) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
 
         try {
@@ -31,18 +31,19 @@ public class EmailSenderService {
             helper.setTo(toEmail);
             helper.setText(body);
             helper.setSubject(subject);
-            FileSystemResource file = new FileSystemResource(new File(pathToAttachment));
-            helper.addAttachment(file.getFilename(), file);
 
-        }catch (Exception e) {
+            for (String pathToAttachment : attachmentPaths) {
+                FileSystemResource file = new FileSystemResource(new File(pathToAttachment));
+                helper.addAttachment(file.getFilename(), file);
+            }
+
+        } catch (Exception e) {
             System.out.println("Exception when creating email");
             System.out.println(e.getMessage());
         }
 
-
         mailSender.send(message);
-        System.out.println("Mail sent succesfully...");
-
+        System.out.println("Mail sent successfully...");
     }
 
     public void sendEmail(String toEmail, String subject, String body) {

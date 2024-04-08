@@ -114,13 +114,11 @@ export class ZvReportComponent implements OnInit {
 
   onSelectStudent() {
     this.getThesesesToDropdown()
-    console.log(this.session)
     this.getCodeToDropDown()
     console.log(this.selectedStudent)
   }
 
   getThesesesToDropdown() {
-    // TODO: SQL-ben userId-ra filterezni thesis-t, aztán akkor nem itt kell szarakodni
     this.listThesesesService.getThesesList().subscribe(
       (resp) => {
         console.log(resp)
@@ -136,14 +134,21 @@ export class ZvReportComponent implements OnInit {
     this.addSessionService.getSessionList().subscribe(
       (resp) => {
         console.log(resp)
+
+        let allSession = resp as any[]
+        console.log(allSession)
         console.log(this.selectedStudent)
 
-        let allSession = resp as any;
-        console.log(allSession)
-        this.session = allSession.filter((sessions: any) =>
-          sessions.students[0] == this.selectedStudent)
-      })
+        this.session = allSession.filter((sessions: any) => {
+          console.log(sessions.students.id)
+          return sessions.students[0].id == this.selectedStudent
+        });
+
+        console.log(this.session)
+      }
+    );
   }
+
 
 
   addFormData(addDocxForm: FormGroup) {

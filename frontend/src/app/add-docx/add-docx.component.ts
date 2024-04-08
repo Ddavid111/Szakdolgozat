@@ -20,7 +20,7 @@ import Swal from "sweetalert2";
 export class AddDocxComponent implements OnInit {
 
   ngOnInit() {
-    this.getStudentsToDropdown() // It calls getThesesesToDropdown as well
+    this.getStudentsToDropdown(localStorage['userId']) // It calls getThesesesToDropdown as well
     // this.getThesesesToDropdown() // Called at OnSelectStudent
   }
 
@@ -42,10 +42,6 @@ export class AddDocxComponent implements OnInit {
       description: new FormControl(null),
       score: new FormControl(null,[Validators.required]),
       city: new FormControl(null,[Validators.required]),
-      // invitationDate: new FormControl(null,[Validators.required]),
-      invitationAcceptionDate: new FormControl(null,[Validators.required]),
-      responseDate: new FormControl(null,[Validators.required]),
-      submissionDate: new FormControl(null,[Validators.required]),
     },
       {validators: [cityError]
 
@@ -54,20 +50,34 @@ export class AddDocxComponent implements OnInit {
 
   alertWithSucces()
   {
-    Swal.fire("Köszönjük!",'Felhasználó sikeresen tárolva','success')
+    Swal.fire({
+      title: "Sikeres",
+      icon: 'success',
+      allowOutsideClick: false
+    }).then((result) => {
+      if(!result.isDenied){
+        window.location.reload()
+      }
+      // return result.isConfirmed;
+    });
   }
 
+
   alertWithError(err: any) {
-    Swal.fire("Hiba", ' Error:' + err,  'error');
+  Swal.fire("Hiba!",'Error' + err,'error')
   }
 
   alertWithFileDownload(err:any){
     Swal.fire("Error", 'Error downloading file' + err , 'error')
   }
 
-  getStudentsToDropdown() {
-    this.findAllUsersService.findUsersByRole(0).subscribe(
+
+
+  getStudentsToDropdown(userId: number) {
+    // this.findAllUsersService.findUsersByRole(0).subscribe(
+    this.findAllUsersService.findStudentsByLoggedInReviewer(userId).subscribe(
       (resp) => {
+        console.log(resp)
         this.students = resp
       },
       (err) => {
@@ -77,18 +87,17 @@ export class AddDocxComponent implements OnInit {
   }
 
   onSelectStudent() {
-    this.theses
-    this.getThesesesToDropdown()
     console.log(this.selectedStudent)
+    if(this.selectedStudent !== undefined) {
+      this.getThesesesToDropdown(this.selectedStudent,localStorage['userId'])
+    }
   }
 
-  getThesesesToDropdown() {
-    // TODO: SQL-ben userId-ra filterezni thesis-t, aztán akkor nem itt kell szarakodni
-    this.listThesesesService.getThesesList().subscribe(
-      (resp) => {
+  getThesesesToDropdown(userId: number, reviewerId: number) {
+    this.listThesesesService.findThesesByUserIdAndReviewerId(userId,reviewerId).subscribe(
+      (resp: any) => {
         console.log(resp)
-        let allThesis = resp as any;
-        this.theses = allThesis.filter((thesis: any) => thesis.userId == this.selectedStudent)
+        this.theses = resp
       },
 
       (err) => {

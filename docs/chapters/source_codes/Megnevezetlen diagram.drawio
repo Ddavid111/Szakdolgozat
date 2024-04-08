@@ -1,0 +1,97 @@
+<mxfile host="app.diagrams.net" modified="2024-03-29T15:14:22.269Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="htGfLlOxMtJ6_cMLpn4K" version="24.2.1" type="device">
+  <diagram name="1 oldal" id="KOCVEWSfp-y_1-q1elBh">
+    <mxGraphModel dx="1434" dy="780" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-3" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="131" y="20" width="566" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-1" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="hlbMqYNY3Y4gczkukbaF-3" vertex="1">
+          <mxGeometry width="566" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-2" value="&lt;font style=&quot;font-size: 30px;&quot;&gt;Angular&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="hlbMqYNY3Y4gczkukbaF-3" vertex="1">
+          <mxGeometry x="223" y="12.051282051282051" width="130" height="36.15384615384615" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-4" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Components&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="hlbMqYNY3Y4gczkukbaF-3" vertex="1">
+          <mxGeometry x="20" y="170.00153846153844" width="210" height="120.51282051282051" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-5" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Services&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="hlbMqYNY3Y4gczkukbaF-3" vertex="1">
+          <mxGeometry x="340" y="170.00153846153844" width="210" height="120.51282051282051" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-6" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;HTTP Client&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="hlbMqYNY3Y4gczkukbaF-3" vertex="1">
+          <mxGeometry x="81.86999999999999" y="350.00461538461536" width="402.25" height="72.3076923076923" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-10" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png;" parent="hlbMqYNY3Y4gczkukbaF-3" vertex="1">
+          <mxGeometry x="213" y="40" width="140" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-11" value="" style="group" parent="1" vertex="1" connectable="0">
+          <mxGeometry x="131" y="560" width="1189" height="1120.49" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-33" value="" style="group" parent="hlbMqYNY3Y4gczkukbaF-11" vertex="1" connectable="0">
+          <mxGeometry width="949" height="1120.49" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-12" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="hlbMqYNY3Y4gczkukbaF-33" vertex="1">
+          <mxGeometry width="566" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-14" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Services&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="hlbMqYNY3Y4gczkukbaF-33" vertex="1">
+          <mxGeometry x="20" y="184.74" width="150" height="100.51" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-15" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Model&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="hlbMqYNY3Y4gczkukbaF-33" vertex="1">
+          <mxGeometry x="212.51" y="184.74" width="141" height="100.51" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-16" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Spring REST Controller&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="hlbMqYNY3Y4gczkukbaF-33" vertex="1">
+          <mxGeometry x="81.88" y="25.004615384615363" width="402.25" height="72.3076923076923" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-34" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;DAO&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="hlbMqYNY3Y4gczkukbaF-33" vertex="1">
+          <mxGeometry x="399" y="180" width="141" height="100.51" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-13" value="&lt;font style=&quot;font-size: 30px;&quot;&gt;Spring boot&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="hlbMqYNY3Y4gczkukbaF-33" vertex="1">
+          <mxGeometry x="204.51" y="420" width="157" height="36.15" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-39" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Spring_Boot.svg/1024px-Spring_Boot.svg.png;" parent="hlbMqYNY3Y4gczkukbaF-33" vertex="1">
+          <mxGeometry x="230" y="302.44" width="105.68" height="105.68" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-40" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Java_programming_language_logo.svg/1200px-Java_programming_language_logo.svg.png;" parent="hlbMqYNY3Y4gczkukbaF-33" vertex="1">
+          <mxGeometry x="66.78999999999999" y="302.44" width="56.43" height="103.24" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-27" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;MySQL&lt;/font&gt;&lt;div style=&quot;font-size: 15px;&quot;&gt;&lt;font style=&quot;font-size: 15px;&quot;&gt;Adatbázis&lt;/font&gt;&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="hlbMqYNY3Y4gczkukbaF-33" vertex="1">
+          <mxGeometry x="779" y="180" width="131" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-41" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;exitX=1.001;exitY=0.33;exitDx=0;exitDy=0;exitPerimeter=0;" parent="hlbMqYNY3Y4gczkukbaF-33" source="hlbMqYNY3Y4gczkukbaF-34" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="619" y="360" as="sourcePoint" />
+            <mxPoint x="779" y="214" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-46" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitX=0.005;exitY=0.537;exitDx=0;exitDy=0;exitPerimeter=0;" parent="hlbMqYNY3Y4gczkukbaF-33" source="hlbMqYNY3Y4gczkukbaF-27" target="hlbMqYNY3Y4gczkukbaF-34" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="779" y="260" as="sourcePoint" />
+            <mxPoint x="789" y="224" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ue2bZFBEn8R5mvFbNGnJ-2" value="&lt;font style=&quot;font-size: 18px;&quot;&gt;Fájlrendszer&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="hlbMqYNY3Y4gczkukbaF-33">
+          <mxGeometry x="794" y="24.999999999999968" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-36" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://e7.pngegg.com/pngimages/747/798/png-clipart-mysql-logo-mysql-database-web-development-computer-software-dolphin-marine-mammal-animals-thumbnail.png;" parent="hlbMqYNY3Y4gczkukbaF-11" vertex="1">
+          <mxGeometry x="919" y="210" width="110" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-37" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;entryX=0.835;entryY=1.024;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.834;exitY=0.001;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="hlbMqYNY3Y4gczkukbaF-16" target="hlbMqYNY3Y4gczkukbaF-6" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="550" y="584" as="sourcePoint" />
+            <mxPoint x="580" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hlbMqYNY3Y4gczkukbaF-38" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" parent="1" source="hlbMqYNY3Y4gczkukbaF-6" target="hlbMqYNY3Y4gczkukbaF-16" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="580" y="595" as="sourcePoint" />
+            <mxPoint x="580" y="454" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ue2bZFBEn8R5mvFbNGnJ-1" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://videotanfolyam.hu/images/blog/lead200/egyedi_mappa_ikonok.png;" vertex="1" parent="1">
+          <mxGeometry x="910" y="430" width="170" height="170" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

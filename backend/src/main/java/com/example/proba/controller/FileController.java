@@ -1,5 +1,7 @@
 package com.example.proba.controller;
 
+import com.example.proba.entity.Thesis;
+import com.example.proba.entity.User;
 import com.example.proba.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -23,6 +26,11 @@ public class FileController {
     @PostMapping("/addFiles")
     public int addFiles(@RequestParam("file") MultipartFile file) { // , @RequestParam("thesesId") Integer thesesId
         return fileService.uploadFile(file); // returns with the fileId in the File table
+    }
+
+    @GetMapping("/findThesesByLoggedInStudent")
+    public List<Thesis> findThesesByLoggedInStudent(@RequestParam Integer userId) {
+        return fileService.findThesesByLoggedInStudent(userId);
     }
 
 

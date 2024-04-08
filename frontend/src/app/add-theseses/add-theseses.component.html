@@ -42,17 +42,15 @@
                class="form-check-input">
       </div>
 
-      <div class="form-group">
-        <mat-form-field>
-          <mat-label>Benyújtás ideje:</mat-label>
-          <input formControlName ="submissionDate" matInput [matDatepicker]="submissionDate" id="submissionDate" >
-          <mat-datepicker-toggle matSuffix [for]="submissionDate"></mat-datepicker-toggle>
-          <mat-hint>YYYY.MM.DD</mat-hint>
-          <mat-datepicker #submissionDate></mat-datepicker>
-        </mat-form-field>
-        <br>
-      </div>
-
+<!--      <div class="form-group">-->
+<!--        <mat-form-field>-->
+<!--          <mat-label>Benyújtás ideje:</mat-label>-->
+<!--          <input formControlName ="submissionDate" matInput [matDatepicker]="submissionDate" id="submissionDate" >-->
+<!--          <mat-datepicker-toggle matSuffix [for]="submissionDate"></mat-datepicker-toggle>-->
+<!--          <mat-hint>YYYY.MM.DD</mat-hint>-->
+<!--          <mat-datepicker #submissionDate></mat-datepicker>-->
+<!--        </mat-form-field>-->
+<!--      </div>-->
 
 
       <div class="form-group">
@@ -60,29 +58,14 @@
         <textarea formControlName="answer" id="answer" placeholder="Megjegyzés" class="form-control"></textarea>
       </div>
 
-      <div class="form-group">
-        <label for="defenseScore">Védés pontszáma:</label>
-        <input type="number" formControlName="defenseScore" id="defenseScore" placeholder="Védés pontszáma"
-               class="form-control">
-      </div>
+      <br>
 
-      <div class="form-group">
-        <label for="subjectScore">Tárgyra kapott pontszám:</label>
-        <input type="number" formControlName="subjectScore" id="subjectScore" placeholder="Tárgyra kapott pontszám"
-               class="form-control">
-      </div>
-
-      <div class="form-group">
-        <label for="finalScore">Végső pontszám:</label>
-        <input type="number" formControlName="finalScore" id="finalScore" placeholder="Végső pontszám"
-               class="form-control">
-      </div>
 
       <div class="form-group">
         <mat-form-field>
           <mat-label>Hallgató kiválasztása</mat-label>
           <mat-select formControlName="userId" [(ngModel)]="selectedStudent">
-            <mat-option *ngFor="let student of students" [value]="student.userId">{{ student.fullname }}</mat-option>
+            <mat-option *ngFor="let student of students" [value]="student.id">{{ student.fullname }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -91,8 +74,8 @@
         <mat-form-field>
           <mat-label>Témavezető kiválasztása</mat-label>
           <mat-select formControlName="supervisorId" [(ngModel)]="selectedSupervisor">
-            <mat-option *ngFor="let supervisior of supervisors"
-                        [value]="supervisior.userId">{{ supervisior.fullname }}
+            <mat-option *ngFor="let supervisor of supervisors"
+                        [value]="supervisor.id">{{ supervisor.fullname }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -102,7 +85,7 @@
         <mat-form-field>
           <mat-label>Konzulens kiválasztása</mat-label>
           <mat-select formControlName="consultantId" [(ngModel)]="selectedConsultant">
-            <mat-option *ngFor="let consultant of consultants" [value]="consultant.userId">{{ consultant.fullname }}
+            <mat-option *ngFor="let consultant of consultants" [value]="consultant.id">{{ consultant.fullname }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -110,7 +93,7 @@
 
 
       <div class="form-group">
-        <input type="submit" [disabled]="addThesesForm.invalid" value="Felvitel">
+        <input type="submit" [disabled]="addThesesForm.invalid" value="Felvitel" class="submit-button">
       </div>
 
     </form>

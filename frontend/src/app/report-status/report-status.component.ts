@@ -14,6 +14,7 @@ export class ReportStatusComponent implements OnInit {
   theses: any
   reviews: any
   users: any
+  thesesId: any
 
   reviewers: any
   thesisToDisplay = {
@@ -28,6 +29,7 @@ export class ReportStatusComponent implements OnInit {
 
   files = [] as any
   selectedReviewer: any
+  thesisId: any
 
   constructor(
     private reportStatusService: ReportStatusService,
@@ -52,6 +54,7 @@ export class ReportStatusComponent implements OnInit {
     this.getReviewList()
 
     this.getReviewerToDropdown()
+
   }
 
 
@@ -69,9 +72,12 @@ export class ReportStatusComponent implements OnInit {
         })
         this.reviewedTheses = reviewedTheses
 
+
       }
     )
   }
+
+
 
   findThesesUnderReview(){
     this.reportStatusService.findThesesUnderReview(true).subscribe(
@@ -103,11 +109,11 @@ export class ReportStatusComponent implements OnInit {
   correctTable() {
 
     this.theses.forEach((thesis: any) => { // végigmegyünk a thesiseken
-
+      console.log(this.theses)
       let thesisId = thesis.id
       let thesisTitle = thesis.title
       let submissionDate_ = thesis.submissionDate
-      let studentId = thesis.user.userId
+      let studentId = thesis.user.id
       let supervisiorId = thesis.supervisorId
 
       let dataForOneThesis = { // lokálisan az aktuális thesishez tartozó cuccokat ebbe szedjük össze
@@ -121,34 +127,37 @@ export class ReportStatusComponent implements OnInit {
         pdfUUID: null,
         pptUUID: null,
         attachmentUUID: null,
-        reviewUUID: null
+        reviewUUID: null,
+        secondReviewUUID: null,
+        zvUUID: null
       }
       dataForOneThesis.thesisId = thesisId
       dataForOneThesis.submissionDate = submissionDate_
       dataForOneThesis.title = thesisTitle
 
       let tempReviewerId: any = null
+      console.log(this.reviews)
       this.reviews.forEach((review: any) => { // bíráló megkeresése, bírálatokon megy végig
-        if (thesisId === review.theseses.id) {
-          tempReviewerId = review.user.userId
+        if (thesisId == review.theseses.id && review.user.role == 'Bíráló') {
+          tempReviewerId = review.user.id
         }
       })
 
       this.users.forEach((user: any) => {
-        if (studentId === user.userId) {              // hallgató nevének, neptun kódjának megkeresése
+        if (studentId == user.id) {              // hallgató nevének, neptun kódjának megkeresése
           dataForOneThesis.fullname = user.fullname
           dataForOneThesis.neptunCode = user.neptunCode
         }
 
-        if (supervisiorId == user.userId) {         // thesishez tartozó témavezető megkeresése
+        if (supervisiorId == user.id) {         // thesishez tartozó témavezető megkeresése
           dataForOneThesis.supervisorname = user.fullname
         }
 
-        if (tempReviewerId != null && tempReviewerId == user.userId) {
+        if (tempReviewerId != null && tempReviewerId == user.id) {
           dataForOneThesis.reviewername = user.fullname // bíráló neve
         }
       })
-
+      let reviewCount = 0
       this.files.forEach((fileResultSet: any) => {
         if (fileResultSet.first === thesisId) {
           // ekkor megvan az aktuális thesis a file táblában
@@ -166,8 +175,18 @@ export class ReportStatusComponent implements OnInit {
               dataForOneThesis.pptUUID = fileResultSet.third
               break
             }
-            case 're': { // ppt
-              dataForOneThesis.reviewUUID = fileResultSet.third
+            case 're': {
+              if (reviewCount == 0) {
+                dataForOneThesis.reviewUUID = fileResultSet.third
+              }
+              else {
+                dataForOneThesis.secondReviewUUID = fileResultSet.third
+              }
+              reviewCount++
+              break
+            }
+            case 'zv': { // ppt
+              dataForOneThesis.zvUUID = fileResultSet.third
               break
             }
             default: {
@@ -214,6 +233,7 @@ export class ReportStatusComponent implements OnInit {
 
         this.findThesesUnderReview()
         this.findReviewedTheses()
+
       },
       (err) => {
         console.error(err)
@@ -244,6 +264,20 @@ export class ReportStatusComponent implements OnInit {
       }
     )
   }
+
+  findFilesByThesesId(thesisId: number){
+    console.log(thesisId)
+    this.reportStatusService.findFilesByThesesId(thesisId).subscribe(
+      (resp) => {
+        console.log(resp)
+      },
+      (err) => {
+        console.error(err)
+      }
+    )
+
+  }
+
 
   getReviewerToDropdown() {
     // Param: role ID of reviewer (currently it is 3)

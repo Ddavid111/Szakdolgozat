@@ -23,7 +23,6 @@ export class AddTopicsComponent {
   }
 
   addFormData(addTopicsForm: NgForm) {
-
     this.addTopicsService.addTopics(addTopicsForm.value).subscribe(
       (resp) => {
         console.log(addTopicsForm.value)

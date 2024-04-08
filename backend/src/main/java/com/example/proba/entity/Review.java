@@ -3,13 +3,12 @@ package com.example.proba.entity;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 @Entity
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer reviewId;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "reviewerId")
@@ -17,39 +16,33 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "thesisId")
-    Theses theses;
+    Thesis thesis;
 
     private Date invitationDate;
     private Integer Score;
     @Column(columnDefinition = "LONGTEXT")
     private String description;
     private String city;
-    private Date invitationAcceptionDate;
-    private Date responseDate;
     private Date submissionDate;
 
     @Override
     public String toString() {
         return "Review{" +
-                "id=" + reviewId +
-                ", user=" + user.toString() +
-                ", theses=" + theses +
+                "reviewId=" + id +
                 ", invitationDate=" + invitationDate +
                 ", Score=" + Score +
                 ", description='" + description + '\'' +
                 ", city='" + city + '\'' +
-                ", invitationAcceptionDate=" + invitationAcceptionDate +
-                ", responseDate=" + responseDate +
                 ", submissionDate=" + submissionDate +
                 '}';
     }
 
-    public Integer getReviewId() {
-        return reviewId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setReviewId(Integer reviewId) {
-        this.reviewId = reviewId;
+    public void setId(Integer reviewId) {
+        this.id = reviewId;
     }
 
     public User getUser() {
@@ -60,12 +53,12 @@ public class Review {
         this.user = user;
     }
 
-    public Theses getTheseses() {
-        return theses;
+    public Thesis getTheseses() {
+        return thesis;
     }
 
-    public void setTheseses(Theses theses) {
-        this.theses = theses;
+    public void setTheseses(Thesis thesis) {
+        this.thesis = thesis;
     }
 
     public Date getInvitationDate() {
@@ -98,22 +91,6 @@ public class Review {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public Date getInvitationAcceptionDate() {
-        return invitationAcceptionDate;
-    }
-
-    public void setInvitationAcceptionDate(Date invitationAcceptionDate) {
-        this.invitationAcceptionDate = invitationAcceptionDate;
-    }
-
-    public Date getResponseDate() {
-        return responseDate;
-    }
-
-    public void setResponseDate(Date responseDate) {
-        this.responseDate = responseDate;
     }
 
     public Date getSubmissionDate() {

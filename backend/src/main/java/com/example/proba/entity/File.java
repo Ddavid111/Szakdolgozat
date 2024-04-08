@@ -3,28 +3,26 @@ package com.example.proba.entity;
 import javax.persistence.*;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Entity
 public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @ManyToOne
+    @JoinColumn(name = "thesis_id")
+    private Thesis thesis;
     private String name;
     private Date uploadTime;
-
     private String uuid;
 
 
-    @ManyToOne
-    @JoinColumn(name = "thesis_id")
-    private Theses thesis;
 
-    public Theses getThesis() {
+    public Thesis getThesis() {
         return thesis;
     }
 
-    public void setThesis(Theses thesis) {
+    public void setThesis(Thesis thesis) {
         this.thesis = thesis;
     }
 

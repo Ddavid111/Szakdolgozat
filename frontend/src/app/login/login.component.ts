@@ -62,12 +62,12 @@ export class LoginComponent {
     this.userService.login(loginForm.value).subscribe(
       (response: any) => {
         console.log('loginform: ' + loginForm.value.userName)
-        this.authService.setRoles(response.user.roleId)
-        localStorage.setItem('userId', response.user.userId)
-        console.log("loginnál user role id: " + response.user.roleId)
+        this.authService.setRoles(response.user.role)
+        localStorage.setItem('userId', response.user.id)
+        console.log("loginnál user role id: " + response.user.role)
         this.authService.setToken(response.jwtToken)
 
-        if (response.user.roleId === 0) {
+        if (response.user.role === "Hallgató") {
           this.router.navigate(['/listTheseses']); // ide rak miután a login sikeres és ha roleid 0
         }
         else {

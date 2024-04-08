@@ -44,7 +44,10 @@ export class AddThesesesComponent implements OnInit {
   }
 
   ngOnInit() { // runs before loading the component
-    if (!this.userService.roleMatch(0)) { // if the roles are not correct, navigate to login page before the component would have loaded
+    if (!this.userService.roleMatch([
+      "Hallgató",
+      "ADMIN"
+    ])) { // if the roles are not correct, navigate to login page before the component would have loaded
       this.alertWithWarning()
       this.router.navigate(['/login'])
     }
@@ -67,26 +70,23 @@ export class AddThesesesComponent implements OnInit {
         speciality: new FormControl(null, [Validators.required]),
         language: new FormControl(null, [Validators.required]),
         hasMscApply: new FormControl(null),
-        submissionDate: new FormControl(null, [Validators.required]),
+        // submissionDate: new FormControl(null, [Validators.required]),
         answer: new FormControl(null),
-        defenseScore: new FormControl(null),
-        subjectScore: new FormControl(null),
-        finalScore: new FormControl(null),
         userId: new FormControl(null, [Validators.required]),
         supervisorId: new FormControl(null, [Validators.required]),
         consultantId: new FormControl(null)
       },
       {
         validators: [titleError, facultyError, departmentError, specialityError, languageError,
-          submissionDateError, userIdError, supervisorIdError]
-
+           userIdError, supervisorIdError]
+        //submissionDateError,
       })
 
   }
 
 
   getSupervisorToDropdown() {
-    this.findAllUsersService.findUsersByRole(4).subscribe(
+    this.findAllUsersService.findUsersByRoleList(["Témavezető"]).subscribe(
       (resp) => {
         this.supervisors = resp
         this.consultants = resp
@@ -95,7 +95,7 @@ export class AddThesesesComponent implements OnInit {
   }
 
   getStudentsToDropdown() {
-    this.findAllUsersService.findUsersByRole(0).subscribe(
+    this.findAllUsersService.findUsersByRoleList(["Hallgató"]).subscribe(
       (resp) => {
         this.students = resp
       }
@@ -173,15 +173,15 @@ export const languageError: ValidatorFn = (control: AbstractControl): Validation
   return null
 }
 
-export const submissionDateError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  let field = control.get('submissionDate')
-  if (field === null || field?.value === null || field?.value === "") {
-    return {
-      submissionDateError: true
-    }
-  }
-  return null
-}
+// export const submissionDateError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+//   let field = control.get('submissionDate')
+//   if (field === null || field?.value === null || field?.value === "") {
+//     return {
+//       submissionDateError: true
+//     }
+//   }
+//   return null
+// }
 
 export const userIdError: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   let field = control.get('userId')

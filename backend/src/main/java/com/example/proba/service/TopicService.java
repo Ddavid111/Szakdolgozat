@@ -1,8 +1,8 @@
 package com.example.proba.service;
 
-import com.example.proba.dao.ThesesDao;
+import com.example.proba.dao.ThesisDao;
 import com.example.proba.dao.TopicDao;
-import com.example.proba.entity.Theses;
+import com.example.proba.entity.Thesis;
 import com.example.proba.entity.Topic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,7 +17,7 @@ public class TopicService {
     private TopicDao topicDao;
 
     @Autowired
-    private ThesesDao thesesDao;
+    private ThesisDao thesisDao;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -30,21 +30,21 @@ public class TopicService {
     public Topic addTopics(Topic topics)
     {
         Topic topic = topicDao.save(topics);
-        Theses actualTheses = new Theses();
-        actualTheses.setTopics(topics);
-        actualTheses.setId(topic.getId());
-        thesesDao.save(actualTheses);
+        Thesis actualThesis = new Thesis();
+        actualThesis.setTopics(topics);
+        actualThesis.setId(topic.getId());
+        thesisDao.save(actualThesis);
 
         return topic;
     }
 
     public void chooseTopic(Object topicId, Object thesisId, Object topic_score) {
-        String query = "UPDATE THESES SET topics_id=" + topicId + ", topic_score=" + topic_score + " WHERE id=" + thesisId; // id or user_id??
+        String query = "UPDATE THESIS SET topic_id=" + topicId + ", topic_score=" + topic_score + " WHERE id=" + thesisId;
         jdbcTemplate.update(query);
     }
 
     public void initTopics() {
-        if(thesesDao.getCountOfRecords() <= 0)
+        if(thesisDao.getCountOfRecords() <= 0)
         {
             topicDao.deleteAll();
             Topic[] topics = new Topic[27];
@@ -135,7 +135,7 @@ public class TopicService {
 
             };
             for (int i = 0; i < topics.length; i++) {
-                topics[i] = new Topic(); // kell..
+                topics[i] = new Topic();
                 topics[i].setTopic((i + 1) + ".  " + topicNames[i]);
                 topicDao.save(topics[i]);
             }
