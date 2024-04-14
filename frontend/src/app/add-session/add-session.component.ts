@@ -10,6 +10,8 @@ import {
 } from "@angular/forms";
 import {findAllUsersService} from "../_services/find-allUsers.service";
 import Swal from "sweetalert2";
+import {UserService} from "../_services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-add-session',
@@ -27,7 +29,9 @@ export class AddSessionComponent implements OnInit {
   addSessionForm: FormGroup
 
   constructor(private addSessionService: AddSessionService,
-              private findAllUsersService: findAllUsersService
+              private findAllUsersService: findAllUsersService,
+              private router: Router,
+              private userService: UserService,
   ) {
     this.addSessionForm = new FormGroup({
         location: new FormControl(null, [Validators.required]),
@@ -63,12 +67,26 @@ export class AddSessionComponent implements OnInit {
     })
   }
 
+  alertWithWarningPermission()
+  {
+    Swal.fire("Figyelem!","Nincs jogosultsága a következő odalhoz!", 'warning')
+  }
+
 
   alertWithError(err: any) {
     Swal.fire("Hiba", 'Error:' + err,  'error');
   }
 
   ngOnInit() {
+    if (!this.userService.roleMatch([
+      "Elnök",
+      "Jegyző",
+      "ADMIN"
+    ])) { // if the roles are not correct, navigate to login page before the component would have loaded
+      this.alertWithWarningPermission()
+      this.router.navigate(['/login'])
+    }
+
     this.getStudentsToDropdown()
     this.getMembersToDropdown()
   }

@@ -4,6 +4,8 @@ import com.example.proba.entity.User;
 import com.example.proba.service.ForgottenPasswordService;
 import com.example.proba.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -22,10 +24,22 @@ public class UsersController {
         forgottenPasswordService.sendForgottenPasswordTokenByEmail(username);
     }
 
+//    @PostMapping("/changePassword")
+//    public void changePassword(@RequestParam String username, @RequestParam String token, @RequestParam String newPassword) {
+//        forgottenPasswordService.setNewPassword(username, token, newPassword);
+//    }
+
     @PostMapping("/changePassword")
-    public void changePassword(@RequestParam String username, @RequestParam String token, @RequestParam String newPassword) {
-        forgottenPasswordService.setNewPassword(username, token, newPassword);
+    public ResponseEntity<String> changePassword(@RequestParam String username, @RequestParam String token, @RequestParam String newPassword) {
+        try {
+            forgottenPasswordService.setNewPassword(username, token, newPassword);
+            return ResponseEntity.ok("Password changed.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Username or token is not valid.");
+        }
     }
+
+
 
     @PostMapping("/changePassword_two")
     public void changePassword_two(@RequestParam Integer userId, @RequestParam String oldPassword, @RequestParam String newPassword) throws Exception {
@@ -41,6 +55,7 @@ public class UsersController {
     public List<User> findAllUsers() {
         return userService.findAllUsers();
     }
+
     @GetMapping("/findAllUsersToDisplay")
     public List<User> findAllUsersToDisplay() {return userService.findAllUsersToDisplay();}
 

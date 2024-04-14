@@ -3,6 +3,8 @@ import {ReportStatusService} from "../_services/report-status.service";
 import {ListThesesesService} from "../_services/list-theseses.service";
 import {findAllUsersService} from "../_services/find-allUsers.service";
 import Swal from "sweetalert2";
+import {UserService} from "../_services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-report-status',
@@ -34,7 +36,9 @@ export class ReportStatusComponent implements OnInit {
   constructor(
     private reportStatusService: ReportStatusService,
     private listThesesService: ListThesesesService,
-    private findallUsersService: findAllUsersService
+    private findallUsersService: findAllUsersService,
+    private router: Router,
+    private userService: UserService,
   ) {
   }
 
@@ -44,12 +48,39 @@ export class ReportStatusComponent implements OnInit {
   alertWithError(err: any) {
     Swal.fire("Hiba", ' Error:' + err,  'error');
   }
+  alertWithSucces()
+  {
+    Swal.fire({
+      title: "Sikeres",
+      icon: 'success',
+      allowOutsideClick: false
+    }).then((result) => {
+      if(!result.isDenied){
+        window.location.reload()
+      }
+      // return result.isConfirmed;
+    });
+  }
 
   alertWithFileType(){
     Swal.fire("Hiba", 'probléma a fájlok típusának azonosítása során',  'error');
   }
 
+  alertWithWarning()
+  {
+    Swal.fire("Figyelem!","Nincs jogosultsága a következő odalhoz!", 'warning')
+  }
+
   ngOnInit(): void {
+    if (!this.userService.roleMatch([
+      "Elnök",
+      "Jegyző",
+      "ADMIN",
+    ])) { // if the roles are not correct, navigate to login page before the component would have loaded
+      this.alertWithWarning()
+      this.router.navigate(['/login'])
+    }
+
     // review list --> users list --> thesis list --> downloadable
     this.getReviewList()
 
@@ -63,7 +94,7 @@ export class ReportStatusComponent implements OnInit {
       (resp) => {
         this.reviewedTheses = resp
         console.log(resp)
-
+        console.log(this.reviews)
         let reviewedTheses = [] as any
         this.reviewedTheses.forEach((thesisUnderReview: any) => {
           let tempRecord = this.thesesFullData.filter((thesisFullDataRecord: any) => thesisFullDataRecord.thesisId === thesisUnderReview.id)
@@ -71,7 +102,13 @@ export class ReportStatusComponent implements OnInit {
             reviewedTheses.push(tempRecord[0])
         })
         this.reviewedTheses = reviewedTheses
-
+        // this.reviews.forEach((review: any) => {
+        //   if(review.theseses.id == this.reviewedTheses.id)
+        //   {
+        //     this.reviewedTheses.reviewerfullname = this.reviews.user.fullname
+        //   }
+        // })
+        console.log(this.reviewedTheses)
 
       }
     )
@@ -131,6 +168,17 @@ export class ReportStatusComponent implements OnInit {
         secondReviewUUID: null,
         zvUUID: null
       }
+      let dateObj = new Date(submissionDate_)
+      let monthInCorrectForm = (dateObj.getMonth() + 1).toString()
+      if (monthInCorrectForm.length == 1) {
+        monthInCorrectForm = '0' + monthInCorrectForm
+      }
+
+      let dayInCorrectForm = dateObj.getDate().toString()
+      if (dayInCorrectForm.toString().length == 1) {
+        dayInCorrectForm = "0" + dayInCorrectForm
+      }
+      submissionDate_ = dateObj.getFullYear() + '.' + monthInCorrectForm + '.' + dayInCorrectForm + '.'
       dataForOneThesis.thesisId = thesisId
       dataForOneThesis.submissionDate = submissionDate_
       dataForOneThesis.title = thesisTitle
@@ -270,6 +318,7 @@ export class ReportStatusComponent implements OnInit {
     this.reportStatusService.findFilesByThesesId(thesisId).subscribe(
       (resp) => {
         console.log(resp)
+        this.alertWithSucces()
       },
       (err) => {
         console.error(err)

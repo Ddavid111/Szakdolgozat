@@ -7,6 +7,9 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 import com.example.proba.dao.FileDao;
 import com.example.proba.dao.ReviewDao;
@@ -1285,23 +1288,38 @@ public class GenerateDocxService {
 
             System.out.println("File saved succesfull");
 
+            try {
+                // Fájl beolvasása
+                BufferedReader reader = new BufferedReader(new FileReader("email/zv_report.txt"));
+                StringBuilder emailBodyBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.contains("[Név]")) {
+                        line = line.replace("[Név]", studentName);
+                    }
+                    emailBodyBuilder.append(line).append("\n");
+                }
+                reader.close();
+                String emailBody = emailBodyBuilder.toString();
 
-            String email = userr.getEmail();
-            String emailSubject = "Záróvizsga jegyzőkönyv";
-            String emailBody = "Kedves Hallgató!";
-            emailBody += "\nMegérkezett a záróvizsga jegyzőkönyve amit a mellékletben talál.";
-            emailBody += "\n";
-            emailBody += "\nÜdvözlettel: Adminisztrátor";
+                // Email cím, tárgy és mellékletek
+                String email = userr.getEmail();
+                String emailSubject = "Záróvizsga jegyzőkönyv";
 
-            List<String> attachmentPaths = new ArrayList<>();
-            attachmentPaths.add(filename);
+                // Mellékletek
+                List<String> attachmentPaths = new ArrayList<>();
+                attachmentPaths.add(filename);
 
-            emailSenderService.sendEmailWithAttachments(email, emailSubject, emailBody, attachmentPaths);
+                // Email küldése
+                emailSenderService.sendEmailWithAttachments(email, emailSubject, emailBody, attachmentPaths);
 
-            return uuid;
-
+                return uuid;
+            }
+            catch (IOException e) {
+                    e.printStackTrace();
+                }
         }catch (Exception e) {
-            // TODO: handle exception
+
             e.printStackTrace();
         }
         return null;

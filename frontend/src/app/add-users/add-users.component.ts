@@ -9,6 +9,8 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
+import {UserService} from "../_services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-add-users',
@@ -61,7 +63,9 @@ export class AddUsersComponent {
   ];
 
 
-  constructor(private addUserService: AddUsersService) {
+  constructor(private addUserService: AddUsersService,
+              private router: Router,
+              private userService: UserService) {
     this.addUserForm = new FormGroup({
         title: new FormControl(null),
         birthday: new FormControl(null,),
@@ -84,6 +88,15 @@ export class AddUsersComponent {
       })
   }
 
+  ngOnInit(): void {
+    if (!this.userService.roleMatch([
+      "ADMIN"
+    ])) { // if the roles are not correct, navigate to login page before the component would have loaded
+      this.alertWithWarning()
+      this.router.navigate(['/login'])
+    }
+  }
+
   alertWithSucces()
   {
     Swal.fire("Köszönjük!",'Felhasználó sikeresen tárolva','success')
@@ -91,6 +104,11 @@ export class AddUsersComponent {
 
   alertWithError(err: any) {
     Swal.fire("Hiba", ' Error:' + err,  'error');
+  }
+
+  alertWithWarning()
+  {
+    Swal.fire("Figyelem!",'Only HALLGATO role can view this page.','warning')
   }
 
 

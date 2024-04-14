@@ -1,46 +1,40 @@
-<form (ngSubmit)="addFormData(addDocxForm)" [formGroup]="addDocxForm">
-  <h1 style="margin: 0 auto; text-align: center;">Szakdolgozat bírálat</h1>
+<form (ngSubmit)="addFormData(addDocxForm)" [formGroup]="addDocxForm" class="form-container">
+  <h1 class="form-title">Szakdolgozat bírálat</h1>
 
-  <mat-form-field>
+  <mat-form-field class="form-field">
     <mat-label>Válassz ki egy hallgatót!</mat-label>
     <mat-select formControlName="student" [(ngModel)]="selectedStudent" (ngModelChange)="onSelectStudent()">
-      <mat-option *ngFor="let student of students" [value]="student.id">
-        {{ student.fullname }}
-      </mat-option>
+      <mat-option *ngFor="let student of students" [value]="student.id">{{ student.fullname }}</mat-option>
     </mat-select>
   </mat-form-field>
 
-  <p></p>
-  <mat-form-field>
-  <mat-label>Szakdolgozat kiválasztása</mat-label>
-  <mat-select formControlName="theses" [(ngModel)]="selectedTheseses">
-    <mat-option *ngFor="let item of theses" [value]="item.id">
-      {{ item.title }}
-    </mat-option>
-  </mat-select>
+  <div class="form-separator"></div>
+
+  <mat-form-field class="form-field">
+    <mat-label>Szakdolgozat kiválasztása</mat-label>
+    <mat-select formControlName="theses" [(ngModel)]="selectedTheseses">
+      <mat-option *ngFor="let item of theses" [value]="item.id">{{ item.title }}</mat-option>
+    </mat-select>
   </mat-form-field>
-  <br>
 
-  <textarea ngModel formControlName="description" id="description" placeholder="A bírálat részletes kifejtése"></textarea>
-  <p></p>
+  <div class="form-separator"></div>
 
-  <mat-form-field>
+  <textarea ngModel formControlName="description" id="description" class="form-textarea" placeholder="A bírálat részletes kifejtése"></textarea>
+
+  <div class="form-separator"></div>
+
+  <mat-form-field class="form-field">
     <mat-label>Javasolt érdemjegy</mat-label>
     <mat-select formControlName="score" [(ngModel)]="selectedScore">
       <mat-option *ngFor="let grade of gradesToDropDownList" [value]="grade.gradeId">{{ grade.grade }}</mat-option>
     </mat-select>
   </mat-form-field>
 
-  <p></p>
-  <span style="color:red;" *ngIf="addDocxForm.errors?.['cityError']">Kötelező megadni a mezőt!</span>
+  <span class="form-error" *ngIf="addDocxForm.errors?.['cityError']">Kötelező megadni a mezőt!</span>
   <br>
-    <input type="text" formControlName="city" id="city" placeholder="Helyszín">
-    {{ LocalDate }}
-  <p></p>
-
-
-  <p></p>
-
-  <input type="submit" [disabled]="addDocxForm.invalid" value="Generálás">
-
+  <input type="text" formControlName="city" id="city" class="form-input" placeholder="Helyszín" style="width: 200px;">
+  <span class="form-info">{{ LocalDate }}</span>
+  <br>
+  <br>
+  <button type="submit" [disabled]="addDocxForm.invalid" class="form-button">Generálás</button>
 </form>

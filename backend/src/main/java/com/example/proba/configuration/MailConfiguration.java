@@ -28,15 +28,6 @@ public class MailConfiguration {
         props.put("mail.smtp.debug", "true");
         props.put("mail.transport.protocol", "smtp");
 
-        /**************** OLD VERSION *****************/
-        /*
-        Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        */
-        /************** END OF OLD VERSION ************/
-
         return mailSender;
     }
 }

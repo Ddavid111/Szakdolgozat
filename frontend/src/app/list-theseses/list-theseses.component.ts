@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ListThesesesService} from "../_services/list-theseses.service";
 import {findAllUsersService} from "../_services/find-allUsers.service";
+import {Router} from "@angular/router";
+import Swal from "sweetalert2";
+import {UserService} from "../_services/user.service";
 
 @Component({
   selector: 'app-list-theseses',
@@ -75,12 +78,27 @@ export class ListThesesesComponent implements OnInit {
 
   ]
 
+  alertWithWarning()
+  {
+    Swal.fire("Figyelem!",'Only HALLGATO role can view this page.','warning')
+  }
+
   constructor(private listThesesesService: ListThesesesService,
-              private FindAllUsersService: findAllUsersService) {
+              private FindAllUsersService: findAllUsersService,
+              private router: Router,
+              private userService: UserService) {
     this.getThesesList()
   }
 
   ngOnInit() {
+    if (!this.userService.roleMatch([
+      "Jegyző",
+      "Elnök",
+      "ADMIN"
+    ])) { // if the roles are not correct, navigate to login page before the component would have loaded
+      this.alertWithWarning()
+      this.router.navigate(['/login'])
+    }
     this.getThesesList()
   }
 

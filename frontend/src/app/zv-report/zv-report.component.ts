@@ -5,6 +5,8 @@ import {ListThesesesService} from "../_services/list-theseses.service";
 import {AddDocxService} from "../_services/add-docx.service";
 import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import Swal from "sweetalert2";
+import {Router} from "@angular/router";
+import {UserService} from "../_services/user.service";
 
 @Component({
   selector: 'app-zv-report',
@@ -28,6 +30,15 @@ export class ZvReportComponent implements OnInit {
 
 
   ngOnInit() {
+    if (!this.userService.roleMatch([
+      "Elnök",
+      "Jegyző",
+      "ADMIN"
+    ])) { // if the roles are not correct, navigate to login page before the component would have loaded
+      this.alertWithWarningPermission()
+      this.router.navigate(['/login'])
+    }
+
     this.getStudentsToDropdown() // It calls getThesesesToDropdown as well
     //this.getThesesesToDropdown() // Called in getStudentsToDropdown because we need to wait its response.
     // this.getCodeToDropDown()
@@ -36,7 +47,9 @@ export class ZvReportComponent implements OnInit {
   constructor(private findAllUsersService: findAllUsersService,
               private addSessionService: AddSessionService,
               private listThesesesService: ListThesesesService,
-              private addDocxService: AddDocxService) {
+              private addDocxService: AddDocxService,
+              private router: Router,
+              private userService: UserService,) {
 
     this.addDocxForm = new FormGroup({
       student: new FormControl(null,[Validators.required]),
@@ -53,6 +66,11 @@ export class ZvReportComponent implements OnInit {
   alertWithSucces()
   {
     Swal.fire("Köszönjük!",'Felhasználó sikeresen tárolva','success')
+  }
+
+  alertWithWarningPermission()
+  {
+    Swal.fire("Figyelem!","Nincs jogosultsága a következő odalhoz!", 'warning')
   }
 
 

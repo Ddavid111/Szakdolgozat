@@ -10,7 +10,15 @@ import {UserService} from "../_services/user.service";
 })
 export class HeaderComponent {
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService,
+              private router: Router,
+              private userService: UserService) {
+  }
+
+  ngOnInit(): void {
+    if (!this.userService.roleMatch(['ADMIN', 'Hallgató', 'Bíráló', 'Témavezető', 'Jegyző', 'Elnök'])) {
+      this.router.navigate(['/login']);
+    }
   }
 
   // returns the roleId of the logged in user
@@ -21,7 +29,12 @@ export class HeaderComponent {
 
   public logout() {
     this.authService.clear();
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
+  }
+
+
+  hasRole(role: string): boolean {
+    return this.userService.roleMatch([role]);
   }
 
 }

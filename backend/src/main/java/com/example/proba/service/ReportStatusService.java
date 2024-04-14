@@ -9,6 +9,9 @@ import com.example.proba.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,31 +53,47 @@ public class ReportStatusService {
 
         if(thesisFromSql != null) {
             user = userFromSql;
+            String fullname = user.getFullname();
             thesis = thesisFromSql;
             String thesisTitle = thesis.getTitle();
 
+            try {
+                // Fájl beolvasása
+                BufferedReader reader = new BufferedReader(new FileReader("email/request_review.txt"));
+                StringBuilder emailBodyBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
 
-            String email = user.getEmail();
-            String emailSubject = "Felkérés érkezett";
-            String emailBody = "Önt felkérték egy szakdolgozat bírálatára.";
-            emailBody += "\nA bírálandó szakdolgozat címe: " + thesisTitle;
+                    if (line.contains("[Szakdolgozat név]")) {
+                        line = line.replace("[Szakdolgozat név]", thesisTitle);
+                    }
 
+                    if (line.contains("[Név]")) {
+                        line = line.replace("[Név]", fullname);
+                    }
+                    emailBodyBuilder.append(line).append("\n");
+                }
+                reader.close();
+                String emailBody = emailBodyBuilder.toString();
 
-            emailSenderService.sendEmail(email, emailSubject, emailBody);
+                // Email elküldése
+                String email = user.getEmail();
+                String emailSubject = "Felkérés érkezett";
+                emailSenderService.sendEmail(email, emailSubject, emailBody);
 
-            thesis.setUnderReview(true);
-            thesisDao.save(thesis);
-            reviewDao.save(review);
-        }
+                thesis.setUnderReview(true);
+                thesisDao.save(thesis);
+                reviewDao.save(review);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        else {
+        } else {
             try {
                 throw new Exception("Reviewer user or the thesis to be reviewed was not found in the DB!");
             } catch (Exception e) {
                 e.printStackTrace();
-
             }
-
         }
     }
 

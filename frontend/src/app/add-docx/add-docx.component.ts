@@ -11,6 +11,8 @@ import {
 } from "@angular/forms";
 import {AddDocxService} from "../_services/add-docx.service";
 import Swal from "sweetalert2";
+import {UserService} from "../_services/user.service";
+import {Router} from "@angular/router";
 @Component({
   selector: 'app-add-docx',
   templateUrl: './add-docx.component.html',
@@ -20,6 +22,15 @@ import Swal from "sweetalert2";
 export class AddDocxComponent implements OnInit {
 
   ngOnInit() {
+    if (!this.userService.roleMatch([
+      "Bíráló",
+      "Témavezető",
+      "ADMIN"
+    ])) { // if the roles are not correct, navigate to login page before the component would have loaded
+      this.alertWithWarningPermission()
+      this.router.navigate(['/login'])
+    }
+
     this.getStudentsToDropdown(localStorage['userId']) // It calls getThesesesToDropdown as well
     // this.getThesesesToDropdown() // Called at OnSelectStudent
   }
@@ -35,7 +46,9 @@ export class AddDocxComponent implements OnInit {
 
   constructor(private findAllUsersService: findAllUsersService,
               private listThesesesService: ListThesesesService,
-              private addDocxService: AddDocxService) {
+              private addDocxService: AddDocxService,
+              private router: Router,
+              private userService: UserService,) {
     this.addDocxForm = new FormGroup({
       student: new FormControl(null,[Validators.required]),
       theses: new FormControl(null, [Validators.required]),
@@ -71,6 +84,10 @@ export class AddDocxComponent implements OnInit {
     Swal.fire("Error", 'Error downloading file' + err , 'error')
   }
 
+  alertWithWarningPermission()
+  {
+    Swal.fire("Figyelem!","Nincs jogosultsága a következő odalhoz!", 'warning')
+  }
 
 
   getStudentsToDropdown(userId: number) {

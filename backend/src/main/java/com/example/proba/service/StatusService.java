@@ -8,6 +8,9 @@ import com.example.proba.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 import com.example.proba.util.Triple;
@@ -59,24 +62,37 @@ public class StatusService {
             List<String> attachmentPaths = new ArrayList<>();
 
             if (!files.isEmpty()) {
-                String emailSubject = "Bírálat jegyzőkönyv";
-                String emailBody = "Kedves" + fullname;
-                emailBody += "\nMegérkezett a bírálat jegyzőkönyve amit a mellékletben talál.";
-                emailBody += "\n";
-                emailBody += "\nÜdvözlettel: Adminisztrátor";
+                try {
 
-                // Az összes bírálat mellékelése az emailhez
-                for (File file : files) {
-                    String filename = file.getName();
-                    if (filename.startsWith("reviews")) {
-                        attachmentPaths.add(filename);
+                    BufferedReader reader = new BufferedReader(new FileReader("email/review.txt"));
+                    StringBuilder emailBodyBuilder = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+
+                        if (line.contains("[Név]")) {
+                            line = line.replace("[Név]", fullname);
+                        }
+                        emailBodyBuilder.append(line).append("\n");
                     }
+                    reader.close();
+                    String emailBody = emailBodyBuilder.toString();
+
+                    String emailSubject = "Bírálat jegyzőkönyv";
+
+                    // Az összes bírálat mellékelése az emailhez
+                    for (File file : files) {
+                        String filename = file.getName();
+                        if (filename.startsWith("reviews")) {
+                            attachmentPaths.add(filename);
+                        }
+                    }
+
+                    emailSenderService.sendEmailWithAttachments(email, emailSubject, emailBody, attachmentPaths);
+
+                    System.out.println("Bírálatok elküldve az emailben.");
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-
-                emailSenderService.sendEmailWithAttachments(email, emailSubject, emailBody, attachmentPaths);
-
-
-                System.out.println("Bírálatok elküldve az emailben.");
             } else {
                 System.out.println("Nincs bírálat az adott thesishez.");
             }

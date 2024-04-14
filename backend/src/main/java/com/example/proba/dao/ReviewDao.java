@@ -26,4 +26,7 @@ public interface ReviewDao extends CrudRepository<Review, Integer> {
     @Query(value= "SELECT * FROM Review r INNER JOIN Thesis t on r.thesis_id = t.id WHERE t.user_id = :userId and r.reviewer_id = :reviewerId ", nativeQuery = true)
     List<Review> findThesesByUserIdAndReviewerId(@Param("userId") Integer userId, @Param("reviewerId") Integer reviewerId);
 
+    @Query(value = "SELECT count(thesis_id) FROM Review WHERE thesis_id = :thesisId", nativeQuery = true)
+    Integer countByThesesesId(@Param("thesisId") Integer thesisId);
+
 }

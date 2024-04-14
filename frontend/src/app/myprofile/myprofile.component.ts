@@ -17,7 +17,25 @@ export class MyprofileComponent {
 
   changePwForm: FormGroup
 
-  constructor(private userService: UserService) {
+  ngOnInit() { // runs before loading the component
+    if (!this.userService.roleMatch([
+      "Hallgató",
+      "ADMIN",
+      "Elnök",
+      "Bíráló",
+      "Jegyző",
+      "Témavezető"
+    ])) { // if the roles are not correct, navigate to login page before the component would have loaded
+      this.alertWithWarning()
+      this.router.navigate(['/login'])
+    }
+
+
+  }
+
+
+  constructor(private userService: UserService,
+              private router: Router) {
     this.changePwForm = new FormGroup({
         password: new FormControl(null, [Validators.required]),
         //     token: new FormControl(null, [Validators.required]),
@@ -32,6 +50,11 @@ export class MyprofileComponent {
   alertWithNewPassword()
   {
     Swal.fire("Köszönjük!",'Jelszó sikeresen megváltoztatva. Mostantól az új jelszóval lehet bejelentkezni','success')
+  }
+
+  alertWithWarning()
+  {
+    Swal.fire("Figyelem!",'Csak bejelentkezett felhasználó tekintheti meg az oldalt!','warning')
   }
 
   changePw() {

@@ -8,14 +8,13 @@
       </div>
 
       <div class="form-group">
-        <br>
         <span style="color:red;" *ngIf="addUserForm.errors?.['birthdayError']">Kötelező megadni a mezőt!</span>
         <br>
         <mat-form-field>
         <mat-label>Születési dátum:</mat-label>
           <input formControlName ="birthday" matInput [matDatepicker]="birthday" id="birthday" >
           <mat-datepicker-toggle matSuffix [for]="birthday"></mat-datepicker-toggle>
-          <mat-hint>YYYY.MM.DD</mat-hint>
+          <mat-hint>ÉÉÉÉ.HH.NN</mat-hint>
           <mat-datepicker #birthday></mat-datepicker>
         </mat-form-field>
         <br>
@@ -79,7 +78,7 @@
       <br>
       <div class="form-group">
         <mat-form-field>
-          <mat-label>Select a role!</mat-label>
+          <mat-label>Válassz szerepkört!</mat-label>
           <mat-select formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onRoleChange()">
             <mat-option *ngFor="let item of rolesToDropDownList" [value]="item.role">{{ item.role }}</mat-option>
           </mat-select>
@@ -96,7 +95,7 @@
       <div class="form-group">
         <div *ngIf="isDropdownList">
           <mat-form-field>
-            <mat-label>Select a position!</mat-label>
+            <mat-label>Válassz beosztást!</mat-label>
             <mat-select formControlName="position">
               <mat-option *ngFor="let item of positionsToDropDownList" [value]="item.position">{{ item.position }}</mat-option>
             </mat-select>

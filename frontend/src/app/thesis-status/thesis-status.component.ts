@@ -3,6 +3,8 @@ import {ReportStatusService} from "../_services/report-status.service";
 import {ListThesesesService} from "../_services/list-theseses.service";
 import {findAllUsersService} from "../_services/find-allUsers.service";
 import Swal from "sweetalert2";
+import {UserService} from "../_services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-thesis-status',
@@ -26,6 +28,8 @@ export class ThesisStatusComponent implements OnInit{
     thesisId: null
   }
 
+
+
   thesesFullData = [] as any // a fájlok (pdf, pptx, zip) letöltéséhez szükséges adatok vannak benne
 
   files = [] as any
@@ -36,13 +40,25 @@ export class ThesisStatusComponent implements OnInit{
   constructor(
     private reportStatusService: ReportStatusService,
     private listThesesService: ListThesesesService,
-    private findallUsersService: findAllUsersService
+    private findallUsersService: findAllUsersService,
+    private router: Router,
+    private userService: UserService,
   )
   { }
 
   ngOnInit(): void {
+    if (!this.userService.roleMatch([
+      "Elnök",
+      "Jegyző",
+      "ADMIN",
+      "Hallgató",
+      "Bíráló",
+      "Témavezető"
+    ])) { // if the roles are not correct, navigate to login page before the component would have loaded
+      this.alertWithWarning()
+      this.router.navigate(['/login'])
+    }
      this.getReviewList(localStorage['userId'])
-
 
   }
 
@@ -60,6 +76,11 @@ export class ThesisStatusComponent implements OnInit{
 
   showErrorMessage() {
   Swal.fire('Hiba', 'Nincs PDF fájl a törléshez!', 'error')
+  }
+
+  alertWithWarning()
+  {
+    Swal.fire("Figyelem!","Nincs jogosultsága a következő odalhoz!", 'warning')
   }
 
 
@@ -140,7 +161,7 @@ export class ThesisStatusComponent implements OnInit{
       // console.log("current thesis ID and title: " + thesisId + " " + thesisTitle + " reviewer id: " + tempReviewerId)
       console.log(dataForOneThesis)
       this.files.forEach((y: any) => {
-        console.log(y)
+        // console.log(y)
         if (y.first === thesisId) {
           // ekkor megvan az aktuális thesis a file táblában
           let fileType = y.second.substring(0, 2) // pd: pdf, at: zip, pp: ppt
@@ -179,13 +200,15 @@ export class ThesisStatusComponent implements OnInit{
         }
       })
 
-      let roleId = localStorage['roles']
+      let roles = localStorage['roles']
+      let cleanedRoles = roles.slice(1,-1)
       let userId = localStorage['userId']
       console.log(userId)
+      console.log(cleanedRoles)
       console.log(tempReviewerId)
       console.log(dataForOneThesis)
 
-      if (roleId == 3) {
+      if (cleanedRoles == 'Bíráló') {
         if (tempReviewerId == userId) {
           console.log(tempReviewerId)
           this.thesesFullData.push(dataForOneThesis)
@@ -221,10 +244,10 @@ export class ThesisStatusComponent implements OnInit{
       });
   }
 
-  getDownloadableThesisFiles(thesesIds?: any[], roleId?: any) {
+  getDownloadableThesisFiles(thesesIds?: any[], roles?: any) {
     this.reportStatusService.getDownloadableThesisFiles().subscribe(
       (resp : any) => {
-        if((roleId == 0 || roleId == 4) && thesesIds !== undefined){
+        if((roles == 'Hallgató' || roles === 'Témavezető') && thesesIds !== undefined){
         resp.forEach((x:any)=>{
           if(thesesIds?.includes(x.first)){
             this.files.push(x)
@@ -245,11 +268,11 @@ export class ThesisStatusComponent implements OnInit{
     )
   }
 
-  getThesesList(userId?: number, roleId?: number) {
+  getThesesList(userId?: number, roles?: any) {
     this.listThesesService.getThesesList().subscribe(
       (resp : any) => {
-        console.log(resp)
-        if(roleId == 0){
+        console.log(roles)
+        if(roles == 'Hallgató'){
         this.theses = resp.filter((x: any) =>
             x.userId == userId
         )
@@ -258,22 +281,22 @@ export class ThesisStatusComponent implements OnInit{
           // @ts-ignore
           let thesesIds = this.theses.map(({id}) => id)
           console.log(thesesIds)
-        this.getDownloadableThesisFiles(thesesIds,roleId)
+        this.getDownloadableThesisFiles(thesesIds,roles)
         }
-        else if(roleId == 4){
+        else if(roles == 'Témavezető'){
           this.theses = resp.filter((x: any) =>
-            x.supervisor.userId == userId
+            x.supervisor.id == userId
           )
           console.log(userId)
           console.log(this.theses)
           // @ts-ignore
           let thesesIds = this.theses.map(({id}) => id)
           console.log(thesesIds)
-          this.getDownloadableThesisFiles(thesesIds,roleId)
+          this.getDownloadableThesisFiles(thesesIds,roles)
         }
         else{
           this.theses = resp
-          this.getDownloadableThesisFiles(undefined, roleId)
+          this.getDownloadableThesisFiles(undefined, roles)
         }
       },
       (err) =>
@@ -283,29 +306,29 @@ export class ThesisStatusComponent implements OnInit{
     )
   }
 
-  getUsersList(userId?: number, roleId?: number){
+  getUsersList(userId?: number, roles?: any){
     this.findallUsersService.findAllUsers().subscribe(
       (resp : any) => {
-        if(roleId == 0){
+        if(roles == 'Hallgató'){
           console.log(resp)
           this.users = resp.filter((x: any) =>
-              (x.id == userId && x.roleId == 0) ||  x.roleId == 3 || x.roleId == 4
+              (x.id == userId && x.role == 'Hallgató') ||  x.role == 'Bíráló' || x.role == 'Témavezető'
           )
-          this.getThesesList(userId, roleId)
+          this.getThesesList(userId, roles)
         }
-        else if(roleId == 4){
+        else if(roles === 'Témavezető'){
           console.log(resp)
           this.users = resp.filter((x: any) =>
-            (x.id == userId && x.roleId == 4) ||  x.roleId == 3 || x.roleId == 0
+            (x.id == userId && x.role === 'Témavezető') ||  x.role === 'Bíráló' || x.role === 'Hallgató'
           )
-          this.getThesesList(userId, roleId)
+          this.getThesesList(userId, roles)
         }
-        else if(roleId == 3){
+        else if(roles == 'Bíráló'){
           console.log(resp)
           this.users = resp.filter((x: any) =>
-            x.roleId == 0 || (x.id == userId && x.roleId == 3) ||  x.roleId == 4
+            x.role == 'Hallgató' || (x.id == userId && x.role === 'Bíráló') ||  x.role == 'Témavezető'
           )
-          this.getThesesList(userId, roleId)
+          this.getThesesList(userId, roles)
         }
         else{
           this.users = resp
@@ -321,31 +344,32 @@ export class ThesisStatusComponent implements OnInit{
 
   getReviewList(userId: number){
     console.log(userId)
-    let roleId = localStorage['roles']
-
+    let roles = localStorage['roles']
+    let cleanedRoles = roles.slice(1,-1)
     this.reportStatusService.getReviewData().subscribe(
       (resp: any) => {
-        if(roleId == 0)
+        console.log(cleanedRoles)
+        console.log("Bíráló")
+        if(cleanedRoles == "Hallgató")
         {
         this.reviews = resp.filter((element: any) =>
             element.theseses.userId == userId
         )
         console.log("reviews:")
         console.log(resp)
-
-        this.getUsersList(userId, roleId)
+        this.getUsersList(userId, cleanedRoles)
           }
-        else if(roleId == 4)
+        else if(cleanedRoles == "Témavezető")
         {
           this.reviews = resp.filter((element: any) =>
-            element.theseses.supervisor.userId == userId
+            element.theseses.supervisor.id == userId
           )
           console.log("reviews:")
           console.log(resp)
 
-          this.getUsersList(userId, roleId)
+          this.getUsersList(userId, cleanedRoles)
         }
-        else if(roleId == 3)
+        else if(cleanedRoles == "Bíráló")
         {
           this.reviews = resp.filter((element: any) =>
             element.user.id == userId
@@ -353,7 +377,7 @@ export class ThesisStatusComponent implements OnInit{
           console.log("reviews:")
           console.log(this.reviews)
 
-          this.getUsersList(userId, roleId)
+          this.getUsersList(userId, cleanedRoles)
         }
         else{
           this.reviews = resp

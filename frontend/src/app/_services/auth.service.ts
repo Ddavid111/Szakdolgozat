@@ -13,8 +13,8 @@ export class AuthService {
     Swal.fire("Hiba", 'Error:' + err,  'error');
   }
 
-  public setRoles(roles: []) {
-    localStorage.setItem("roles", JSON.stringify(roles));
+  public setRoles(roles: string[]) {
+    localStorage.setItem("roles", JSON.stringify(roles))
   }
 
   public getRoles(): [] {
@@ -22,7 +22,7 @@ export class AuthService {
 
     if (roleString) {
       try {
-        return JSON.parse(roleString)
+        return JSON.parse(roleString);
       } catch (e) {
         this.alertWithError(e)
         return []

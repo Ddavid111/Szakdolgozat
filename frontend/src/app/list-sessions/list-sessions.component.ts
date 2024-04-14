@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import {AddSessionService} from "../_services/add-session.service";
 import {FindAllUsersComponent} from "../find-allUsers/find-allUsers.component";
 import {findAllUsersService} from "../_services/find-allUsers.service";
+import {UserService} from "../_services/user.service";
+import {Router} from "@angular/router";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-list-sessions',
@@ -11,12 +14,28 @@ import {findAllUsersService} from "../_services/find-allUsers.service";
 export class ListSessionsComponent {
 
   data: any
-  constructor(private addSessionService: AddSessionService) {
+  constructor(private addSessionService: AddSessionService,
+              private router: Router,
+              private userService: UserService) {
   }
 
   ngOnInit() {
+    if (!this.userService.roleMatch([
+      "Elnök",
+      "Jegyző",
+      "ADMIN"
+    ])) { // if the roles are not correct, navigate to login page before the component would have loaded
+      this.alertWithWarning()
+      this.router.navigate(['/login'])
+    }
+
     this.listSessions()
 
+  }
+
+  alertWithWarning()
+  {
+    Swal.fire("Figyelem!","Nincs jogosultsága a következő odalhoz!", 'warning')
   }
 
   //OrderBy and pagination

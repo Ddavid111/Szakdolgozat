@@ -94,7 +94,11 @@ public class ReviewService {
         else if (userDao.findById(reviewerId).get().getRole().equals(Role.Témavezető))
         {
             Iterable<Thesis> thesesIterable = thesisDao.findThesesBySupervisorId(reviewerId);
-            thesesIterable.forEach(theses::add);
+            for(Thesis thesis : thesesIterable) {
+                if(userId.equals(thesis.getUserId())) {
+                    theses.add(thesis);
+                }
+            }
         }
 
         return theses;

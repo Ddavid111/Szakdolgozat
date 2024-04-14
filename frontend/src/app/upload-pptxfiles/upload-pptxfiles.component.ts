@@ -5,6 +5,8 @@ import { DocumentService } from "../_services/document.service";
 import { HttpEventType } from "@angular/common/http";
 import { ListThesesesService } from "../_services/list-theseses.service";
 import Swal from "sweetalert2";
+import {UserService} from "../_services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-upload-pptxfiles',
@@ -21,7 +23,9 @@ export class UploadPPTXFilesComponent implements OnInit {
   thesesId: number | undefined
 
   constructor(private addFilesService: AddFilesService, private documentService: DocumentService,
-              private findThesesService: ListThesesesService) {
+              private findThesesService: ListThesesesService,
+              private router: Router,
+              private userService: UserService) {
   }
 
   alertWithWarningFileType()
@@ -53,7 +57,20 @@ export class UploadPPTXFilesComponent implements OnInit {
     Swal.fire("Siker",'Sikerült a fájl feltöltés.','success')
   }
 
+  alertWithWarning()
+  {
+    Swal.fire("Figyelem!",'Only HALLGATO role can view this page.','warning')
+  }
+
   ngOnInit(): void {
+    if (!this.userService.roleMatch([
+      "Hallgató",
+      "ADMIN"
+    ])) { // if the roles are not correct, navigate to login page before the component would have loaded
+      this.alertWithWarning()
+      this.router.navigate(['/login'])
+    }
+
     this.getTheses(localStorage["userId"]);
   }
 

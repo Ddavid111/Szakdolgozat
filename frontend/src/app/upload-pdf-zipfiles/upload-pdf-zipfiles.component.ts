@@ -3,6 +3,8 @@ import { AddFilesService } from "../_services/add-files.service";
 import { HttpEventType } from "@angular/common/http";
 import { ListThesesesService } from "../_services/list-theseses.service";
 import Swal from 'sweetalert2';
+import {Router} from "@angular/router";
+import {UserService} from "../_services/user.service";
 
 @Component({
   selector: 'app-upload-pdf-zipfiles',
@@ -19,9 +21,19 @@ export class UploadPDFZIPFilesComponent implements OnInit {
   theses: any;
   thesesId: number | undefined;
 
-  constructor(private addFilesService: AddFilesService, private findThesesService: ListThesesesService) {}
+  constructor(private addFilesService: AddFilesService, private findThesesService: ListThesesesService,
+              private router: Router,
+              private userService: UserService,) {}
 
   ngOnInit(): void {
+    if (!this.userService.roleMatch([
+      "Hallgató",
+      "ADMIN"
+    ])) { // if the roles are not correct, navigate to login page before the component would have loaded
+      this.alertWithWarning()
+      this.router.navigate(['/login'])
+    }
+
     this.getTheses(localStorage['userId']);
   }
 
@@ -53,6 +65,12 @@ export class UploadPDFZIPFilesComponent implements OnInit {
   {
     Swal.fire("Siker",'Sikerült a fájl feltöltés.','success')
   }
+
+  alertWithWarning()
+  {
+    Swal.fire("Figyelem!",'Only HALLGATO role can view this page.','warning')
+  }
+
 
   getTheses(userId: number) {
     this.addFilesService.findThesesByLoggedInStudent(userId).subscribe(

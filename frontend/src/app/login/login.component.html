@@ -1,31 +1,37 @@
-<h1>Default credentials: username / password</h1>
-
+<!--<h1>Default credentials: username / password</h1>-->
 <div class="container mt-5">
-  <div class="container mt-5" style="text-align: center;">
-    <h1>Bejelentkezés</h1>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card p-4 shadow">
+        <h2 class="text-center mb-4">Bejelentkezés</h2>
+        <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+          <div class="mb-3">
+            <input type="text"
+                   ngModel
+                   name="userName"
+                   id="userName"
+                   placeholder="Felhasználónév"
+                   class="form-control"
+            >
+          </div>
+          <div class="mb-3">
+            <input type="password"
+                   ngModel
+                   name="userPassword"
+                   id="userPassword"
+                   placeholder="Jelszó"
+                   class="form-control"
+            >
+          </div>
+          <button type="submit" class="btn btn-dark btn-block">Bejelentkezés</button>
+        </form>
+      </div>
+    </div>
   </div>
 
-  <div class="card text-center" style="padding: 20px;">
-    <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
-      <input type="text"
-             ngModel
-             name="userName"
-             id="userName"
-             placeholder="Felhasználónév"
-             class="form-control mb-3"
-      >
 
-      <input type="password"
-             ngModel
-             name="userPassword"
-             id="userPassword"
-             placeholder="Jelszó"
-             class="form-control mb-3"
-      >
 
-      <input type="submit" value="Bejelentkezés" class="btn btn-outline-dark form-control rounded-0">
-    </form>
-  </div>
+
   <!--
     <div class="alert alert-success" role="alert">
       A simple success alert—check it out!
@@ -40,62 +46,75 @@
       </div>
     </div>
    -->
-  <div class="card text-center" style="padding: 20px;">
-    <input type="button" value="Elfelejtett jelszó" class="btn btn-danger" (click)="openModal()"/>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card text-center p-4 shadow">
+          <input type="button" value="Elfelejtett jelszó" class="btn btn-danger" (click)="openModal()"/>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="modal " id="forgottenPwModal" tabindex="-1" aria-labelledby="forgottenPwModalLabel"
+<!-- Elfelejtett jelszó modal -->
+<div class="modal" id="forgottenPwModal" tabindex="-1" aria-labelledby="forgottenPwModalLabel"
      [ngStyle]="{'display':display}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="forgottenPwModalLabel">Új jelszó igénylése</h1>
+        <h3 class="modal-title" id="forgottenPwModalLabel">Új jelszó igénylése</h3>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                 (click)="onCloseHandled()"></button>
       </div>
       <div class="modal-body">
-
         <form #forgotten="ngForm" (ngSubmit)="forgottenPw()">
-          <label for="username">Felhasználónév</label>
-          <input type="text" name="username" [(ngModel)]="forgottenPwForm.username" placeholder="Felhasználónév">
-
-          <p>A lenti gombra kattintva a regisztrációkor a felhasználónévhez
-            rendelt thesis-mail címre egy thesis-mailt küld a rendszer, benne egy tokennel. Ezzel lehet új jelszót beállítani a
-            következő lépésben.</p>
-
-          <input type="submit" value="Új jelszó igénylése" data-bs-dismiss="Modal" (click)="showNewPwModal()">
+          <div class="mb-3">
+            <label for="username" class="form-label">Felhasználónév</label>
+            <input type="text" name="username" [(ngModel)]="forgottenPwForm.username" class="form-control"
+                    placeholder="Felhasználónév">
+          </div>
+          <p class="mb-3">A lenti gombra kattintva a regisztrációkor a felhasználónévhez rendelt e-mail címre egy e-mailt küld a rendszer, benne egy tokennel. Ezzel lehet új jelszót beállítani a következő lépésben.</p>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" (click)="showNewPwModal()">Új jelszó igénylése</button>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal " id="newPwModal" tabindex="-1" aria-labelledby="newPwModalLabel"
+<!-- Új jelszó beállítása modal -->
+<div class="modal" id="newPwModal" tabindex="-1" aria-labelledby="newPwModalLabel"
      [ngStyle]="{'display':showPwChangeModal}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="newPwModalLabel">Új jelszó beállítása</h1>
-
-
+        <h5 class="modal-title" id="newPwModalLabel">Új jelszó beállítása</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                 (click)="closePwChangeModal()"></button>
       </div>
       <div class="modal-body">
-
         <form (ngSubmit)="changePw()" [formGroup]="changePwForm">
-          <label for="username">Felhasználónév</label>
-          <input type="text" name="username" formControlName="username" placeholder="Felhasználónév">
-          <input type="text" name="token" formControlName="token" placeholder="Token">
-          <input type="password" name="newPw" formControlName="newPassword" placeholder="Új jelszó">
-          <input type="password" name="confPw" formControlName="confirmPassword" placeholder="Új jelszó ismét">
+          <div class="mb-3">
+            <label for="username" class="form-label">Felhasználónév</label>
+            <input type="text" name="username" formControlName="username" class="form-control"
+                    placeholder="Felhasználónév">
+          </div>
+          <div class="mb-3">
+            <label for="token" class="form-label">Token</label>
+            <input type="text" name="token" formControlName="token" class="form-control"
+                   id="token" placeholder="Token">
+          </div>
+          <div class="mb-3">
+            <label for="newPw" class="form-label">Új jelszó</label>
+            <input type="password" name="newPw" formControlName="newPassword" class="form-control"
+                   id="newPw" placeholder="Új jelszó">
+          </div>
+          <div class="mb-3">
+            <label for="confPw" class="form-label">Új jelszó ismét</label>
+            <input type="password" name="confPw" formControlName="confirmPassword" class="form-control"
+                   id="confPw" placeholder="Új jelszó ismét">
+          </div>
           <div style="color: red;" *ngIf="changePwForm.errors?.['matchPwValidator']"> A két jelszó nem egyezik!</div>
-          <p>A lenti gombra kattintva a regisztrációkor a felhasználónévhez
-            rendelt thesis-mail címre egy thesis-mailt küld a rendszer, benne egy tokennel. Ezzel lehet új jelszót beállítani a
-            következő lépésben.</p>
-
-          <input type="submit" value="Új jelszó beállítása" data-bs-dismiss="Modal" (click)="closePwChangeModal()">
+          <p class="mb-3">A lenti gombra kattintva a regisztrációkor a felhasználónévhez rendelt e-mail címre egy e-mailt küld a rendszer, benne egy tokennel. Ezzel lehet új jelszót beállítani a következő lépésben.</p>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" (click)="closePwChangeModal()">Új jelszó beállítása</button>
         </form>
       </div>
     </div>

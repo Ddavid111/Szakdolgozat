@@ -88,7 +88,7 @@
       <thead class="thead">
       <tr>
         <th>ID</th>
-        <th>Student name</th>
+        <th>Hallgató neve</th>
         <th>Title</th>
         <th>Felkérés bírálatra</th>
 
@@ -198,6 +198,7 @@
         <th>PPT</th>
         <th>Reviews</th>
         <th>Review2</th>
+        <th>Bírálatok továbbítása a hallgatónak</th>
 
       </tr>
       </thead>
@@ -206,7 +207,7 @@
         <td>{{ e.neptunCode }}</td>
         <td>{{ e.fullname }}</td>
         <td>{{ e.supervisorname }}</td>
-        <td>...</td>
+        <td>{{ e.reviewername }}</td>
         <td>{{e.title}}</td>
         <td>{{ e.submissionDate }}</td>
 
@@ -237,7 +238,7 @@
         </td>
         <td>
           <button type="button" class="btn btn-primary"
-                  (click)="findFilesByThesesId(e.thesisId)">Bírálat küldése
+                  (click)="findFilesByThesesId(e.thesisId)">Bírálatok küldése
           </button>
         </td>
 

@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {findAllUsersService} from "../_services/find-allUsers.service";
 import Swal from "sweetalert2";
+import {UserService} from "../_services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-find-allUsers',
@@ -75,16 +77,30 @@ export class FindAllUsersComponent implements OnInit {
     role: '',
   }
 
-  constructor(private findAllUsersService: findAllUsersService) {
+  constructor(private findAllUsersService: findAllUsersService,
+              private router: Router,
+              private userService: UserService,) {
 
   }
 
   ngOnInit() {
+      if (!this.userService.roleMatch([
+      "ADMIN"
+    ])) { // if the roles are not correct, navigate to login page before the component would have loaded
+      this.alertWithWarning()
+      this.router.navigate(['/login'])
+    }
+
     this.findAllUsers()
   }
 
   alertWithError(err: any) {
     Swal.fire("Hiba", ' Error:' + err,  'error');
+  }
+
+  alertWithWarning()
+  {
+    Swal.fire("Figyelem!",'Only HALLGATO role can view this page.','warning')
   }
 
   updateUsers() {
@@ -162,7 +178,6 @@ export class FindAllUsersComponent implements OnInit {
 
   onRoleChange() {
     console.log(this.usersForUpdate.role)
-
     this.isVisiblepositionField = false;
     this.isDropdownList = false
     if (this.usersForUpdate.role === "Hallgató") //hallgató

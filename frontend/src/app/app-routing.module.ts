@@ -47,6 +47,9 @@ const routes: Routes = [
     path: 'addDocx', component: AddDocxComponent
   },
   {
+    path: '', redirectTo: 'login', pathMatch: 'full'
+  },
+  {
     path: 'login', component: LoginComponent
   },
   {

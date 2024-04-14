@@ -145,12 +145,18 @@ public class UserService {
                 }
                 return students;
             }
-            case Témavezető:{
-                List<Thesis> theses = thesisDao.findThesesBySupervisorId(userId);
+            case Témavezető: {
                 List<User> students = new ArrayList<>();
-                for(Thesis thesis: theses)
-                {
-                    students.add(findUserById(thesis.getUser().getId()));
+                for (Thesis thesis : thesisDao.findThesesBySupervisorId(userId)) {
+                    // Ellenőrzés, hogy van-e már bírálat az adott thesis-hez
+                    Integer numberOfReviews = reviewDao.countByThesesesId(thesis.getId());
+                    // Ha nincs bírálat, vagy csak egy darab van, akkor hozzáadhatjuk a diákot a listához
+                    if (numberOfReviews == 0 || numberOfReviews == 1) {
+                        User student = findUserById(thesis.getUser().getId());
+                        if (!students.contains(student)) {
+                            students.add(student);
+                        }
+                    }
                 }
                 return students;
             }

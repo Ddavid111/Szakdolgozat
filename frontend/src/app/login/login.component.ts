@@ -68,13 +68,23 @@ export class LoginComponent {
         this.authService.setToken(response.jwtToken)
 
         if (response.user.role === "Hallgató") {
-          this.router.navigate(['/listTheseses']); // ide rak miután a login sikeres és ha roleid 0
+          this.router.navigate(['/thesisStatus']); // ide rak miután a login sikeres és ha roleid 0
         }
-        else {
-          this.router.navigate(['/findAllUsers']); // ide rak miután a login sikeres
+        else if(response.user.role === "Jegyző"){
+          this.router.navigate(['/addSession']); // ide rak miután a login sikeres
         }
-
-
+        else if(response.user.role === "Elnök"){
+          this.router.navigate(['/reportStatus']); // ide rak miután a login sikeres
+        }
+        else if(response.user.role === "ADMIN"){
+          this.router.navigate(['/addUser']); // ide rak miután a login sikeres
+        }
+        else if(response.user.role === "Bíráló"){
+          this.router.navigate(['/addDocx']); // ide rak miután a login sikeres
+        }
+        else if(response.user.role === "Témavezető"){
+          this.router.navigate(['/addDocx']); // ide rak miután a login sikeres
+        }
       },
 
       (error) => {
@@ -99,14 +109,19 @@ export class LoginComponent {
       (resp) => {
         console.log("email sent")
         console.log(resp)
+
       },
-      (err) =>
+      (err) =>{
         console.log(err.status)
+        // this.display = "none"
+        this.closePwChangeModal()
+      }
     )
   }
 
   changePw() {
     console.log(this.changePwForm.value.username)
+    console.log(this.changePwForm.value)
 
     this.userService.changePassword(this.changePwForm.value.username, this.changePwForm.value.token, this.changePwForm.value.newPassword).subscribe(
       (resp) => {
@@ -114,10 +129,13 @@ export class LoginComponent {
         console.log(resp)
         this.alertWithNewPassword()
       },
-      (err) =>
-        console.log(err.status)
+      (err) => {
+        console.log(err.message)
+        this.alertWithWrongPassword()
+      }
     )
   }
+
 
 
   openModal() {

@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,66 +75,164 @@ public class SessionService {
         Integer startHour = session.getStartHour();
         Integer endHour = session.getEndHour();
 
-        if(sessionFromSql.isPresent()){
-            for (User member: membersFromSession) {
+        if (sessionFromSql.isPresent()) {
+            try {
+                for (User student : studentsFromSession) {
+                    BufferedReader reader = new BufferedReader(new FileReader("email/zv_create.txt"));
+                    StringBuilder emailBodyBuilder = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        if (line.contains("[Név]")) {
+                            line = line.replace("[Név]", student.getFullname());
+                        }
 
-                String email = member.getEmail();
+                        if (line.contains("[Dátum]")) {
+                            line = line.replace("[Dátum]", formattedDate);
+                        }
 
+                        if (line.contains("[Helyszín]")) {
+                            line = line.replace("[Helyszín]", zvLocation);
+                        }
+
+                        if (line.contains("[Kezdési időpont]")) {
+                            line = line.replace("[Kezdési időpont]", startHour.toString());
+                        }
+
+                        if (line.contains("[Befejezési időpont]")) {
+                            line = line.replace("[Befejezési időpont]", endHour.toString());
+                        }
+
+                        emailBodyBuilder.append(line).append("\n");
+                    }
+                    reader.close();
+                    String emailBody = emailBodyBuilder.toString();
+
+                    String email = student.getEmail();
+                    String emailSubject = "Záróvizsga időpontja";
+
+                    emailSenderService.sendEmail(email, emailSubject, emailBody);
+                }
+
+                for (User member : membersFromSession) {
+
+                    BufferedReader reader = new BufferedReader(new FileReader("email/zv_create.txt"));
+                    StringBuilder emailBodyBuilder = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+
+                        if (line.contains("[Név]")) {
+                            line = line.replace("[Név]", member.getFullname());
+                        }
+
+                        if (line.contains("[Dátum]")) {
+                            line = line.replace("[Dátum]", formattedDate);
+                        }
+                        // Helyszín helyettesítése
+                        if (line.contains("[Helyszín]")) {
+                            line = line.replace("[Helyszín]", zvLocation);
+                        }
+                        // Kezdési időpont helyettesítése
+                        if (line.contains("[Kezdési időpont]")) {
+                            line = line.replace("[Kezdési időpont]", startHour.toString());
+                        }
+                        // Befejezési időpont helyettesítése
+                        if (line.contains("[Befejezési időpont]")) {
+                            line = line.replace("[Befejezési időpont]", endHour.toString());
+                        }
+
+                        emailBodyBuilder.append(line).append("\n");
+                    }
+                    reader.close();
+                    String emailBody = emailBodyBuilder.toString();
+
+                    String email = member.getEmail();
+                    String emailSubject = "Záróvizsga időpontja";
+
+                    emailSenderService.sendEmail(email, emailSubject, emailBody);
+                }
+
+                // Jegyző
+                BufferedReader reader = new BufferedReader(new FileReader("email/zv_create.txt"));
+                StringBuilder emailBodyBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+
+                    if (line.contains("[Név]")) {
+                        line = line.replace("[Név]", secretary.getFullname());
+                    }
+
+                    if (line.contains("[Dátum]")) {
+                        line = line.replace("[Dátum]", formattedDate);
+                    }
+
+                    if (line.contains("[Helyszín]")) {
+                        line = line.replace("[Helyszín]", zvLocation);
+                    }
+
+                    if (line.contains("[Kezdési időpont]")) {
+                        line = line.replace("[Kezdési időpont]", startHour.toString());
+                    }
+
+                    if (line.contains("[Befejezési időpont]")) {
+                        line = line.replace("[Befejezési időpont]", endHour.toString());
+                    }
+
+
+                    emailBodyBuilder.append(line).append("\n");
+                }
+                reader.close();
+                String emailBodySecretary = emailBodyBuilder.toString();
+
+                String emailToSecretary = secretary.getEmail();
+                String emailSubjectToSecretary = "Záróvizsga időpontja";
+
+                emailSenderService.sendEmail(emailToSecretary, emailSubjectToSecretary, emailBodySecretary);
+
+                // Elnök
+                reader = new BufferedReader(new FileReader("email/zv_create.txt"));
+                emailBodyBuilder = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    // Az [Tag neve] helyére beillesztjük az elnök nevét
+                    if (line.contains("[Név]")) {
+                        line = line.replace("[Név]", chairman.getFullname());
+                    }
+
+                    if (line.contains("[Dátum]")) {
+                        line = line.replace("[Dátum]", formattedDate);
+                    }
+
+                    if (line.contains("[Helyszín]")) {
+                        line = line.replace("[Helyszín]", zvLocation);
+                    }
+
+                    if (line.contains("[Kezdési időpont]")) {
+                        line = line.replace("[Kezdési időpont]", startHour.toString());
+                    }
+
+                    if (line.contains("[Befejezési időpont]")) {
+                        line = line.replace("[Befejezési időpont]", endHour.toString());
+                    }
+
+                    emailBodyBuilder.append(line).append("\n");
+                }
+                reader.close();
+                String emailBodyChairman = emailBodyBuilder.toString();
+
+                String email = chairman.getEmail();
                 String emailSubject = "Záróvizsga időpontja";
-                String emailBody = "Önt felkérték, hogy vegyen részt a következő záróvizsgán. (Member)";
-                emailBody += "\nA Záróvizsga helye: " + zvLocation;
 
-                emailSenderService.sendEmail(email, emailSubject, emailBody);
+                emailSenderService.sendEmail(email, emailSubject, emailBodyChairman);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            for (User student: studentsFromSession) {
-
-                String email = student.getEmail();
-                String studentName = student.getFullname();
-
-                String emailSubject = "Záróvizsga időpontja";
-                String emailBody = "Kedves " + studentName + "!";
-                emailBody += "\n";
-                emailBody += "\nÖrömmel értesítünk arról, hogy Önt felkérték, hogy vegyen részt a következő záróvizsgán.";
-                emailBody += "\n";
-                emailBody += "\nIdőpont: " + formattedDate;
-                emailBody += "\n";
-                emailBody += "\nHelyszín: " + zvLocation;
-                emailBody += "\nA záróvizsga kezdete: " + startHour;
-                emailBody += "\nA záróvizsga vége: " + endHour;
-
-
-                emailSenderService.sendEmail(email, emailSubject, emailBody);
-            }
-
-            String emailToSecretary = secretary.getEmail();
-            String emailSubjectToSecretary = "Záróvizsga időpontja";
-            String emailBodyToSecretary = "Önt felkérték, hogy vegyen részt a következő záróvizsgán.(secretary)";
-            emailBodyToSecretary += "\nA Záróvizsga helye: " + zvLocation;
-
-            emailSenderService.sendEmail(emailToSecretary, emailSubjectToSecretary, emailBodyToSecretary);
-
-
-
-
-
-            String email = chairman.getEmail();
-            String emailSubject = "Záróvizsga időpontja";
-            String emailBody = "Önt felkérték, hogy vegyen részt a következő záróvizsgán.(chairman)";
-            emailBody += "\nA Záróvizsga helye: " + zvLocation;
-
-            emailSenderService.sendEmail(email, emailSubject, emailBody);
-
-        }
-
-        else {
+        } else {
             try {
                 throw new Exception("Reviewer user or the thesis to be reviewed was not found in the DB!");
             } catch (Exception e) {
                 e.printStackTrace();
-
             }
-
         }
         return savedSession;
     }
