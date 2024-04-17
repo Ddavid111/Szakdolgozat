@@ -2,6 +2,8 @@
 
 \usepackage{styles/dolgozat}
 \usepackage{svg}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{listings}
 \usepackage{styles/cpp}
 \usepackage{styles/python}
@@ -9,6 +11,23 @@
 
 \usepackage{hyperref}
 
+\lstset{
+    language=SQL,
+    backgroundcolor=\color{gray!10},
+    basicstyle=\ttfamily,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!40!black},
+    stringstyle=\color{orange},
+    showstringspaces=false,
+    breaklines=true,
+    xleftmargin=.3\textwidth, 
+    xrightmargin=.3\textwidth
+    numberstyle=\tiny\color{gray}\ttfamily\bfseries\centering,
+    inputencoding=utf8,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {é}{{\'e}}1,
+    columns=fullflexible
+}
 
 \begin{document}
 

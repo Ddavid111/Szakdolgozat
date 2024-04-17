@@ -4,14 +4,15 @@ A továbbiakban szeretném bemutatni az alkalmazás használatát. Ez a kézikö
 
 \Section{Az alkalmazás indítása}
 
-Először is egy adatbáziskezelőt nyissunk meg és hozzunk létre egy proba28 nevű adatbázist és használjuk is azt. Ez elengedhetetlen része az alkalmazás indításának, mivel enélkül a szerveroldal el se fog indulni.\\
+Először is egy adatbáziskezelőt nyissunk meg és hozzunk létre egy proba28 nevű adatbázist és használjuk is azt. Ez elengedhetetlen része az alkalmazás indításának, mivel enélkül a szerveroldal el se fog indulni.
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=1]{images/Adatbázis.png}
-\caption{Adatbázis inicializálás}
-\label{fig:adatbazis}
-\end{figure}
+
+\begin{lstlisting}
+-- Adatbázis létrehozása
+CREATE DATABASE proba28;
+-- Adatbázis használata
+USE proba28;
+\end{lstlisting}
 
 Ezek után indítsuk el a backend és frontend részét az alkalmazásnak. Ehhez választhatunk bármilyen webalkalmazáshoz megfelelő fejlesztőkörnyezetet. Személy szerint a JetBrains-es termékeket javaslom, mint például az Intellij vagy a Webstorm. Fontos megjegyezni, hogy az első indításkor néhány hibaüzenet fogad minket a backend részen. Ne essünk kétségbe, mert a második indítás után ezek a hibák automatikusan el fognak tűnni. A probléma abból adódik, hogy a szerveroldal elindulásakor bizonyos műveletek próbálnak hozzáférni a már létező adatbázishoz, ami az első indításkor még nem teljesen inicializálódott. Ezért indítsuk el még egyszer a szerveroldalt.
 
