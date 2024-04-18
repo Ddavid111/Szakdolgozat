@@ -3,7 +3,7 @@
 *.blg
 *.log
 *.out
-*.pdf
+szakdolgozat/dolgozat.pdf
 *.gz
 *.thm
 *.toc

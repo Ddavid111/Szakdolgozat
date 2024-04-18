@@ -46,7 +46,17 @@ A prezentációk eltárolása érdekében is egy külön jegyzéket \textit{ppts
 
 \item{Bírálatok (reviews):}
 
-A bírálatokat word formátumban tárolom le egy külön \textit{reviews} jegyzékben. A fájlnév szerkezete a következő: először az "Review" szó áll, majd a feltöltés dátuma, a hallgató neve, és végül egy uuid következik.
+A bírálatokat word formátumban tárolom le egy külön \textit{reviews} jegyzékben. A fájlnév szerkezete a következő: először az "Review" szó áll, majd a feltöltés dátuma, a hallgató neve, és végül egy uuid következik:
+
+\texttt{Review\_<date>\_<name>\_<UUID>.docx}, melyben
+
+\begin{itemize}
+\item \texttt{date}: a dátum az \texttt{YYYY\_MM\_DD} formátumban, ahol az \texttt{YYYY} az évet, a \texttt{MM} a hónapot, a \texttt{DD} a napot jelöli,
+\item \texttt{name}: a hallgató neve nagy kezdőbetűvel, szóközzel tagolva,
+\item \texttt{UUID}: az egyedi azonosító \texttt{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX} formában, ahol az \texttt{X} helyén kisbetű vagy számjegy szerepel.
+\end{itemize}
+
+Például: Review\_ ...
 
 
 \item{Záróvizsga Jegyzőkönyvek (zv):}
