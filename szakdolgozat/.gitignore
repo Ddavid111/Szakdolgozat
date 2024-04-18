@@ -4,6 +4,7 @@
 *.log
 *.out
 szakdolgozat/dolgozat.pdf
+szakdolgozat/chapters.pdf
 *.gz
 *.thm
 *.toc
