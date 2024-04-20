@@ -57,7 +57,7 @@ Az oldal lehetővé teszi a felhasználók regisztrálását, melyhez kizáróla
 \\
 A felhasználó szerepkörét egy legördülő listából választhatjuk ki. A helyes adatbevitelt validátorok segítik, melyek dinamikusan változnak a kiválasztott szerepkörtől függően. Ha a bíráló szerepkört választjuk, megjelenik egy extra mező, ahol a beosztást adhatjuk meg. Témavezető, jegyző és elnök esetén ezeket az adatokat legördülő listával oldottam meg.\\
 \\
-A felvitel gombra kattintva a rendszer egy sikeres vagy sikertelen üzenettel fogad minket, tájékoztatva arról, hogy a felhasználó sikeresen felkerült-e az adatbázisba.
+A felvitel gombra kattintva a rendszer egy sikeres vagy sikertelen üzenettel fogad minket, tájékoztatva arról, hogy a felhasználó sikeresen felkerült-e az adatbázisba. Ez látható a következő ábrán \ref{fig:addUsers}:
 
 \begin{figure}[h]
 \centering
@@ -86,21 +86,21 @@ A bírálat írására szolgáló oldalon lehetősége van a témavezetőnek és
 
 Az oldalon a szakdolgozatok bírálatának nyomon követése egy táblázatos elrendezésben valósult meg. Az oldalt három részre osztottam: a beadott szakdolgozatokra, a folyamatban lévő bírálatokra és a befejezett bírálatokra. Minden rész egy összecsukható listával rendelkezik, ami könnyű navigációt tesz lehetővé.\\
 \\
-A "Beadott szakdolgozatok" részben láthatóak a dolgozatok, valamint az azokhoz kapcsolódó hallgatók, témavezetők és bírálók. A szakdolgozathoz tartozó fájlokat is letölthetjük innen. Ezenkívül az alatta lévő táblázat a bíráló felkérésére lett létrehozva. Egy felugró ablakban választhatunk ki egy bírálót az adott szakdolgozathoz.\\
+A "Beadott szakdolgozatok" \ref{fig:Report_status1} részben láthatóak a dolgozatok, valamint az azokhoz kapcsolódó hallgatók, témavezetők és bírálók. A szakdolgozathoz tartozó fájlokat is letölthetjük innen. Ezenkívül az alatta lévő táblázat a bíráló felkérésére lett létrehozva. Egy felugró ablakban választhatunk ki egy bírálót az adott szakdolgozathoz.\\
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{images/Report_status1.png}
 \caption{Beadott szakdolgozatok}
 \label{fig:Report_status1}
 \end{figure}
-\\A "Folyamatban lévő bírálatok" részben a bíráló neve automatikusan megjelenik, miután kiválasztottuk. A táblázat ugyanazokat az információkat tartalmazza, mint a "Beadott szakdolgozatok" esetében.\\
+\\A "Folyamatban lévő bírálatok" \ref{fig:Report_status2} részben a bíráló neve automatikusan megjelenik, miután kiválasztottuk. A táblázat ugyanazokat az információkat tartalmazza, mint a "Beadott szakdolgozatok" esetében.\\
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{images/Report_status2.png}
 \caption{Folyamatban lévő bírálatok}
 \label{fig:Report_status2}
 \end{figure}
-\\Miután a bírálat befejeződött a témavezető és a bíráló részéről, a "Befejezett bírálatok" táblázathoz kerülünk, ahol lehetőségünk van a bírálatok letöltésére és azok elküldésére e-mailben a hallgatónak. Ez az elrendezés egyszerűsíti és átláthatóvá teszi a bírálatok kezelését és nyomon követését.
+\\Miután a bírálat befejeződött a témavezető és a bíráló részéről, a "Befejezett bírálatok" \ref{fig:Report_status3} táblázathoz kerülünk, ahol lehetőségünk van a bírálatok letöltésére és azok elküldésére e-mailben a hallgatónak. Ez az elrendezés egyszerűsíti és átláthatóvá teszi a bírálatok kezelését és nyomon követését.
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{images/Report_status3.png}

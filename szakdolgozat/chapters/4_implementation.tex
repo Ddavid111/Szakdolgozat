@@ -27,22 +27,43 @@ A webalkalmazás fájlrendszere a dolgozatok, prezentációk, bírálatok, zár�
 \\
 Az alábbiakban felsorolom a jegyzékstruktúrákat és az egyes fájltípusok tárolásának módját:
 
-A dolgozatok hordozható dokumentum formátum (továbbiakban: 'pdf') és tömörített fájlformátum (továbbiakban: 'zip') kerülnek tárolásra.
+A dolgozatok hordozható dokumentum formátum (továbbiakban: 'pdf') és tömörített fájlformátum (továbbiakban: 'zip') kerülnek tárolásra. A fájlok elnevezéseiben több helyen is szerepelnek a következő adatok:
 
 \begin{itemize}
+\item \texttt{UUID}: az egyedi azonosító \texttt{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX} formában, ahol az \texttt{X} helyén kisbetű vagy számjegy szerepel.
+
+\item \texttt{name}: a hallgató neve nagy kezdőbetűvel, szóközzel tagolva.
+\end{itemize}
+
+\begin{enumerate}
 
 \item{Dolgozatok dokumentációjai (pdfs):}
 
 A dolgozatok dokumentációját a \textit{pdfs} nevű jegyzékben tárolom. 
 A fájl feltöltésekor generálódik egy uuid, mely az első részét képezi a fájl nevének, majd ezt követi a hallgató által megadott elnevezés része.
 
+\texttt{<UUID>\_<egyedi\_fájlnév>.pdf}, melyben
+
+\begin{itemize}
+
+\item \texttt{Egyedi\_fájlnév}: az egyedi fájlnév amit a hallgató ad meg általában például \texttt{dolgozat}
+
+\end{itemize}
+
+Például: 3c39562a-fe6a-4783-9ab4-05d875017d70\_dolgozat.pdf
+
+
 \item{Dolgozatok mellékletei (zip):}
 
 A szakdolgozatok mellékleteit az \textit{attachment} jegyzékben raktározom. A fájl elnevezése ugyanaz mint a dokumentációnál.
 
+Például: 14e18814-1246-43cc-85e9-f4443c26f54e\_dolgozat\_melléklet.zip
+
 \item{Prezentáció (pptx):}
 
 A prezentációk eltárolása érdekében is egy külön jegyzéket \textit{ppts} hoztam létre, amelyben a fájlok elnevezése szintén megegyezik a fentebb említett két verzióval.
+
+Például: 653c8797-8a8e-4472-91eb-9d7175a86891\_dolgozat\_prezentációja.pptx
 
 \item{Bírálatok (reviews):}
 
@@ -52,16 +73,18 @@ A bírálatokat word formátumban tárolom le egy külön \textit{reviews} jegyz
 
 \begin{itemize}
 \item \texttt{date}: a dátum az \texttt{YYYY\_MM\_DD} formátumban, ahol az \texttt{YYYY} az évet, a \texttt{MM} a hónapot, a \texttt{DD} a napot jelöli,
-\item \texttt{name}: a hallgató neve nagy kezdőbetűvel, szóközzel tagolva,
-\item \texttt{UUID}: az egyedi azonosító \texttt{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX} formában, ahol az \texttt{X} helyén kisbetű vagy számjegy szerepel.
+
+
 \end{itemize}
 
-Például: Review\_ ...
+Például: Review\_2024\_03\_20\_Minta Hallgató\_2c16f8fe-8127-4795\\-827c-65690513c2cc.docx
 
 
 \item{Záróvizsga Jegyzőkönyvek (zv):}
 
 A záróvizsga jegyzőkönyveket is word formátumban tárolom a \textit{zv} jegyzékben. Az elnevezési konvenció hasonló az bírálathoz viszont a feltöltés dátuma nem jelenik meg benne.
+
+Például: Záróvizsga\_Minta\_Hallgató\_ab2d2f15-5701-4fc4-8022-07e877c7432f.docx
 
 \item{Záróvizsga tételek (topics):}
 
@@ -72,7 +95,7 @@ A záróvizsga tételeket txt formátumban tárolom a könnyebb módosíthatós�
 
 Az e-maileket a \textit{email} jegyzékben txt formátumban tárolom, hogy könnyebben módosíthassam azokat. Öt különálló szöveg fájlt hoztam létre a következő célokra: elfelejtett jelszó (forgotten\_password), bíráló felkérése (request\_review), bírálati jegyzőkönyv elküldése (review), záróvizsga létrehozása (zv\_create) és záróvizsga jegyzőkönyv elküldése (zv\_report). Ezáltal könnyen kezelhetővé teszem az egyes folyamatokhoz kapcsolódó dokumentumokat.
 
-\end{itemize}
+\end{enumerate}
 
 A perzisztens tárolás során az alkalmazás adatmodelljét relációs séma szerint terveztem meg. Ennek értelmében az adatok strukturált formában, relációs adatbázisban lesznek tárolva a későbbi hatékony lekérdezés és adatmanipuláció érdekében. A relációs adatmodell lehetővé teszi az adatok logikai kapcsolatainak és struktúrájának pontos meghatározását, amely segíti az adatok egyszerű és hatékony kezelését, valamint az adatintegritás megőrzését. Az adatmodell megtervezése során figyelembe vettem az alkalmazás üzleti logikáját és funkcióit, hogy az adatbázis struktúrája és relációi pontosan tükrözzék az alkalmazás igényeit és funkcionalitását.
 
@@ -223,11 +246,54 @@ A rendszerben összesen kilenc vezérlő osztályt hoztam létre, melyek mindegy
 
 \end{itemize}
 
-\Section{A REST API áttekintése} % Ide egyelőre nem tudom mit írjak
+\begin{figure}[ht]
+	\includegraphics[width=\textwidth]{images/Osztálydiagram.pdf}
+	\caption{Az alkalmazás osztálydiagramjának részlete}
+	\label{fig:Osztálydiagram}
+\end{figure}
+
+
+
+\Section{A REST API áttekintése}
+
+A Representational State Transfer Application Programming Interface (továbbiakban: REST API) egy olyan szoftveres architekturális stílus, amelyet webes szolgáltatások kialakítására használnak. Az API-k különböző platformokon keresztül teszik lehetővé az alkalmazások közötti kommunikációt. A REST API-k az erőforrásokat (pl. adatbázis rekordokat) reprezentálják és kezelik, a HTTP protokoll különböző metódusainak (GET, POST, PUT, DELETE stb.) segítségével.
+
+A backend és frontend összekapcsolása úgy történik, hogy a backend kiszolgálja az adatokat a frontend felé, amely a felhasználói felületet megjeleníti és a felhasználó interakcióit kezeli. Ezt úgy valósítják meg, hogy a frontend kliens oldalon HTTP kéréseket indít a backend felé, amelyekre a szerver válaszol.
+
+Például:
+
+\begin{enumerate}
+
+\item{\textbf{GET-es kérés:}}
+A backend /getThesesListToDisplay végpontján keresztül elérhetővé teszi a rendszer a szakdolgozatok listáját a megjelenítéshez.
+A frontend a getThesesListToDisplay() metódussal kéri le ezt a listát az API-tól, és a visszakapott adatokat használja a dolgozatok megjelenítésére.
+\item{\textbf{POST request:}}
+A frontend az /addTheseses végpontra küldi a felhasználó által hozzáadni kívánt dolgozat adatait.
+A backend a kapott adatok alapján hozzáadja az új szakdolgozatot az adatbázishoz, majd visszaküldi az új tézist a frontendnek.
+\item{\textbf{PUT request:}}
+A frontend az /updateTheses végpontra küldi a felhasználó által szerkesztett szakdolgozat adatait.
+A backend frissíti az adatbázisban a megfelelő tézis rekordot az új adatokkal, majd visszaküldi a frissített dolgozatot a frontendnek.
+
+
+\end{enumerate}
+
 
 \Section{Frontend}
 
 Az Angular frontend fejlesztésének középpontjában a komponensek és servicek állnak. A komponensek az alkalmazás felhasználói felület részeit képviselik, míg a szolgáltatások központosítják az alkalmazás logikáját és funkcionalitását. A frontend fejlesztés során ezeket az építőköveket kombinálom, hogy részletes és felhasználóbarát webalkalmazást hozzak létre.
+
+Elsőként szeretném bemutatni az alkalmazás fő modulját. Az AppModule egy Angular modul, amely felelős az alkalmazás fő komponenseinek, szolgáltatásainak és moduljainak konfigurálásáért és összekapcsolásáért. \\
+\\Fontos tulajdonságai:
+
+\begin{itemize}
+
+\item{Deklarációk:} A declarations tömbben felsorolom az összes komponenst és direktívát, amelyeket az alkalmazásban használok. Ezek közé tartoznak például a felhasználó felvitele, záróvizsga létrehozása stb. komponensek. 
+
+\item{Importálások:} Az imports tömbben felsorolom azokat a modulokat, amelyeket az alkalmazás használ. Ezek között találhatók a Ng2OrderModule (a rendezésért felelős modul), AppRoutingModule (az alkalmazás útvonalainak kezeléséért felelős modul), NgxPaginationModule (a lapok számozásáért felelős modul) és a HttpClientModule (a HTTP kérésekhez szükséges modul), valamint más modulok, például az Angular Material moduljai.
+
+\end{itemize}
+
+Az AppRoutingModule egy külön modul, amely a fő alkalmazás útvonalait kezeli. A RouterModule.forRoot(routes) segítségével konfigurálom az alkalmazás útvonalait a routes tömb segítségével, ahol minden útvonalhoz megadom, hogy melyik komponenshez tartozzon. Ez azért fontos, mert az Angular útvonalak segítségével navigálja a felhasználókat az alkalmazásban.
 
 % Angular Service-ek bemutatása.
 
@@ -264,8 +330,7 @@ Ezekből 18-at hoztam létre:
 \subsubsection{AddUsersComponent}
 
 Az AddUsersComponent egy Angular komponens, amely felelős a felhasználók felviteléért az alkalmazásban. Ebben a komponensben a felhasználókhoz kapcsolódó adatokat gyűjtöm össze és továbbítom az AddUsersService szolgáltatáshoz. Az adatok felvitelénél különös figyelmet szenteltem, hogy az egyes szerepkörök esetén a beosztás mező csak az adott szerepkörrel rendelkező felhasználókhoz jelenjen meg. Ennek érdekében hoztam létre az onRoleChange függvényt. Az adatok helyes felvitelét validatorok segítségével oldottam meg, ahol létrehoztam egyedieket is, annak érdekében hogy ne kelljen minden mezőt minden szerepkör esetén kitölteni. Az e-mail validációját egy reguláris kifejezéssel, vagy regexszel oldottam meg. A regex egy olyan szövegmintázat, amely lehetővé teszi a szövegben való keresést vagy illesztést egy meghatározott mintához. Ez a reguláris kifejezés ellenőrzi, hogy az e-mail cím megfelelő formátumú-e a következő szerkezet szerint: felhasznalonev@domain.com. A helyes form beküldés esetén sweetalert2 csomag importálásával dizájnos figyelmeztető szöveget helyeztem el. Amennyiben a felhasználó nem megfelelő jogosultsággal rendelkezik, a komponens nem jeleníti meg az oldalt, hanem figyelmeztetést ad a felhasználónak, majd átirányítja a bejelentkező oldalra. Ezt az ngOnInit függvényben állítottam be, ahol egy roleMatch függvény alapján vizsgálom az éppen bejelentkezett felhasználót, hogy jogosultságot kaphat-e az oldalhoz. Amennyiben nem, továbbirányítom egy másik oldalra. Ezt a folyamatot minden lapnál elvégeztem.\\
-\newpage
-A komponens HTML része:\\
+\\A komponens HTML része:\\
 \\
 Az adatok felviteléhez egy container-t hoztam létre, amely tartalmazza az űrlapot. Az űrlap egy card elemen belül található, ami további stílusokat ad az űrlaphoz. Az ngSubmit eseményvezérlő a form küldésekor hívódik meg, és a addFormData függvényt hívja meg az űrlap értékeivel. A [formGroup] direktíva az addUserForm FormGroup-hoz köti az űrlapot, amely a ts fájl-ban lett definiálva. A formon belül a mezők formControlName direktívával kapcsolódnak a FormGroup-hoz. Az input mezők, választógombok és dátumválasztók mellett használok *ngIf strukturális direktívát is, hogy a mezők csak bizonyos feltételek teljesülésekor jelenjenek meg. Betekintést nyertem az Angular Material használatába, amely lehetővé teszi számomra, hogy az alkalmazásban modern és összhangban lévő felhasználói felületet hozzak létre. Az űrlap alján egy gomb található, amely a form elküldésére szolgál, és csak akkor aktív, ha az űrlap érvényes állapotban van. 
 
@@ -397,9 +462,8 @@ Az UploadPPTXFilesComponent HTML kódja a felhasználói felületet definiálja 
 
 \subsubsection{ZvReportComponent}
 
-A ZvReport komponens egy űrlapot kínál a felhasználóknak, ahol megadhatja a szükséges adatokat a záróvizsga jegyzőkönyv összeállításához. A komponens inicializálása során meghívódik a getStudentsToDropdown metódus, ami lekéri az összes hallgatót a rendszerből. A felhasználó választhat egy hallgatót a lenyíló menüből, ami után a onSelectStudent metódus meghívja a getThesesesToDropdown és a getCodeToDropDown metódusokat. A getThesesesToDropdown metódus lekéri az összes szakdolgozatot a kiválasztott diákhoz. A getCodeToDropDown metódus lekéri az összes olyan záróvizsga kódját, amelyben a kiválasztott hallgató részt vett. A questionToDropDownList, gradesToDropDownList és tgradesToDropDownList listák az űrlap különböző legördülő listáit definiálják. Az addFormData metódus felelős az űrlap adatainak feldolgozásáért és az új dokumentum hozzáadásáért a rendszerhez. Az űrlap validálására a addDocxForm FormGroup-ot használom, amely tartalmazza a szükséges ellenőrzéseket a formában szereplő mezők számára.
-\newpage
-A komponens HTML része:\\
+A ZvReport komponens egy űrlapot kínál a felhasználóknak, ahol megadhatja a szükséges adatokat a záróvizsga jegyzőkönyv összeállításához. A komponens inicializálása során meghívódik a getStudentsToDropdown metódus, ami lekéri az összes hallgatót a rendszerből. A felhasználó választhat egy hallgatót a lenyíló menüből, ami után a onSelectStudent metódus meghívja a getThesesesToDropdown és a getCodeToDropDown metódusokat. A getThesesesToDropdown metódus lekéri az összes szakdolgozatot a kiválasztott diákhoz. A getCodeToDropDown metódus lekéri az összes olyan záróvizsga kódját, amelyben a kiválasztott hallgató részt vett. A questionToDropDownList, gradesToDropDownList és tgradesToDropDownList listák az űrlap különböző legördülő listáit definiálják. Az addFormData metódus felelős az űrlap adatainak feldolgozásáért és az új dokumentum hozzáadásáért a rendszerhez. Az űrlap validálására a addDocxForm FormGroup-ot használom, amely tartalmazza a szükséges ellenőrzéseket a formában szereplő mezők számára.\\
+\\A komponens HTML része:\\
 \\
 Ez a HTML kód egy űrlapot definiál, amely lehetővé teszi a felhasználók számára, hogy adatokat adjanak meg és azokat továbbítsák az Angular alkalmazásnak. Az űrlap tartalmazza a következő elemeket:
 
