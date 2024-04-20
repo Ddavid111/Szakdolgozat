@@ -256,9 +256,9 @@ A rendszerben összesen kilenc vezérlő osztályt hoztam létre, melyek mindegy
 
 \Section{A REST API áttekintése}
 
-A Representational State Transfer Application Programming Interface (továbbiakban: REST API) egy olyan szoftveres architekturális stílus, amelyet webes szolgáltatások kialakítására használnak. Az API-k különböző platformokon keresztül teszik lehetővé az alkalmazások közötti kommunikációt. A REST API-k az erőforrásokat (pl. adatbázis rekordokat) reprezentálják és kezelik, a HTTP protokoll különböző metódusainak (GET, POST, PUT, DELETE stb.) segítségével.
+A Representational State Transfer Application Programming Interface (továbbiakban: REST API)\cite{REST API} egy olyan szoftveres architekturális stílus, amelyet webes szolgáltatások kialakítására használnak. Az API-k különböző platformokon keresztül teszik lehetővé az alkalmazások közötti kommunikációt. A REST API-k\cite{REST API} az erőforrásokat (pl. adatbázis rekordokat) reprezentálják és kezelik, a HTTP\cite{http} protokoll különböző metódusainak (GET, POST, PUT, DELETE stb.) segítségével.
 
-A backend és frontend összekapcsolása úgy történik, hogy a backend kiszolgálja az adatokat a frontend felé, amely a felhasználói felületet megjeleníti és a felhasználó interakcióit kezeli. Ezt úgy valósítják meg, hogy a frontend kliens oldalon HTTP kéréseket indít a backend felé, amelyekre a szerver válaszol.
+A backend és frontend összekapcsolása úgy történik, hogy a backend kiszolgálja az adatokat a frontend felé, amely a felhasználói felületet megjeleníti és a felhasználó interakcióit kezeli. Ezt úgy valósítják meg, hogy a frontend kliens oldalon HTTP\cite{http} kéréseket indít a backend felé, amelyekre a szerver válaszol.
 
 Például:
 
@@ -280,26 +280,26 @@ A backend frissíti az adatbázisban a megfelelő tézis rekordot az új adatokk
 
 \Section{Frontend}
 
-Az Angular frontend fejlesztésének középpontjában a komponensek és servicek állnak. A komponensek az alkalmazás felhasználói felület részeit képviselik, míg a szolgáltatások központosítják az alkalmazás logikáját és funkcionalitását. A frontend fejlesztés során ezeket az építőköveket kombinálom, hogy részletes és felhasználóbarát webalkalmazást hozzak létre.
+Az Angular\cite{angular} frontend fejlesztésének középpontjában a komponensek és servicek állnak. A komponensek az alkalmazás felhasználói felület részeit képviselik, míg a szolgáltatások központosítják az alkalmazás logikáját és funkcionalitását. A frontend fejlesztés során ezeket az építőköveket kombinálom, hogy részletes és felhasználóbarát webalkalmazást hozzak létre.
 
-Elsőként szeretném bemutatni az alkalmazás fő modulját. Az AppModule egy Angular modul, amely felelős az alkalmazás fő komponenseinek, szolgáltatásainak és moduljainak konfigurálásáért és összekapcsolásáért. \\
+Elsőként szeretném bemutatni az alkalmazás fő modulját. Az AppModule egy Angular\cite{angular} modul, amely felelős az alkalmazás fő komponenseinek, szolgáltatásainak és moduljainak konfigurálásáért és összekapcsolásáért. \\
 \\Fontos tulajdonságai:
 
 \begin{itemize}
 
 \item{Deklarációk:} A declarations tömbben felsorolom az összes komponenst és direktívát, amelyeket az alkalmazásban használok. Ezek közé tartoznak például a felhasználó felvitele, záróvizsga létrehozása stb. komponensek. 
 
-\item{Importálások:} Az imports tömbben felsorolom azokat a modulokat, amelyeket az alkalmazás használ. Ezek között találhatók a Ng2OrderModule (a rendezésért felelős modul), AppRoutingModule (az alkalmazás útvonalainak kezeléséért felelős modul), NgxPaginationModule (a lapok számozásáért felelős modul) és a HttpClientModule (a HTTP kérésekhez szükséges modul), valamint más modulok, például az Angular Material moduljai.
+\item{Importálások:} Az imports tömbben felsorolom azokat a modulokat, amelyeket az alkalmazás használ. Ezek között találhatók a Ng2OrderModule (a rendezésért felelős modul), AppRoutingModule (az alkalmazás útvonalainak kezeléséért felelős modul), NgxPaginationModule (a lapok számozásáért felelős modul) és a HttpClientModule (a HTTP\cite{http} kérésekhez szükséges modul), valamint más modulok, például az Angular Material moduljai.
 
 \end{itemize}
 
-Az AppRoutingModule egy külön modul, amely a fő alkalmazás útvonalait kezeli. A RouterModule.forRoot(routes) segítségével konfigurálom az alkalmazás útvonalait a routes tömb segítségével, ahol minden útvonalhoz megadom, hogy melyik komponenshez tartozzon. Ez azért fontos, mert az Angular útvonalak segítségével navigálja a felhasználókat az alkalmazásban.
+Az AppRoutingModule egy külön modul, amely a fő alkalmazás útvonalait kezeli. A RouterModule.forRoot(routes) segítségével konfigurálom az alkalmazás útvonalait a routes tömb segítségével, ahol minden útvonalhoz megadom, hogy melyik komponenshez tartozzon. Ez azért fontos, mert az Angular\cite{angular} útvonalak segítségével navigálja a felhasználókat az alkalmazásban.
 
 % Angular Service-ek bemutatása.
 
 \subsection{Servicek}
 
-Az Angular service-ek olyan osztályok, amelyek segítenek a frontend alkalmazás és a szerveroldali  szolgáltatások közötti adatátvitelben és kommunikációban. Az Angular alkalmazások gyakran kommunikálnak a szerverrel, hogy adatokat kérjenek, frissítsenek vagy mentsenek. Ehhez az Angular service-ek HTTP kéréseket hajtanak végre a backend API felé, például GET, POST, PUT vagy DELETE kéréseket küldenek a szervernek a szükséges adatokkal. Ezenkívül az Angular szolgáltatások lehetővé teszik az adatok megosztását és átvitelét a különböző komponensek között is. Például egy szolgáltatásban tárolt adatokat egy vagy több komponens használhatja, ami lehetővé teszi az alkalmazás különböző részeinek adatainak szinkronizálását és koherenciáját.\\
+Az Angular\cite{angular} service-ek olyan osztályok, amelyek segítenek a frontend alkalmazás és a szerveroldali  szolgáltatások közötti adatátvitelben és kommunikációban. Az Angular alkalmazások gyakran kommunikálnak a szerverrel, hogy adatokat kérjenek, frissítsenek vagy mentsenek. Ehhez az Angular\cite{angular} service-ek HTTP\cite{http} kéréseket hajtanak végre a backend API felé, például GET, POST, PUT vagy DELETE kéréseket küldenek a szervernek a szükséges adatokkal. Ezenkívül az Angular\cite{angular} szolgáltatások lehetővé teszik az adatok megosztását és átvitelét a különböző komponensek között is. Például egy szolgáltatásban tárolt adatokat egy vagy több komponens használhatja, ami lehetővé teszi az alkalmazás különböző részeinek adatainak szinkronizálását és koherenciáját.\\
 \\Ezekből 12 darabot hoztam létre:
 
 \begin{itemize}
