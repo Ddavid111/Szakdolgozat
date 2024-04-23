@@ -1,6 +1,0 @@
-th:nth-last-child(1) {
-  width: 70px ;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
