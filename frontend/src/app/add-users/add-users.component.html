@@ -1,0 +1,114 @@
+<div class="container">
+  <div class="card" style="padding: 15px">
+    <form (ngSubmit)="addFormData(addUserForm)" [formGroup]="addUserForm">
+
+      <div class="form-group">
+        <br>
+        <input type="text" formControlName="title" id="title" placeholder="felhasználó titulusa" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <span style="color:red;" *ngIf="addUserForm.errors?.['birthdayError']">Kötelező megadni a mezőt!</span>
+        <br>
+        <mat-form-field>
+        <mat-label>Születési dátum:</mat-label>
+          <input formControlName ="birthday" matInput [matDatepicker]="birthday" id="birthday" >
+          <mat-datepicker-toggle matSuffix [for]="birthday"></mat-datepicker-toggle>
+          <mat-hint>ÉÉÉÉ.HH.NN</mat-hint>
+          <mat-datepicker #birthday></mat-datepicker>
+        </mat-form-field>
+        <br>
+      </div>
+
+      <div class="form-group">
+        <br>
+        <span style="color:red;" *ngIf="addUserForm.errors?.['emailError']">Kötelező megadni a mezőt!</span>
+        <span style="color:red;" *ngIf="addUserForm.errors?.['invalidEmail']">Érvénytelen email cím!</span>
+        <input type="text" formControlName="email" id="email" placeholder="Email cím" class="form-control">
+      </div>
+
+
+      <div class="form-group">
+        <br>
+        <span style="color:red;" *ngIf="addUserForm.errors?.['neptunCodeError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="neptunCode" id="neptunCode" placeholder="Neptunkód" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <br>
+        <span style="color:red;" *ngIf="addUserForm.errors?.['usernameError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="username" id="username" placeholder="Felhasználónév" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <br>
+        <span style="color:red;" *ngIf="addUserForm.errors?.['fullnameError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="fullname" id="fullname" placeholder="Teljes név" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <br>
+        <span style="color:red;" *ngIf="addUserForm.errors?.['passwordError']">Kötelező megadni a mezőt!</span>
+        <input type="password" formControlName="password" id="password" placeholder="Jelszó" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <br>
+        <span style="color:red;" *ngIf="addUserForm.errors?.['birthPlaceError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="birthPlace" id="birthPlace" placeholder="Születési hely" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <br>
+        <span style="color:red;" *ngIf="addUserForm.errors?.['mothersMaidenNameError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="mothersMaidenName" id="mothersMaidenName" placeholder="Anyja lánykori neve" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <br>
+        <span style="color:red;" *ngIf="addUserForm.errors?.['workplaceError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="workplace" id="workplace" placeholder="Munkahely" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <br>
+        <span style="color:red;" *ngIf="addUserForm.errors?.['pedigreeNumberError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="pedigreeNumber" id="pedigreeNumber" placeholder="Törzskönyvi szám" class="form-control">
+      </div>
+      <br>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Válassz szerepkört!</mat-label>
+          <mat-select formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onRoleChange()">
+            <mat-option *ngFor="let item of rolesToDropDownList" [value]="item.role">{{ item.role }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <div *ngIf="isVisiblepositionField">
+          <label for="position">Beosztás:</label>
+          <input type="text" formControlName="position" id="position" placeholder="Beosztás" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div *ngIf="isDropdownList">
+          <mat-form-field>
+            <mat-label>Válassz beosztást!</mat-label>
+            <mat-select formControlName="position">
+              <mat-option *ngFor="let item of positionsToDropDownList" [value]="item.position">{{ item.position }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <br>
+
+     <div class="form-group">
+        <input type="submit" [disabled]="addUserForm.invalid" value="Felvitel" class="submit-button">
+     </div>
+
+    </form>
+  </div>
+</div>

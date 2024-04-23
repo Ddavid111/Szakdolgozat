@@ -258,22 +258,23 @@ A rendszerben összesen kilenc vezérlő osztályt hoztam létre, melyek mindegy
 
 A Representational State Transfer Application Programming Interface (továbbiakban: REST API)\cite{REST API} egy olyan szoftveres architekturális stílus, amelyet webes szolgáltatások kialakítására használnak. Az API-k különböző platformokon keresztül teszik lehetővé az alkalmazások közötti kommunikációt. A REST API-k\cite{REST API} az erőforrásokat (pl. adatbázis rekordokat) reprezentálják és kezelik, a HTTP\cite{http} protokoll különböző metódusainak (GET, POST, PUT, DELETE stb.) segítségével.
 
-A backend és frontend összekapcsolása úgy történik, hogy a backend kiszolgálja az adatokat a frontend felé, amely a felhasználói felületet megjeleníti és a felhasználó interakcióit kezeli. Ezt úgy valósítják meg, hogy a frontend kliens oldalon HTTP\cite{http} kéréseket indít a backend felé, amelyekre a szerver válaszol.
+A backend és frontend összekapcsolása úgy történik, hogy a backend kiszolgálja az adatokat a frontend felé, amely a felhasználói felületet megjeleníti és a felhasználó interakcióit kezeli. Ezt úgy valósítják meg, hogy a frontend kliens oldalon HTTP\cite{http} kéréseket indít a backend felé, amelyekre a szerver válaszol.\\
 
 Például:
 
 \begin{enumerate}
 
 \item{\textbf{GET-es kérés:}}
-A backend /getThesesListToDisplay végpontján keresztül elérhetővé teszi a rendszer a szakdolgozatok listáját a megjelenítéshez.
-A frontend a getThesesListToDisplay() metódussal kéri le ezt a listát az API-tól, és a visszakapott adatokat használja a dolgozatok megjelenítésére.
-\item{\textbf{POST request:}}
-A frontend az /addTheseses végpontra küldi a felhasználó által hozzáadni kívánt dolgozat adatait.
-A backend a kapott adatok alapján hozzáadja az új szakdolgozatot az adatbázishoz, majd visszaküldi az új tézist a frontendnek.
-\item{\textbf{PUT request:}}
-A frontend az /updateTheses végpontra küldi a felhasználó által szerkesztett szakdolgozat adatait.
-A backend frissíti az adatbázisban a megfelelő tézis rekordot az új adatokkal, majd visszaküldi a frissített dolgozatot a frontendnek.
+A GET-es kérések általában adatok lekérésére szolgálnak. Például, a backend a /getThesesListToDisplay végpontján keresztül teszi elérhetővé a szakdolgozatok listáját a frontend számára. Ezenkívül, a frontend a /findThesesById végpontot is használhatja egy adott szakdolgozat részleteinek lekérésére egyedi azonosító alapján.
 
+\item{\textbf{POST-os kérés:}}
+A POST-os kérések új adatok beküldésére szolgálnak a szerver számára. Például, a frontend az /addThesis végpontra küldheti a felhasználó által hozzáadni kívánt dolgozat adatait. A backend a kapott adatok alapján hozzáadja az új szakdolgozatot az adatbázishoz, majd visszaküldi az új tézist a frontendnek.
+
+\item{\textbf{PUT-os kérés:}}
+A PUT-os kérések meglévő adatok frissítésére szolgálnak a szerveren. Például, a frontend az /updateThesis végpontra küldheti a felhasználó által szerkesztett szakdolgozat adatait. A backend frissíti az adatbázisban a megfelelő thesis rekordot az új adatokkal, majd visszaküldi a frissített dolgozatot a frontendnek.
+
+\item{\textbf{DELETE kérés:}}
+A DELETE kérések adatok törlésére szolgálnak a szerveren. A frontend a /deleteThesis végpontra küldheti a felhasználó által törölni kívánt szakdolgozat azonosítóját. A backend az egyedi azonosító alapján törli az adatbázisból a szakdolgozatot.
 
 \end{enumerate}
 
@@ -305,17 +306,17 @@ Az Angular\cite{angular} service-ek olyan osztályok, amelyek segítenek a front
 \begin{itemize}
 
 \item{AddDocxService}
-\item{AddFilesService}
+\item{AddFileService}
 \item{AddSessionService}
-\item{AddThesesesService}
-\item{AddTopicsService}
-\item{AddUsersService}
+\item{AddThesisService}
+\item{AddTopicService}
+\item{AddUserService}
 \item{AuthService}
 \item{DocumentService}
-\item{findAllUsersService}
-\item{ListThesesesService}
+\item{FindAllUserService}
+\item{ListThesisService}
 \item{ReportStatusService}
-\item{UserService}
+\item{LoginService}
 
 \end{itemize}
 

@@ -1,0 +1,46 @@
+title Hallgatók felvitele - Szekvenciadiagram
+
+  participant Elnök as E
+  participant Hallgató as H
+  participant Jegyző as J
+
+  note over E
+  Hallgató adatok megadása
+  end note
+  note over E
+  Adatok ellenőrzése és validáció
+  end note
+
+  E->>H: Felvételre kerültél!
+  
+  note over H 
+  Belépés a rendszerbe
+  end note
+  
+  note over H 
+  Adatlap kitöltése
+  end note
+  
+  H-->J: Új adatlap
+  
+  note over J 
+  Új adatlap érkezett
+  end note
+  
+  note over J 
+  Adatlap ellenőrzése
+  end note
+  
+  Jegyző->>Hallgató: Visszajelzés (ha szükséges)
+  
+  note over J 
+  Adatlap jóváhagyása
+  end note
+  
+  note over J 
+  Jóváhagyott adatok rögzítése
+  end note
+  
+  J-->>E: Adatlap jóváhagyva értesítés
+  
+  E-->>Hallgató: Adatlap jóváhagyva értesítés

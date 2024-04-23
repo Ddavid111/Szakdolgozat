@@ -1,0 +1,101 @@
+<div class="container">
+  <div class="card" style="padding: 15px">
+    <form (ngSubmit)="addFormData()" [formGroup]="addThesesForm">
+
+      <div class="form-group">
+        <br>
+        <span style="color:red;" *ngIf="addThesesForm.errors?.['titleError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="title" id="title" placeholder="Szakdolgozat címe" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="faculty">Egyetemi kar:</label>
+        <br>
+        <span style="color:red;" *ngIf="addThesesForm.errors?.['facultyError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="faculty" id="faculty" placeholder="Egyetemi kar" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="department">Tanszék:</label>
+        <br>
+        <span style="color:red;" *ngIf="addThesesForm.errors?.['departmentError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="department" id="department" placeholder="Tanszék" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="speciality">Szak:</label>
+        <br>
+        <span style="color:red;" *ngIf="addThesesForm.errors?.['specialityError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="speciality" id="speciality" placeholder="Szak" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="language">Nyelv:</label>
+        <br>
+        <span style="color:red;" *ngIf="addThesesForm.errors?.['languageError']">Kötelező megadni a mezőt!</span>
+        <input type="text" formControlName="language" id="language" placeholder="Nyelv" class="form-control">
+      </div>
+
+      <div class="form-check">
+        <label for="hasMscApply">MSc-re jelentkezem:</label>
+        <input type="checkbox" formControlName="hasMscApply" id="hasMscApply" [(ngModel)]="jelentkezik"
+               class="form-check-input">
+      </div>
+
+<!--      <div class="form-group">-->
+<!--        <mat-form-field>-->
+<!--          <mat-label>Benyújtás ideje:</mat-label>-->
+<!--          <input formControlName ="submissionDate" matInput [matDatepicker]="submissionDate" id="submissionDate" >-->
+<!--          <mat-datepicker-toggle matSuffix [for]="submissionDate"></mat-datepicker-toggle>-->
+<!--          <mat-hint>YYYY.MM.DD</mat-hint>-->
+<!--          <mat-datepicker #submissionDate></mat-datepicker>-->
+<!--        </mat-form-field>-->
+<!--      </div>-->
+
+
+      <div class="form-group">
+        <label for="answer">Megjegyzés:</label>
+        <textarea formControlName="answer" id="answer" placeholder="Megjegyzés" class="form-control"></textarea>
+      </div>
+
+      <br>
+
+
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Hallgató kiválasztása</mat-label>
+          <mat-select formControlName="userId" [(ngModel)]="selectedStudent">
+            <mat-option *ngFor="let student of students" [value]="student.id">{{ student.fullname }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Témavezető kiválasztása</mat-label>
+          <mat-select formControlName="supervisorId" [(ngModel)]="selectedSupervisor">
+            <mat-option *ngFor="let supervisor of supervisors"
+                        [value]="supervisor.id">{{ supervisor.fullname }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Konzulens kiválasztása</mat-label>
+          <mat-select formControlName="consultantId" [(ngModel)]="selectedConsultant">
+            <mat-option *ngFor="let consultant of consultants" [value]="consultant.id">{{ consultant.fullname }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+
+      <div class="form-group">
+        <input type="submit" [disabled]="addThesesForm.invalid" value="Felvitel" class="submit-button">
+      </div>
+
+    </form>
+  </div>
+</div>

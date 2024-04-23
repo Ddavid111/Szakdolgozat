@@ -1,0 +1,53 @@
+<h1>PDF, ZIP Fájlok feltöltése </h1>
+
+
+<h3>Szakdolgozat PDF feltöltése</h3>
+
+<p>Ki kellene választani azt a szakdolgozatot, amire a fájlokat tölti fel.</p>
+
+<mat-form-field>
+  <mat-label>Szakdolgozat kiválasztása</mat-label>
+  <mat-select name="thesesId" [(ngModel)]="thesesId">
+    <mat-option *ngFor="let item of theses" [value]="item.id">{{ item.title }}</mat-option>
+  </mat-select>
+  <mat-error *ngIf="!thesesId">Szakdolgozat kiválasztása kötelező</mat-error>
+</mat-form-field>
+
+<input class="form-control" type="file" (change)="onFileSelected($event, 1)">
+<p></p>
+<td>
+  <button type="button" (click)="uploadFile(1)">Feltöltés</button>
+</td>
+
+<div *ngIf="selectedFile1" class="progress my-3">
+  <div
+    class="progress-bar progress-bar-info progress-bar-striped"
+    role="progressbar"
+    attr.aria-valuenow="{{ uploadProgress }}"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    [ngStyle]="{ width: uploadProgress + '%' }"
+  >
+    {{ uploadProgress }}%
+  </div>
+</div>
+
+<h3>Szakdolgozat melléklet (.zip) feltöltése</h3>
+<input class="form-control" type="file" (change)="onFileSelected($event, 2)">
+<p></p>
+<td>
+  <button type="button" (click)="uploadFile(2)">Feltöltés</button>
+</td>
+
+<div *ngIf="selectedFile2" class="progress my-3">
+  <div
+    class="progress-bar progress-bar-info progress-bar-striped"
+    role="progressbar"
+    attr.aria-valuenow="{{ uploadProgress2 }}"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    [ngStyle]="{ width: uploadProgress2 + '%' }"
+  >
+    {{ uploadProgress2 }}%
+  </div>
+</div>

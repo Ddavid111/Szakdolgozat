@@ -1,0 +1,74 @@
+<form (ngSubmit)="addFormData(addDocxForm)" [formGroup]="addDocxForm">
+
+
+  <mat-form-field>
+    <mat-label>Válassz ki egy hallgatót!</mat-label>
+    <mat-select formControlName="student" [(ngModel)]="selectedStudent" (ngModelChange)="onSelectStudent()">
+      <mat-option *ngFor="let student of students" [value]="student.id">
+        {{ student.fullname }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+
+  <mat-form-field>
+    <mat-label>Szakdolgozat kiválasztása</mat-label>
+    <mat-select formControlName="theses" [(ngModel)]="selectedTheseses">
+      <mat-option *ngFor="let item of theses" [value]="item.id">
+        {{ item.title }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br>
+
+  <mat-form-field>
+    <mat-label>Záróvizsga kód kiválasztása</mat-label>
+  <mat-select formControlName="session" [(ngModel)]="selectedSession">
+    <mat-option *ngFor="let item of session" [value]="item.id">
+      {{ item.code }}
+    </mat-option>
+  </mat-select>
+  </mat-form-field>
+  <p></p>
+
+  <input type="text" formControlName="othermembers" id="othermembers" placeholder="Külső tag">
+  <br>
+  <p></p>
+
+  <mat-form-field>
+    <mat-label>Feltett kérdések, válaszok</mat-label>
+  <mat-select id="question" formControlName="question" [(ngModel)]="selectedQuestion">
+    <mat-option *ngFor="let item of questionToDropDownList" [value]="item.question">
+      {{ item.question }}
+    </mat-option>
+  </mat-select>
+    </mat-form-field>
+  <p></p>
+
+  <mat-form-field>
+    <mat-label>Szakdolgozat védésre kapott osztályzat</mat-label>
+  <mat-select id="tgradeId" formControlName="tgradeId" [(ngModel)]="selectedThesesGrade">
+    <mat-option *ngFor="let item of tgradesToDropDownList" [value]="item.tgradeId">
+      {{ item.tgradeId }}
+    </mat-option>
+  </mat-select>
+  </mat-form-field>
+  <p></p>
+
+  <mat-form-field>
+    <mat-label>Szigorlatra kapott osztályzat</mat-label>
+  <mat-select id="gradeId" formControlName="gradeId" [(ngModel)]="selectedGrade">
+    <mat-option *ngFor="let item of gradesToDropDownList" [value]="item.gradeId">
+      {{ item.gradeId }}
+    </mat-option>
+  </mat-select>
+  </mat-form-field>
+  <p></p>
+
+  <textarea formControlName="description" id="description" placeholder="Megjegyzés"></textarea>
+  <p></p>
+
+  <input type="submit" [disabled]="addDocxForm.invalid" value="Generate">
+
+</form>
+

@@ -1,0 +1,12 @@
+title Bírálati Folyamat
+    
+    
+
+    Admin->Hallgató: Regisztálja
+    Témavezető->Admin: Bíráló elérhetősége
+    Admin->Bíráló: Regisztálja
+    Elnök->Témavezető: Felkérés bírálatra
+    Elnök->Bíráló: Felkérés bírálatra
+    Bíráló->Elnök: Bírálat
+    Témavezető->Elnök: Bírálat
+    Elnök->Hallgató: Bírálat kiküldése
