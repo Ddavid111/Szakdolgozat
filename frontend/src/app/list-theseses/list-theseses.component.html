@@ -20,32 +20,28 @@
       <mat-datepicker #searchDatePicker></mat-datepicker>
     </mat-form-field>
   </div>
-
+</div>
 
   <div class="mt-5">
     <table class="table table-bordered">
       <thead class="thead">
       <tr>
-        <th (click)="sort('user.fullname')">Name<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
-        <th (click)="sort('title')">Title<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
-        <th (click)="sort('faculty')">Faculty<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
-        <th (click)="sort('department')">Department<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
-        <th (click)="sort('speciality')">Speciality<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
-        <th (click)="sort('language')">Language<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
-        <th (click)="sort('hasMscApply')">MSC<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
-        <th (click)="sort('submissionDate')">Submission Date<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
-        <th (click)="sort('answer')">Answer<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
-        <th (click)="sort('topicScore')">Topic Score<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
-        <th (click)="sort('supervisor.fullname')">Supervisor name<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
-        <th (click)="sort('consultant.fullname')">Consultant name<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
-
-
+        <th (click)="sort('user.fullname')">Hallgató neve<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort('title')">Dolgozat címe<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort('faculty')">Kar<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort('department')">Tanszék<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort('speciality')">Szak<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort('language')">Nyelv<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort('hasMscApply')">MSC jelentkezés<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort('submissionDate')">Benyújtás ideje<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort('answer')">Megjegyzés<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort('topicScore')">Tételre kapott osztályzat<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort('supervisor.fullname')">Témavezető neve<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
+        <th (click)="sort('consultant.fullname')">Konzulens neve<span [hidden]="reverse">▲</span><span [hidden]="!reverse">▼</span> <i class="fa fa-sort"></i></th>
         <th>UPDATE</th>
         <th>DELETE</th>
         <th>Tételhúzás</th>
         <th style="width: 70px">Mit húzott a hallgató?</th>
-
-
       </tr>
       </thead>
       <tbody class="tbody">
@@ -58,35 +54,29 @@
         <td>{{ e.language }}</td>
         <td>{{ e.hasMscApply }}</td>
         <td>{{ e.submissionDate }}</td>
-        <td> <span *ngIf="e.answer != null; else elseBlockForNoAnswer"></span> {{ e.answer }}</td>
+        <td><span *ngIf="e.answer != null; else elseBlockForNoAnswer"></span> {{ e.answer }}</td>
         <td>{{ e.topicScore }}</td>
-        <td> <span *ngIf="e.supervisor.title!= null">{{e.supervisor.title + ' ' }}</span> {{e.supervisor.fullname }}</td>
-        <td> <span *ngIf="e.consultant != null; else elseBlockForNoConsultant"> <span *ngIf="e.consultant.title != null">{{e.consultant.title + ' ' }}</span> {{ e.consultant.fullname }}</span></td>
-
+        <td><span *ngIf="e.supervisor.title!= null">{{e.supervisor.title + ' ' }}</span> {{e.supervisor.fullname }}</td>
+        <td><span *ngIf="e.consultant != null; else elseBlockForNoConsultant"> <span *ngIf="e.consultant.title != null">{{e.consultant.title + ' ' }}</span> {{ e.consultant.fullname }}</span></td>
         <td>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal"
-                  (click)="edit(e)">Update
-          </button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" (click)="edit(e)">Update</button>
         </td>
         <td>
-          <button type="button" class="btn btn-danger btn-sm" (click)="deleteTheses(e)">
-            Delete
-          </button>
+          <button type="button" class="btn btn-danger btn-sm" (click)="deleteTheses(e)">Delete</button>
         </td>
         <td>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chooseTopicModal"
-                  (click)="addTopic(e)">Új tétel
-          </button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chooseTopicModal" (click)="addTopic(e)">Új tétel</button>
         </td>
-       <td *ngIf=" e.topics !== null; else elseBlock">{{ e.topics.topic }}</td>
+        <td *ngIf=" e.topics !== null; else elseBlock">{{ e.topics.topic }}</td>
         <ng-template #elseBlock><td>A hallgató még nem húzott tételt.</td></ng-template>
       </tr>
       </tbody>
     </table>
-
     <pagination-controls (pageChange)="p = $event"></pagination-controls>
   </div>
-<ng-template #elseBlockForNoConsultant>Nincs konzulense</ng-template>
+
+
+  <ng-template #elseBlockForNoConsultant>Nincs konzulense</ng-template>
   <ng-template #elseBlockForNoAnswer>Nincs megjegyzés</ng-template>
 
 
@@ -235,4 +225,4 @@
       </div>
     </div>
   </div>
-</div>
+

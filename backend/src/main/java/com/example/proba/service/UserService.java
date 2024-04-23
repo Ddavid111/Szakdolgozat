@@ -218,8 +218,8 @@ public class UserService {
         user.setFullname("Minta Admin");
         user.setEmail("zalman2020201@gmail.com");
         user.setMothersMaidenName("admin anyja neve");
-        user.setBirthPlace("Lyukóbánya");
-        user.setWorkplace("Cigánysor");
+        user.setBirthPlace("Miskolc");
+        user.setWorkplace("Ubisoft");
         user.setPedigreeNumber("T34458");
         user.setPosition("egyetemi tanár");
         user.setNeptunCode("ABCDEF");
