@@ -14,7 +14,7 @@ CREATE DATABASE proba28;
 USE proba28;
 \end{lstlisting}
 
-Ezek után indítsuk el a backend és frontend részét az alkalmazásnak. Ehhez választhatunk bármilyen webalkalmazáshoz megfelelő fejlesztőkörnyezetet. Személy szerint a \textit{JetBrains}-es \cite{JetBrains} termékeket javaslom, mint például az \textit{IntelliJ} \cite{IntelliJ} vagy a \textit{WebStorm} \cite{WebStorm}. Fontos megjegyezni, hogy az első indításkor néhány hibaüzenet fogad minket a backend részen. Ne essünk kétségbe, mert a második indítás után ezek a hibák automatikusan el fognak tűnni. A probléma abból adódik, hogy a szerveroldal elindulásakor bizonyos műveletek próbálnak hozzáférni a már létező adatbázishoz, ami az első indításkor még nem teljesen inicializálódott. Ezért indítsuk el még egyszer a szerveroldalt.
+Ezek után indítsuk el a backend és frontend részét az alkalmazásnak. Ehhez választhatunk bármilyen webalkalmazáshoz megfelelő fejlesztőkörnyezetet. Személy szerint a \textit{JetBrains}-es \cite{JetBrains} termékeket javaslom, mint például az \textit{IntelliJ} \cite{IntelliJ IDEA} vagy a \textit{WebStorm} \cite{WebStorm}. Fontos megjegyezni, hogy az első indításkor néhány hibaüzenet fogad minket a backend részen. Ne essünk kétségbe, mert a második indítás után ezek a hibák automatikusan el fognak tűnni. A probléma abból adódik, hogy a szerveroldal elindulásakor bizonyos műveletek próbálnak hozzáférni a már létező adatbázishoz, ami az első indításkor még nem teljesen inicializálódott. Ezért indítsuk el még egyszer a szerveroldalt.
 
 \begin{figure}[h]
 \centering
@@ -93,14 +93,14 @@ A "Beadott szakdolgozatok" (\ref{fig:Report_status1} ábra) részben láthatóak
 \caption{Beadott szakdolgozatok}
 \label{fig:Report_status1}
 \end{figure}
-\\A "Folyamatban lévő bírálatok" (\ref{fig:Report_status2}) részben a bíráló neve automatikusan megjelenik, miután kiválasztottuk. A táblázat ugyanazokat az információkat tartalmazza, mint a "Beadott szakdolgozatok" esetében.\\
+\\A "Folyamatban lévő bírálatok" (\ref{fig:Report_status2} ábra) részben a bíráló neve automatikusan megjelenik, miután kiválasztottuk. A táblázat ugyanazokat az információkat tartalmazza, mint a "Beadott szakdolgozatok" esetében.\\
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth]{images/Report_status2.png}
 \caption{Folyamatban lévő bírálatok}
 \label{fig:Report_status2}
 \end{figure}
-\\Miután a bírálat befejeződött a témavezető és a bíráló részéről, a "Befejezett bírálatok" (\ref{fig:Report_status3}) táblázathoz kerülünk, ahol lehetőségünk van a bírálatok letöltésére és azok elküldésére e-mailben a hallgatónak. Ez az elrendezés egyszerűsíti és átláthatóvá teszi a bírálatok kezelését és nyomonkövetését.
+\\Miután a bírálat befejeződött a témavezető és a bíráló részéről, a "Befejezett bírálatok" (\ref{fig:Report_status3} ábra) táblázathoz kerülünk, ahol lehetőségünk van a bírálatok letöltésére és azok elküldésére e-mailben a hallgatónak. Ez az elrendezés egyszerűsíti és átláthatóvá teszi a bírálatok kezelését és nyomonkövetését.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth]{images/Report_status3.png}
@@ -110,7 +110,7 @@ A "Beadott szakdolgozatok" (\ref{fig:Report_status1} ábra) részben láthatóak
 
 \subsection{Rendezés és lapozás}
 
-A Szakdolgozatok listázása oldalon (illetve minden adattagot megjelenítő lapon) megtekinthetjük és rendezhetjük a táblázatot különböző szempontok alapján, például hallgató neve vagy dolgozat címe szerint. A rendezés ábécé sorrendben történik. Emellett a lapozási funkció is elérhető, így minden 25 adattag után új lapra kerülünk.
+A "Szakdolgozatok listázása" oldalon (illetve minden adattagot megjelenítő lapon) megtekinthetjük és rendezhetjük a táblázatot különböző szempontok alapján, például hallgató neve vagy dolgozat címe szerint. A rendezés ábécé sorrendben történik. Emellett a lapozási funkció is elérhető, így minden 25 adattag után új lapra kerülünk.
 
 \begin{figure}[h!]
 \centering

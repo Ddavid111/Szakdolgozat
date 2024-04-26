@@ -9,6 +9,8 @@ A webalkalmazás fejlesztése során fontos szempont volt az alapvető technoló
 
 Ezek a technológiák összehangoltan működnek, hogy egy erőteljes, hatékony és felhasználóbarát webalkalmazást hozzanak létre. A \textit{MySQL} \cite{MySQL} adatbázis, a \textit{Java Spring Boot} \cite{spring_boot} backend és az \textit{Angular} \cite{angular} frontend kombinációja lehetővé teszi számomra, hogy magas színvonalú alkalmazást fejlesszek ki. Ez megfelel a felhasználók elvárásainak és az iparági követelményeknek.
 
+\newpage
+
 \begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{images/A_webalkalmazás_felépítése.pdf}
@@ -22,7 +24,7 @@ A webalkalmazás fájlrendszere a dolgozatok, prezentációk, bírálatok, zár�
 
 Az alábbiakban felsorolom a jegyzékstruktúrákat és az egyes fájltípusok tárolásának módját:
 
-A dolgozatok hordozható dokumentum formátum (továbbiakban: 'PDF') és tömörített fájlformátum (továbbiakban: 'zip') kerülnek tárolásra. A fájlok elnevezéseiben több helyen is szerepelnek a következő adatok:
+A dolgozatok hordozható dokumentum formátum (továbbiakban: 'PDF') és tömörített fájlformátum (továbbiakban: 'ZIP') kerülnek tárolásra. A fájlok elnevezéseiben több helyen is szerepelnek a következő adatok:
 
 \begin{itemize}
 \item \texttt{UUID}: az egyedi azonosító \texttt{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX} formában, ahol az \texttt{X} helyén kisbetű vagy számjegy szerepel.
@@ -97,7 +99,7 @@ A perzisztens tárolás során az alkalmazás adatmodelljét relációs séma sz
 
 \Section{Backend}
 
-A backend rész az alkalmazás egyik kulcsfontosságú része, amely az adatok kezelését, üzleti logikájának végrehajtását és az ügyfélkérések feldolgozását végzi. Ebben a részben bemutatom az alkalmazás \textit{Data Access Object} (továbbiakban: \textit{DAO}) \cite{DAO}, Entitás, \textit{Service} és \textit{Controller} rétegeit.
+A backend rész az alkalmazás egyik kulcsfontosságú része, amely az adatok kezelését, üzleti logikájának végrehajtását és az ügyfélkérések feldolgozását végzi. Ebben a részben bemutatom az alkalmazás \textit{Data Access Object} (továbbiakban: \textit{DAO}) \cite{DAO}, \textit{Entity}, \textit{Service} és \textit{Controller} rétegeit.
 
 \SubSection{DAO}
 
@@ -117,11 +119,11 @@ A \textit{DAO} \cite{DAO} réteg egy tervezési minta, amelyet szoftverfejleszt�
 
 \end{itemize}
 
-A webalkalmazásban található \textit{SQL} lekérdezések olyan mezőket kérnek le egyes táblákból, amelyek az adott lekérdezéshez szükségesek lehetnek. Azokra az adatokra amelyekre nincs szükség egy adott lekérdezés során a \textit{null as} kulcsszóval látom el.\\
+A webalkalmazásban található \textit{SQL} \cite{SQL} lekérdezések olyan mezőket kérnek le egyes táblákból, amelyek az adott lekérdezéshez szükségesek lehetnek. Azokra az adatokra amelyekre nincs szükség egy adott lekérdezés során a \textit{null as} kulcsszóval látom el.\\
 \\
 A \textit{Spring JDBC Template}-t \cite{JdbcTemplate} is használhatom az \textit{SQL} lekérdezések végrehajtására, és ennek segítségével is könnyedén érhetem el az adatbázist. A \textit{JDBC template}-t viszont a \textit{Service} osztályban valósítom meg.
 
-\SubSection{Entitások}
+\SubSection{Entity}
 
 \begin{figure}[ht]
 	\includegraphics[width=\textwidth]{images/Adatmodell.pdf}
@@ -130,7 +132,7 @@ A \textit{Spring JDBC Template}-t \cite{JdbcTemplate} is használhatom az \texti
 \end{figure}
 
 
-Először létrehoztam a \textit{Java} \cite{java} osztályokat az adatbázistáblákhoz, amelyeket Java Persistence API (továbbiakban: JPA) \cite{Java Persistence API} entitásokként definiáltam. Ezek az osztályok reprezentálják az adatbázistáblákat és tartalmazzák a tábla attribútumait. Konfiguráltam a \textit{Spring Boot} \cite{spring_boot} alkalmazást, hogy csatlakozzon az adatbázishoz és használja a \textit{JPA}-t \cite{Java Persistence API} az adatok kezelésére. Ehhez a \textit{application.properties} fájlban megadtam az adatbázis kapcsolódási információit és konfigurációit. A \textit{Spring Data JPA} \cite{Spring Data JPA} segítségével \textit{Repository} interfészeket hoztam létre, amelyek a \textit{JPA} entitásokhoz kapcsolódnak. Ezek a interfészek kiterjesztik a \textit{Spring Data} \textit{CrudRepository} vagy \textit{JpaRepository} interfészeket, amelyek előre definiált adatműveleteket nyújtanak az entitásokhoz. Minden entitás osztályra alkalmaztam az \textit{@Entity} annotációt, hogy jelezzem, hogy az adott osztály egy \textit{JPA} entitás, és kapcsolódik egy adatbázistáblához.
+Először létrehoztam a \textit{Java} \cite{java} osztályokat az adatbázistáblákhoz, amelyeket \textit{Java Persistence API} (továbbiakban: \textit{JPA}) \cite{Java Persistence API} entitásokként definiáltam. Ezek az osztályok reprezentálják az adatbázistáblákat és tartalmazzák a tábla attribútumait. Konfiguráltam a \textit{Spring Boot} \cite{spring_boot} alkalmazást, hogy csatlakozzon az adatbázishoz és használja a \textit{JPA}-t \cite{Java Persistence API} az adatok kezelésére. Ehhez a \textit{application.properties} fájlban megadtam az adatbázis kapcsolódási információit és konfigurációit. A \textit{Spring Data JPA} \cite{Spring Data JPA} segítségével \textit{Repository} interfészeket hoztam létre, amelyek a \textit{JPA} entitásokhoz kapcsolódnak. Ezek a interfészek kiterjesztik a \textit{Spring Data} \textit{CrudRepository} vagy \textit{JpaRepository} interfészeket, amelyek előre definiált adatműveleteket nyújtanak az entitásokhoz. Minden entitás osztályra alkalmaztam az \textit{@Entity} annotációt, hogy jelezzem, hogy az adott osztály egy \textit{JPA} entitás, és kapcsolódik egy adatbázistáblához.
 
 
 Minden entitáshoz létrehoztam \textit{getter-setter} metódusokat az attribútumok kezelésére és beállítására, valamint egy \textit{toString} metódust az objektumok olvasható formában történő megjelenítésére.
@@ -142,7 +144,7 @@ A \textit{User} entitásban vagyis a \textit{User.java} fájlban található a f
 
 \subsubsection{Thesis entitás}
 
-A \textit{Thesis} entitás az alkalmazásban olyan információkat tárol, amelyek az egyetemi hallgatók által írt szakdolgozatokra vonatkoznak. Az \textit{id} mező a \textit{Thesis} táblában egyedi azonosítót jelöl, amely segíti az adatbázisban tárolt szakdolgozatok egyértelmű azonosítását és kezelését. A \textit{Thesis} tábla összeköttetésben áll az adatbázisban szereplő összes entitással. A \textit{session\_id} mező egy idegen kulcs, amely a \textit{Session} tábla \textit{id} mezőjére mutat. A két tábla között egy-több kapcsolat áll fenn, mivel egy záróvizsgához több szakdolgozat is tartozhat. A relációt \textit{Java}-ban \cite{Java} a \textit{@ManyToOne} és \textit{@OneToMany} annotációval valósítottam meg. A kapcsolatot a \textit{@JoinColumn} annotációval egy mezőre képeztem le ez esetben ez a \textit{session\_id} mező lenne. Az idegenkulcsok kezelése hasonló a fent bemutatott példához más entitásoknál is. A \textit{user\_id}, \textit{supervisor\_id} és a \textit{consultant\_id} mezők is idegenkulcsok melyek a \textit{User} tábla \textit{id} mezőjére mutatnak. Itt is egy-több kapcsolatot valósítottam meg, mivel egy hallgatónak, témavezetőnek és konzulensnek lehet több szakdolgozata. A \textit{topic\_id} adattag a \textit{Topic} tábla \textit{id} mezőjére mutat és egy-több kapcsolatot implementáltam itt is. A \textit{title}, \textit{faculty}, \textit{department}, \textit{speciality}, \textit{language}, \textit{has\_msc\_apply}, \textit{submission\_date}, \textit{answer} mezők a szakdolgozatok könnyebb beazonosítására szolgálnak. Az \textit{is\_under\_review} a folyamatban lévő bírálatokat szeretné reprezentálni, míg a \textit{reviews\_remaining} mező a hátralévő bírálatokat tartja számon, amely alapesetben beállításra kerül 2-es értékkel.
+A \textit{Thesis} entitás az alkalmazásban olyan információkat tárol, amelyek az egyetemi hallgatók által írt szakdolgozatokra vonatkoznak. Az \textit{id} mező a \textit{Thesis} táblában egyedi azonosítót jelöl, amely segíti az adatbázisban tárolt szakdolgozatok egyértelmű azonosítását és kezelését. A \textit{Thesis} tábla összeköttetésben áll az adatbázisban szereplő összes entitással. A \textit{session\_id} mező egy idegen kulcs, amely a \textit{Session} tábla \textit{id} mezőjére mutat. A két tábla között egy-több kapcsolat áll fenn, mivel egy záróvizsgához több szakdolgozat is tartozhat. A relációt \textit{Java}-ban \cite{java} a \textit{@ManyToOne} és \textit{@OneToMany} annotációval valósítottam meg. A kapcsolatot a \textit{@JoinColumn} annotációval egy mezőre képeztem le ez esetben ez a \textit{session\_id} mező lenne. Az idegenkulcsok kezelése hasonló a fent bemutatott példához más entitásoknál is. A \textit{user\_id}, \textit{supervisor\_id} és a \textit{consultant\_id} mezők is idegenkulcsok melyek a \textit{User} tábla \textit{id} mezőjére mutatnak. Itt is egy-több kapcsolatot valósítottam meg, mivel egy hallgatónak, témavezetőnek és konzulensnek lehet több szakdolgozata. A \textit{topic\_id} adattag a \textit{Topic} tábla \textit{id} mezőjére mutat és egy-több kapcsolatot implementáltam itt is. A \textit{title}, \textit{faculty}, \textit{department}, \textit{speciality}, \textit{language}, \textit{has\_msc\_apply}, \textit{submission\_date}, \textit{answer} mezők a szakdolgozatok könnyebb beazonosítására szolgálnak. Az \textit{is\_under\_review} a folyamatban lévő bírálatokat szeretné reprezentálni, míg a \textit{reviews\_remaining} mező a hátralévő bírálatokat tartja számon, amely alapesetben beállításra kerül 2-es értékkel.
 
 \subsubsection{Topic entitás}
 
@@ -176,7 +178,7 @@ A \textit{ThesesService} osztály felelős a szakdolgozatokkal kapcsolatos műve
 
 \subsubsection{TopicService osztály}
 
-A \textit{TopicService} osztály felelős a záróvizsga tételekkel kapcsolatos műveletek végrehajtásáért és az azokhoz kapcsolódó adatbázis-műveletek kezeléséért. Az \textit{addTopics} metódus segítségével új záróvizsga tételt lehet hozzáadni egy szakdolgozathoz. A chooseTopic eljárásban valósítottam meg egy \textit{JDBC template}-el \cite{JdbcTemplate} a tételhúzást. Amikor a felületen megtörténik a folyamat, akkor az adatbázisban a Thesis tábla \textit{topic\_id} és \textit{topic\_score} mezője frissül. A \textit{getTopics} metódussal egy listába kapom vissza a záróvizsga tételeket. Az \textit{initTopics} metódussal inicializálom a tételeket. Ezeket egy tömbben tárolom el. Azért mert amikor újból indítom az alkalmazást akkor mindig legenerálódik ismételten a 27 db tétel ezért írtam rá egy \textit{SQL} \cite{SQL} lekérdezést, amely megszámolja, hogy mennyi szakdolgozat van, és ha még nincs szakdolgozat akkor inicializálja a tételeket.
+A \textit{TopicService} osztály felelős a záróvizsga tételekkel kapcsolatos műveletek végrehajtásáért és az azokhoz kapcsolódó adatbázis-műveletek kezeléséért. Az \textit{addTopics} metódus segítségével új záróvizsga tételt lehet hozzáadni egy szakdolgozathoz. A \textit{chooseTopic} eljárásban valósítottam meg egy \textit{JDBC template}-el \cite{JdbcTemplate} a tételhúzást. Amikor a felületen megtörténik a folyamat, akkor az adatbázisban a Thesis tábla \textit{topic\_id} és \textit{topic\_score} mezője frissül. A \textit{getTopics} metódussal egy listába kapom vissza a záróvizsga tételeket. Az \textit{initTopics} metódussal inicializálom a tételeket. Ezeket egy tömbben tárolom el. Azért mert amikor újból indítom az alkalmazást akkor mindig legenerálódik ismételten a 27 db tétel ezért írtam rá egy \textit{SQL} \cite{SQL} lekérdezést, amely megszámolja, hogy mennyi szakdolgozat van, és ha még nincs szakdolgozat akkor inicializálja a tételeket.
 
 \subsubsection{FileService osztály}
 
@@ -218,14 +220,14 @@ A \textit{StatusService} a szakdolgozatok állapotának kezelésével és azokho
 A \textit{ReportStatusService} a szakdolgozatok állapotának jelentésével kapcsolatos üzleti logikát valósítja meg. A \textit{requestForReview} metódus a bírálónak küld felkérést egy szakdolgozat bírálatra. A bíráló felkérése után rögtön e-mail megy ki a bírálónak benne a szakdolgozat címével. Ezután a szakdolgozat állapota az \textit{is\_under\_review} mezőben megváltozik igaz értékre. A \textit{findThesesUnderReview} metódus visszaadja az összes olyan szakdolgozatot, amely jelenleg bírálat alatt áll, azaz az \textit{is\_under\_review} mező értéke igaz. Ez lehetővé teszi a rendszer számára, hogy kezelje és megjelenítse ezeket a szakdolgozatokat a jegyző és az elnök számára. A \textit{findReviewedTheses} metódus visszaadja az összes olyan szakdolgozatot, amely már átesett a bírálaton. 
 
 
-\subsection{Vezérlők}
+\subsection{Controllers}
 
 
-A vezérlő osztályok a \textit{Spring} keretrendszerben az alkalmazás üzleti logikájának és az \textit{HTTP} kérések kezelésének központi pontjai. Ezek az osztályok felelősek a bejövő \textit{HTTP} kérések fogadásáért, feldolgozásáért és a megfelelő válasz létrehozásáért. A vezérlő osztályok a \textit{@RestController} annotációval vannak ellátva, és \textit{HTTP} kéréseket kezelő metódusokat tartalmaznak, melyek különböző útvonalakra vannak mappelve. A vezérlő osztályok meghatározzák az alkalmazás által kezelt útvonalakat. Ezek az útvonalak az \textit{HTTP} kérésekhez vannak hozzárendelve, és megadják, hogy mely metódusokat kell meghívni az adott kérésre érkező adatok kezelésére. A vezérlő osztályok fogadják és feldolgozzák a bejövő \textit{HTTP} kéréseket. Ezek a kérések lehetnek GET, POST, PUT, DELETE stb. típusúak, és a megfelelő metódusok hívódnak meg azok kezelésére. Például GET kérésekkel lekérdezhetők a felhasználók adatai, POST kérésekkel új felhasználók hozhatók létre, PUT kérésekkel módosíthatók a felhasználók adatai, DELETE kérésekkel pedig törölhetők a felhasználók. A TopicsController részben használtam még egy \textit{PostConstruct} annotációt is. A \textit{@PostConstruct} annotációval ellátott metódus az osztály példányosítása után hívódik meg. Ebben az esetben a \textit{initTopics} metódus meghívása történik, amely a \textit{topicService} inicializálását és beállítását végzi el. Ez azért fontos, mert biztosítja, hogy a témák inicializálása megtörténjen a \textit{TopicsController} példányosítása után, még mielőtt bármely más kérést kezelnénk a vezérlőben. A vezérlő osztályok hívják az \textit{Service} réteget, hogy végrehajtsák az alkalmazás üzleti logikáját. Ez lehet adatok lekérdezése, módosítása vagy más üzleti folyamatok végrehajtása. A vezérlő osztályok felelősek a megfelelő válasz létrehozásáért az adott \textit{HTTP} kérésre. Ez lehet \textit{HTML} oldal renderelése (ha a \textit{@Controller} annotációt használjuk), vagy JSON válasz küldése (ha a \textit{@RestController} annotációt használjuk). A vezérlő osztályok gyakran végzik az adatok validációját, és kezelik a különböző hibákat, amelyek a \textit{HTTP} kérések feldolgozása során jelentkezhetnek.
+A controller osztályok a \textit{Spring} keretrendszerben az alkalmazás üzleti logikájának és az \textit{HTTP} kérések kezelésének központi pontjai. Ezek az osztályok felelősek a bejövő \textit{HTTP} kérések fogadásáért, feldolgozásáért és a megfelelő válasz létrehozásáért. A vezérlő osztályok a \textit{@RestController} annotációval vannak ellátva, és \textit{HTTP} kéréseket kezelő metódusokat tartalmaznak, melyek különböző útvonalakra vannak mappelve. A vezérlő osztályok meghatározzák az alkalmazás által kezelt útvonalakat. Ezek az útvonalak az \textit{HTTP} kérésekhez vannak hozzárendelve, és megadják, hogy mely metódusokat kell meghívni az adott kérésre érkező adatok kezelésére. A vezérlő osztályok fogadják és feldolgozzák a bejövő \textit{HTTP} kéréseket. Ezek a kérések lehetnek GET, POST, PUT, DELETE stb. típusúak, és a megfelelő metódusok hívódnak meg azok kezelésére. Például GET kérésekkel lekérdezhetők a felhasználók adatai, POST kérésekkel új felhasználók hozhatók létre, PUT kérésekkel módosíthatók a felhasználók adatai, DELETE kérésekkel pedig törölhetők a felhasználók. A TopicsController részben használtam még egy \textit{PostConstruct} annotációt is. A \textit{@PostConstruct} annotációval ellátott metódus az osztály példányosítása után hívódik meg. Ebben az esetben a \textit{initTopics} metódus meghívása történik, amely a \textit{topicService} inicializálását és beállítását végzi el. Ez azért fontos, mert biztosítja, hogy a témák inicializálása megtörténjen a \textit{TopicsController} példányosítása után, még mielőtt bármely más kérést kezelnénk a controller rétegben. A vezérlő osztályok hívják az \textit{Service} réteget, hogy végrehajtsák az alkalmazás üzleti logikáját. Ez lehet adatok lekérdezése, módosítása vagy más üzleti folyamatok végrehajtása. A vezérlő osztályok felelősek a megfelelő válasz létrehozásáért az adott \textit{HTTP} kérésre. Ez lehet \textit{HTML} oldal renderelése (ha a \textit{@Controller} annotációt használjuk), vagy \textit{JSON} válasz küldése (ha a \textit{@RestController} annotációt használjuk). A vezérlő osztályok gyakran végzik az adatok validációját, és kezelik a különböző hibákat, amelyek a \textit{HTTP} kérések feldolgozása során jelentkezhetnek.
 
-A rendszerben összesen kilenc vezérlő osztályt hoztam létre, melyek mindegyike különböző funkciókat lát el és kezeli a kapcsolódó \textit{HTTP} kéréseket. Ezek a vezérlők az alábbiak:
+A rendszerben összesen kilenc vezérlő osztályt hoztam létre, melyek mindegyike különböző funkciókat lát el és kezeli a kapcsolódó \textit{HTTP} kéréseket. Ezek a controllerek az alábbiak:
 \begin{itemize}
-
+\setlength\itemsep{0pt}
 \item{\textit{UsersController}},
 \item{\textit{ThesisController}},
 \item{\textit{FileController}},
@@ -237,18 +239,19 @@ A rendszerben összesen kilenc vezérlő osztályt hoztam létre, melyek mindegy
 \item{\textit{TopicsController}}.
 
 \end{itemize}
-
-\begin{figure}[ht]
+\begin{figure}[h!]
 	\includegraphics[width=\textwidth]{images/Classdiagram/Osztálydiagram.pdf}
 	\caption{A bírálatokhoz és szakdolgozatokhoz tartozó \textit{DAO}, Service és vezérlő osztályok}
 	\label{fig:Osztálydiagram}
 \end{figure}
-Az ábrán a szakdolgozat és bírálat entitásokat láthatjuk. \ref{fig:Entitások}
+A \ref{fig:Entitások} ábrán a szakdolgozat és bírálat entitásokat láthatjuk. 
 \begin{figure}[h!]
 	\includegraphics[width=\textwidth]{images/Classdiagram/Entitások.pdf}
 	\caption{A bírálatokhoz és szakdolgozatokhoz tartozó entitások}
 	\label{fig:Entitások}
 \end{figure}
+
+\newpage
 
 \Section{A REST API áttekintése}
 
@@ -277,7 +280,7 @@ A DELETE kérések adatok törlésére szolgálnak a szerveren. A frontend a \te
 
 \Section{Frontend}
 
-Az \textit{Angular} \cite{angular} frontend fejlesztésének középpontjában a komponensek és szervízek állnak. A komponensek az alkalmazás felhasználói felület részeit képviselik, míg a szolgáltatások központosítják az alkalmazás logikáját és funkcionalitását. A frontend fejlesztés során ezeket az építőköveket kombinálom, hogy részletes és felhasználóbarát webalkalmazást hozzak létre.
+Az \textit{Angular} \cite{angular} frontend fejlesztésének középpontjában a komponensek és service állnak. A komponensek az alkalmazás felhasználói felület részeit képviselik, míg a szolgáltatások központosítják az alkalmazás logikáját és funkcionalitását. A frontend fejlesztés során ezeket az építőköveket kombinálom, hogy részletes és felhasználóbarát webalkalmazást hozzak létre.
 
 Elsőként szeretném bemutatni az alkalmazás fő modulját. Az \textit{AppModule} egy \textit{Angular} modul, amely felelős az alkalmazás fő komponenseinek, szolgáltatásainak és moduljainak konfigurálásáért és összekapcsolásáért. \\
 \\Fontos tulajdonságai:
@@ -317,7 +320,7 @@ Az \textit{Angular} service-ek olyan osztályok, amelyek segítenek a frontend a
 
 \subsection{Komponensek}
 
-Az \textit{Angular} alkalmazásokban a komponensek az építőkövek, amelyek létrehozzák az alkalmazás felhasználói felületét és meghatározzák, hogy az hogyan viselkedik és milyen módon reagál a felhasználói interakciókra. A komponensek négy fő részből állnak: a \textit{TypeScript (.ts)} fájlból, a spec \textit{TypeScript (.spec.ts)} fájlból, a \textit{HTML} fájlból és a \textit{CSS} fájlból. A \textit{TypeScript} fájl a komponens logikáját és viselkedését definiálja, míg a \textit{spec} \textit{TypeScript} fájl a komponens teszteléséhez szükséges specifikációkat tartalmazza. Az \textit{HTML} fájl tartalmazza a komponens megjelenítéséhez szükséges struktúrát és sablonokat, míg a \textit{CSS} fájl a stílusokat és formázást definiálja a komponens számára. A \textit{TypeScript} és a \textit{HTML} fájlok interaktív felhasználói felületet biztosítanak, míg a CSS fájl az esztétikai megjelenést és a formázást szabályozza. A komponensek felelősek az adatok megjelenítéséért, a felhasználói interakciók kezeléséért és az alkalmazás üzleti logikájának koordinálásáért. Ezeket részletezem a következőkben:
+Az \textit{Angular} alkalmazásokban a komponensek az építőkövek, amelyek létrehozzák az alkalmazás felhasználói felületét és meghatározzák, hogy az hogyan viselkedik és milyen módon reagál a felhasználói interakciókra. A komponensek négy fő részből állnak: a \textit{TypeScript (.ts)} fájlból, a spec \textit{TypeScript (.spec.ts)} fájlból, a \textit{HTML} fájlból és a \textit{CSS} fájlból. A \textit{TypeScript} fájl a komponens logikáját és viselkedését definiálja, míg a \textit{spec} \textit{TypeScript} fájl a komponens teszteléséhez szükséges specifikációkat tartalmazza. A \textit{HTML} fájl tartalmazza a komponens megjelenítéséhez szükséges struktúrát és sablonokat, míg a \textit{CSS} fájl a stílusokat és formázást definiálja a komponens számára. A \textit{TypeScript} és a \textit{HTML} fájlok interaktív felhasználói felületet biztosítanak, míg a CSS fájl az esztétikai megjelenést és a formázást szabályozza. A komponensek felelősek az adatok megjelenítéséért, a felhasználói interakciók kezeléséért és az alkalmazás üzleti logikájának koordinálásáért. Ezeket részletezem a következőkben:
 
 \subsubsection{AddUsersComponent}
 
@@ -387,7 +390,7 @@ A komponens listázza a szakdolgozatok adatait. A \textit{getThesesList} segíts
 A komponens \textit{HTML} része:\\
 \\
 A \textit{HTML} kódban a kereséseket ugyanúgy containerek segítségével hoztam létre.
-Külön kihívást nyújtott a dátum alapján keresés, amelyet a \textit{datepicker} segítségével oldottam meg. Az adatokat ugyanúgy egy táblázatban jelenítem meg, ahol lehetőség van rendezésre. Ezenkívül elhelyeztem gombokat a módosítás, törlés és tétel húzás funkciókhoz is. A táblázatban a kitöltetlen adatokat kiküszöböltem egy \textit{*ngif} direktívával és írtam egy \textit{elseBlock}-ot. A módosítást és a tétel húzást egy felugró ablakban valósítottam meg, ahol input mezőket \textit{date-picker}-t és legördülő listát is volt alkalmam alkalmazni.
+Külön kihívást nyújtott a dátum alapján keresés, amelyet a \textit{datepicker} segítségével oldottam meg. Az adatokat ugyanúgy egy táblázatban jelenítem meg, ahol lehetőség van rendezésre. Ezenkívül elhelyeztem gombokat a módosítás, törlés és tétel húzás funkciókhoz is. A táblázatban a kitöltetlen adatokat kiküszöböltem egy \textit{*ngif} direktívával és írtam egy \textit{elseBlock}-ot. A módosítást és a tétel húzást egy felugró ablakban valósítottam meg, ahol \textit{input} mezőket \textit{date-picker}-t és legördülő listát is volt alkalmam alkalmazni.
 
 
 \subsubsection{LoginComponent}
@@ -410,7 +413,7 @@ Az \textit{HTML} kód egy jelszóváltoztatás űrlapot és egy hozzá tartozó 
 
 \subsubsection{ReportStatusComponent}
 
-A \textit{ReportStatusComponent} a szakdolgozatok státuszának nyomonkövetéséért felelős komponens. A komponens a jegyző és elnök szerepköröknek készült elsősorban. Három részre lehet osztani az oldalt a beadott szakdolgozatokra, a folyamatban lévő bírálatokra, és a befejezett bírálatokra. Mindháromhoz létrehoztam egy tömböt és ezekben tárolom le a szükséges adatokat. A \textit{requestForReview} függvényben lehetőség van a bíráló felkérésére.A komponens különböző segédfüggvényekkel rendelkezik, például az \textit{alertWithReview}, \textit{alertWithError}, \textit{alertWithFileType}, amelyek segítenek kezelni a különböző hibákat vagy értesítéseket. A \textit{correctTable} metódusban az adatok rendszerezése és formázása történik a megfelelő megjelenítés érdekében. A komponens tartalmaz továbbá metódusokat a fájlok letöltéséhez.\\
+A \textit{ReportStatusComponent} a szakdolgozatok státuszának nyomonkövetéséért felelős komponens. A komponens a jegyző és elnök szerepköröknek készült elsősorban. Három részre lehet osztani az oldalt a beadott szakdolgozatokra, a folyamatban lévő bírálatokra, és a befejezett bírálatokra. Mindháromhoz létrehoztam egy tömböt és ezekben tárolom le a szükséges adatokat. A \textit{requestForReview} függvényben lehetőség van a bíráló felkérésére. A komponens különböző segédfüggvényekkel rendelkezik, például az \textit{alertWithReview}, \textit{alertWithError}, \textit{alertWithFileType}, amelyek segítenek kezelni a különböző hibákat vagy értesítéseket. A \textit{correctTable} metódusban az adatok rendszerezése és formázása történik a megfelelő megjelenítés érdekében. A komponens tartalmaz továbbá metódusokat a fájlok letöltéséhez.\\
 \\
 A komponens \textit{HTML} része:\\
 \\
@@ -454,7 +457,7 @@ Az \textit{UploadPPTXFilesComponent} \textit{HTML} kódja a felhasználói felü
 
 \subsubsection{ZvReportComponent}
 
-A \textit{ZvReportComponent} komponens egy űrlapot kínál a felhasználóknak, ahol megadhatja a szükséges adatokat a záróvizsga jegyzőkönyv összeállításához. A komponens inicializálása során meghívódik a \textit{getStudentsToDropdown} metódus, ami lekéri az összes hallgatót a rendszerből. A felhasználó választhat egy hallgatót a lenyíló menüből, ami után a \textit{onSelectStudent} metódus meghívja a \textit{getThesesesToDropdown} és a \textit{getCodeToDropdown} metódusokat. A \textit{getThesesesToDropdown} metódus lekéri az összes szakdolgozatot a kiválasztott diákhoz. A \textit{getCodeToDropdown} metódus lekéri az összes olyan záróvizsga kódját, amelyben a kiválasztott hallgató részt vett. A \textit{questionToDropDownList}, \textit{gradesToDropDownList} és \textit{tgradesToDropDownList} listák az űrlap különböző legördülő listáit definiálják. Az \textit{addFormData} metódus felelős az űrlap adatainak feldolgozásáért és az új dokumentum hozzáadásáért a rendszerhez. Az űrlap validálására a \textit{addDocxForm} \textit{FormGroup}-ot használom, amely tartalmazza a szükséges ellenőrzéseket a formában szereplő mezők számára.\\
+A \textit{ZvReportComponent} komponens egy űrlapot kínál a felhasználóknak, ahol megadhatja a szükséges adatokat a záróvizsga jegyzőkönyv összeállításához. A komponens inicializálása során meghívódik a \textit{getStudentsToDropdown} metódus, ami lekéri az összes hallgatót a rendszerből. A felhasználó választhat egy hallgatót a lenyíló menüből, ami után a \textit{onSelectStudent} metódus meghívja a \textit{getThesesesToDropdown} és a \textit{getCodeToDropdown} metódusokat. A \textit{getThesesesToDropdown} metódus lekéri az összes szakdolgozatot a kiválasztott diákhoz. A \textit{getCodeToDropdown} metódus lekéri az összes olyan záróvizsga kódját, amelyben a kiválasztott hallgató részt vett. A \textit{questionToDropdownList}, \textit{gradesToDropdownList} és \textit{tgradesToDropdownList} listák az űrlap különböző legördülő listáit definiálják. Az \textit{addFormData} metódus felelős az űrlap adatainak feldolgozásáért és az új dokumentum hozzáadásáért a rendszerhez. Az űrlap validálására a \textit{addDocxForm} \textit{FormGroup}-ot használom, amely tartalmazza a szükséges ellenőrzéseket a formában szereplő mezők számára.\\
 \\A komponens \textit{HTML} része:\\
 \\
 Ez a \textit{HTML} kód egy űrlapot definiál, amely lehetővé teszi a felhasználók számára, hogy adatokat adjanak meg és azokat továbbítsák az Angular alkalmazásnak. Az űrlap tartalmazza a következő elemeket:
