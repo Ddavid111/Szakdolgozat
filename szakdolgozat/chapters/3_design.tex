@@ -1,10 +1,10 @@
-\Chapter{Tervezés}
+\Chapter{Tervezés}\label{Tervezés}
 
-A következőkben bemutatom a különböző szerepköröket és folyamatokat a szekvenciadiagramok és folyamatábrák segítségével. Részletes elemzésre kerülnek a lapok közötti átmenetek és az adatmodell is. Ezek a lépések nélkülözhetetlenek a hatékony és átlátható tervezéshez, hogy sikeresen elkészülhessen a projekt.
+A következőkben bemutatom a különböző szerepköröket és folyamatokat szekvenciadiagramok és folyamatábrák segítségével. Részletes elemzésre kerülnek a lapok közötti átmenetek és az adatmodell is. Ezek a lépések nélkülözhetetlenek a hatékony és átlátható tervezéshez, hogy sikeresen elkészülhessen a projekt.
 
 \Section{Szerepkörök leírása}
 
-A webalkalmazás kialakítása során hat különböző szerepkört határoztam meg, amelyek mindegyike különös felelősséggel és jogosultságokkal rendelkezik a platformon. Ezek a szerepkörök a következők:
+A webalkalmazás kialakítása során hat különböző szerepkört határoztam meg, amelyek mindegyike különféle felelősséggel és jogosultságokkal rendelkezik a platformon. Ezek a szerepkörök a következők:
 
 \begin{enumerate}
 \item Hallgató
@@ -20,7 +20,7 @@ A webalkalmazás kialakítása során hat különböző szerepkört határoztam 
 \item Bíráló
 \begin{itemize}
 \item A dolgozat értékelése és visszajelzés küldése a hallgatónak.
-\item A dolgozat nyomon követése és annak státuszának frissítése a rendszerben.
+\item A dolgozat nyomonkövetése és annak státuszának frissítése a rendszerben.
 \item Az értékelőlap és a végső jegy rögzítése a rendszerben.
 \end{itemize}
 
@@ -48,7 +48,7 @@ A webalkalmazás kialakítása során hat különböző szerepkört határoztam 
 \begin{itemize}
 \item A hallgatóval való kommunikáció és támogatás a szakdolgozat elkészítése során.
 
-\item A hallgató dolgozatának nyomon követése és visszajelzések küldése.
+\item A hallgató dolgozatának nyomonkövetése és visszajelzések küldése.
 
 \item A bírálók és a bizottság értékeléseinek megtekintése.
 
@@ -67,9 +67,11 @@ A webalkalmazás kialakítása során hat különböző szerepkört határoztam 
 
 \end{enumerate}
 
+A \ref{fig:usecase} ábrán összegeztem a szerepköröket és a hozzájuk tartozó jogokat.
+
 \begin{figure}[ht]
 \includegraphics[width=\textwidth]{images/UseCaseDiagram1.pdf}
-\caption{Az alkalmazás use case diagramja}
+\caption{Az alkalmazás használati eset diagramja}
 \label{fig:usecase}
 \end{figure}
 \newpage
@@ -80,7 +82,7 @@ Az alkalmazás tervezésekor több folyamatot is figyelembe kellett vennem, mint
 
 \subsection{Bírálati folyamat}
 
-\vspace{0.5cm}
+A bírálati folyamat a következő nagyobb lépésekből épül fel.
 
 \begin{enumerate}
 \item \textbf{Adminisztrátor regisztrálja a hallgatót:}
@@ -120,6 +122,8 @@ Az elnök elküldi a bírálati eredményeket a hallgatónak, lehetővé téve s
 \end{figure}
 
 \subsection{Bírálat feltöltésének lépései}
+
+A bírálati folyamat fő lépései az alábbiak.
 
 \begin{enumerate}
 
@@ -167,7 +171,7 @@ Miután a bíráló sikeresen ellenőrizte és beküldte a bírálatot, a folyam
 
 \Section{Lapok közötti átmenetek}
 
-Az alábbi ábrák és a leírások különböző szerepkörök nézőpontjából ábrázolják, hogy melyik oldalhoz férhetnek hozzá. Fontos megjegyeznem, hogy nincs összeköttetés az angular komponensek és a 3.fejezet elnevezései között.
+Az alábbi ábrák és a leírások különböző szerepkörök nézőpontjából ábrázolják, hogy melyik oldalhoz férhetnek hozzá. Fontos megjegyeznem, hogy nincs összeköttetés az \textit{Angular} \cite{angular} komponensek és a 3. fejezet [\ref{Tervezés}] elnevezései között.
 
 \subsection{Elnök és Jegyző}
 
@@ -180,11 +184,11 @@ Az alábbi ábrák és a leírások különböző szerepkörök nézőpontjábó
 
 \begin{itemize}
 
-\item \textbf{Bejelentkezés:} Minden felhasználó lehetőséget kap a belépésre az alkalmazásba, ahhoz hogy azonosíthassák magukat és hozzáférjenek a rendszerhez. Ehhez felhasználónevet és jelszót kell megadniuk.
+\item \textbf{Bejelentkezés:} Minden felhasználó lehetőséget kap a belépésre az alkalmazásba ahhoz, hogy azonosíthassák magukat és hozzáférjenek a rendszerhez. Ehhez felhasználónevet és jelszót kell megadniuk.
 
-\item \textbf{Elfelejtett jelszó:} Ha a felhasználók elfelejtik a jelszót, lehetőségük van új igénylésére. Erre az Elfelejtett jelszó menüpont szolgál, amely segítségével új jelszó kérése vagy generálása lehetséges.
+\item \textbf{Elfelejtett jelszó:} Ha a felhasználók elfelejtik a jelszót, lehetőségük van új igénylésére. Erre az "Elfelejtett jelszó" menüpont szolgál, amely segítségével új jelszó kérése vagy generálása lehetséges.
 
-\item \textbf{Jelszó változtatás:}Az alkalmazás felhasználói képesek megváltoztatni jelszavukat, ha szükségük van rá. Erre a Jelszó változtatás lap szolgál, ahol lehetőség van a jelszó módosítására.
+\item \textbf{Jelszó változtatás:} Az alkalmazás felhasználói képesek megváltoztatni jelszavukat, ha szükségük van rá. Erre a "Jelszó változtatás" lap szolgál, ahol lehetőség van a jelszó módosítására.
 
 \item \textbf{Szakdolgozatok listázása:} Az elnök és a jegyző is képes kilistázni a rendszerben található összes szakdolgozatot. Ez lehetőséget ad arra, hogy áttekintsék a szakdolgozatok részleteit.
 
@@ -247,6 +251,6 @@ Az adminisztrátor szerepe az alkalmazásban a legteljesebb hozzáférést bizto
 
 \item \textbf{Felhasználók felvitele:} Az adminisztrátornak lehetősége nyílik új felhasználókat regisztrációjára.
 
-\item \textbf{Felhasználók listázása és kezelése:} Az admin képes kilistázni az összes felhasználót az alkalmazásban. Lehetősége van az adatokat megtekinteni, módosítani és törölni.
+\item \textbf{Felhasználók listázása és kezelése:} Az adminisztrátor képes kilistázni az összes felhasználót az alkalmazásban. Lehetősége van az adatokat megtekinteni, módosítani és törölni.
 
 \end{itemize}

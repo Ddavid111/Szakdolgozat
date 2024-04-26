@@ -4,7 +4,7 @@ A továbbiakban szeretném bemutatni az alkalmazás használatát. Ez a kézikö
 
 \Section{Az alkalmazás indítása}
 
-Először is egy adatbáziskezelőt nyissunk meg és hozzunk létre egy proba28 nevű adatbázist és használjuk is azt. Ez elengedhetetlen része az alkalmazás indításának, mivel enélkül a szerveroldal el se fog indulni.
+Először is egy \textit{MySQL} vagy más megfelelő adatbáziskezelőt nyissunk meg és hozzunk létre egy \textit{proba28} nevű adatbázist és használjuk is azt. Ez elengedhetetlen része az alkalmazás indításának, mivel enélkül a szerveroldal el se fog indulni.
 
 
 \begin{lstlisting}
@@ -14,7 +14,7 @@ CREATE DATABASE proba28;
 USE proba28;
 \end{lstlisting}
 
-Ezek után indítsuk el a backend és frontend részét az alkalmazásnak. Ehhez választhatunk bármilyen webalkalmazáshoz megfelelő fejlesztőkörnyezetet. Személy szerint a JetBrains-es termékeket javaslom, mint például az Intellij vagy a Webstorm. Fontos megjegyezni, hogy az első indításkor néhány hibaüzenet fogad minket a backend részen. Ne essünk kétségbe, mert a második indítás után ezek a hibák automatikusan el fognak tűnni. A probléma abból adódik, hogy a szerveroldal elindulásakor bizonyos műveletek próbálnak hozzáférni a már létező adatbázishoz, ami az első indításkor még nem teljesen inicializálódott. Ezért indítsuk el még egyszer a szerveroldalt.
+Ezek után indítsuk el a backend és frontend részét az alkalmazásnak. Ehhez választhatunk bármilyen webalkalmazáshoz megfelelő fejlesztőkörnyezetet. Személy szerint a \textit{JetBrains}-es \cite{JetBrains} termékeket javaslom, mint például az \textit{IntelliJ} \cite{IntelliJ} vagy a \textit{WebStorm} \cite{WebStorm}. Fontos megjegyezni, hogy az első indításkor néhány hibaüzenet fogad minket a backend részen. Ne essünk kétségbe, mert a második indítás után ezek a hibák automatikusan el fognak tűnni. A probléma abból adódik, hogy a szerveroldal elindulásakor bizonyos műveletek próbálnak hozzáférni a már létező adatbázishoz, ami az első indításkor még nem teljesen inicializálódott. Ezért indítsuk el még egyszer a szerveroldalt.
 
 \begin{figure}[h]
 \centering
@@ -31,11 +31,11 @@ Ezek után indítsuk el a backend és frontend részét az alkalmazásnak. Ehhez
 \end{figure}
 \newpage
 
-Miután sikeresen elindítottuk az alkalmazást nyissuk meg a frontend által felkínált localhost:4200 linket.
+Miután sikeresen elindítottuk az alkalmazást nyissuk meg a frontend által felkínált \textit{localhost:4200} linket.
 
 \Section{Bejelentkezés}
 
-Miután a linket megnyitottuk, a bejelentkező felületre érkezünk. Itt lehetőségünk van megadni a felhasználónevünket és a jelszót a belépéshez szükséges adatokként. Ha esetleg elfelejtettük a jelszavunkat, akkor az "Elfelejtett jelszó" gombra kattintva megadhatjuk a felhasználónevünket, amely egy e-mail címhez van rendelve. Ezt követően egy token-t kapunk az e-mail címünkre, amelyet a következő felugró ablakban kell használnunk. Ott kell megadnunk a felhasználónevet, a tokent és az új jelszót kétszer. A validátor segítségével ellenőrzöm, hogy a két jelszó megegyezik.
+Miután a linket megnyitottuk, a bejelentkező felületre érkezünk. Itt lehetőségünk van megadni a felhasználónevünket és a jelszót a belépéshez szükséges adatokként. Ha esetleg elfelejtettük a jelszavunkat, akkor az "Elfelejtett jelszó" gombra kattintva megadhatjuk a felhasználónevünket, amely egy e-mail címhez van rendelve. Ezt követően egy tokent kapunk az e-mail címünkre, amelyet a következő felugró ablakban kell használnunk. Ott kell megadnunk a felhasználónevet, a tokent és az új jelszót kétszer. A validátor segítségével ellenőrzöm, hogy a két jelszó megegyezik.
 
 \begin{figure}[h]
 \centering
@@ -46,18 +46,18 @@ Miután a linket megnyitottuk, a bejelentkező felületre érkezünk. Itt lehet�
 
 \newpage
 
-A továbbiakban szeretném bemutatni a felhasználók regisztrálását, a bírálat írását és a szakdolgozatok bírálatának nyomon követését. Ezek a lapok alapvető fontosságúak az alkalmazás fő funkcionalitásainak megértéséhez és hatékony használatához. Fontosnak tartom megjegyezni, hogy bár más lapok is léteznek az alkalmazásban, melyek különböző funkciókat és információkat kínálnak, a bemutatott három lap átfogóan tartalmazza az összes implementált funkcionalitást, így biztosítva a felhasználóknak a teljes körű tudást és felhasználói élményt.
+A továbbiakban szeretném bemutatni a felhasználók regisztrálását, a bírálat írását és a szakdolgozatok bírálatának nyomon követését. Ezek a lapok alapvető fontosságúak az alkalmazás fő funkcionalitásainak megértéséhez és hatékony használatához. Fontosnak tartom megjegyezni, hogy bár más lapok is léteznek az alkalmazásban, melyek különböző funkciókat és információkat kínálnak, a bemutatott három lap átfogóan tartalmazza az összes implementált funkcionalitást, így biztosítva a felhasználóknak a teljeskörű tudást és felhasználói élményt.
 
 
 
 \Section{Felhasználók regisztrálása}
 
 
-Az oldal lehetővé teszi a felhasználók regisztrálását, melyhez kizárólag az adminisztrátor férhet hozzá. A regisztráció során számos információt kell megadni, mint például a felhasználó titulusát (pl. dr.), születési dátumát, e-mail címét, Neptun kódját, felhasználónevet és jelszót. Emellett további adatokat is rögzíthetünk, mint a felhasználó teljes nevét, születési helyét, édesanyja leánykori nevét, munkahelyét és törzskönyvi számát. Ezek az adatok később elengedhetetlenek lehetnek a záróvizsga jegyzőkönyvéhez.\\
-\\
-A felhasználó szerepkörét egy legördülő listából választhatjuk ki. A helyes adatbevitelt validátorok segítik, melyek dinamikusan változnak a kiválasztott szerepkörtől függően. Ha a bíráló szerepkört választjuk, megjelenik egy extra mező, ahol a beosztást adhatjuk meg. Témavezető, jegyző és elnök esetén ezeket az adatokat legördülő listával oldottam meg.\\
-\\
-A felvitel gombra kattintva a rendszer egy sikeres vagy sikertelen üzenettel fogad minket, tájékoztatva arról, hogy a felhasználó sikeresen felkerült-e az adatbázisba. Ez látható a következő ábrán \ref{fig:addUsers}:
+Az oldal lehetővé teszi a felhasználók regisztrálását, melyhez kizárólag az adminisztrátor férhet hozzá. A regisztráció során számos információt kell megadni, mint például a felhasználó titulusát (pl. dr.), születési dátumát, e-mail címét, Neptun kódját, felhasználónevet és jelszót. Emellett további adatokat is rögzíthetünk, mint a felhasználó teljes nevét, születési helyét, édesanyja leánykori nevét, munkahelyét és törzskönyvi számát. Ezek az adatok később elengedhetetlenek lehetnek a záróvizsga jegyzőkönyvéhez.
+
+A felhasználó szerepkörét egy legördülő listából választhatjuk ki. A helyes adatbevitelt validátorok segítik, melyek dinamikusan változnak a kiválasztott szerepkörtől függően. Ha a bíráló szerepkört választjuk, megjelenik egy extra mező, ahol a beosztást adhatjuk meg. Témavezető, jegyző és elnök esetén ezeket az adatokat legördülő listával oldottam meg.
+
+A "felvitel" gombra kattintva a rendszer egy sikeres vagy sikertelen üzenettel fogad minket, tájékoztatva arról, hogy a felhasználó sikeresen felkerült-e az adatbázisba. Ez látható a következő \ref{fig:addUsers} ábrán:
 
 \begin{figure}[h]
 \centering
@@ -84,31 +84,29 @@ A bírálat írására szolgáló oldalon lehetősége van a témavezetőnek és
 
 \Section{Report status}
 
-Az oldalon a szakdolgozatok bírálatának nyomon követése egy táblázatos elrendezésben valósult meg. Az oldalt három részre osztottam: a beadott szakdolgozatokra, a folyamatban lévő bírálatokra és a befejezett bírálatokra. Minden rész egy összecsukható listával rendelkezik, ami könnyű navigációt tesz lehetővé.\\
-\\
-A "Beadott szakdolgozatok" \ref{fig:Report_status1} részben láthatóak a dolgozatok, valamint az azokhoz kapcsolódó hallgatók, témavezetők és bírálók. A szakdolgozathoz tartozó fájlokat is letölthetjük innen. Ezenkívül az alatta lévő táblázat a bíráló felkérésére lett létrehozva. Egy felugró ablakban választhatunk ki egy bírálót az adott szakdolgozathoz.\\
+Az oldalon a szakdolgozatok bírálatának nyomonkövetése egy táblázatos elrendezésben valósult meg. Az oldalt három részre osztottam: a beadott szakdolgozatokra, a folyamatban lévő bírálatokra és a befejezett bírálatokra. Minden rész egy összecsukható listával rendelkezik, ami könnyű navigációt tesz lehetővé.
+
+A "Beadott szakdolgozatok" (\ref{fig:Report_status1} ábra) részben láthatóak a dolgozatok, valamint az azokhoz kapcsolódó hallgatók, témavezetők és bírálók. A szakdolgozathoz tartozó fájlokat is letölthetjük innen. Ezenkívül az alatta lévő táblázat a bíráló felkérésére lett létrehozva. Egy felugró ablakban választhatunk ki egy bírálót az adott szakdolgozathoz.\\
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth]{images/Report_status1.png}
 \caption{Beadott szakdolgozatok}
 \label{fig:Report_status1}
 \end{figure}
-\\A "Folyamatban lévő bírálatok" \ref{fig:Report_status2} részben a bíráló neve automatikusan megjelenik, miután kiválasztottuk. A táblázat ugyanazokat az információkat tartalmazza, mint a "Beadott szakdolgozatok" esetében.\\
+\\A "Folyamatban lévő bírálatok" (\ref{fig:Report_status2}) részben a bíráló neve automatikusan megjelenik, miután kiválasztottuk. A táblázat ugyanazokat az információkat tartalmazza, mint a "Beadott szakdolgozatok" esetében.\\
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth]{images/Report_status2.png}
 \caption{Folyamatban lévő bírálatok}
 \label{fig:Report_status2}
 \end{figure}
-\\Miután a bírálat befejeződött a témavezető és a bíráló részéről, a "Befejezett bírálatok" \ref{fig:Report_status3} táblázathoz kerülünk, ahol lehetőségünk van a bírálatok letöltésére és azok elküldésére e-mailben a hallgatónak. Ez az elrendezés egyszerűsíti és átláthatóvá teszi a bírálatok kezelését és nyomon követését.
+\\Miután a bírálat befejeződött a témavezető és a bíráló részéről, a "Befejezett bírálatok" (\ref{fig:Report_status3}) táblázathoz kerülünk, ahol lehetőségünk van a bírálatok letöltésére és azok elküldésére e-mailben a hallgatónak. Ez az elrendezés egyszerűsíti és átláthatóvá teszi a bírálatok kezelését és nyomonkövetését.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth]{images/Report_status3.png}
 \caption{Befejezett bírálatok}
 \label{fig:Report_status3}
 \end{figure}
-
-\Section{További funkciók}
 
 \subsection{Rendezés és lapozás}
 
@@ -123,7 +121,7 @@ A Szakdolgozatok listázása oldalon (illetve minden adattagot megjelenítő lap
 
 \subsection{Fájlfeltöltés}
 
-A Fájlfeltöltés oldalon a Hallgató töltheti fel az adott szakdolgozathoz szükséges fájlokat. Ha a fájl mérete túl nagy, vagy nem megfelelő formátumú fájlt tölt fel a hallgató, egy felugró ablak figyelmezteti. A fájl feltöltésének állapotát egy előrehaladási sáv mutatja. Ha a fájl feltöltése sikeres, egy sikeres üzenet figyelmezteti a felhasználót egy felugró ablakban.
+A "Fájlfeltöltés" oldalon a Hallgató töltheti fel az adott szakdolgozathoz szükséges fájlokat. Ha a fájl mérete túl nagy, vagy nem megfelelő formátumú fájlt tölt fel a hallgató, egy felugró ablak figyelmezteti. A fájl feltöltésének állapotát egy előrehaladási sáv mutatja. Ha a fájl feltöltése sikeres, egy sikeres üzenet figyelmezteti a felhasználót egy felugró ablakban.
 
 
 \begin{figure}[h!]

@@ -1,14 +1,13 @@
 \Chapter{Megvalósítás}
 
+A fejezet a webalkalmazás elkészítésének technikai részleteit mutatja be.
 
 \Section{A rendszer felépítése}
 
-% Ide egy magasabb szintű architekturális áttekintés kerül.
 
+A webalkalmazás fejlesztése során fontos szempont volt az alapvető technológiai döntések meghozatala. Az alkalmazásom három fő komponensre épül: adatbázis, backend és frontend. Az adatbázis rétegként \textit{MySQL}-t \cite{MySQL} használok, mely hatékonyan tárolja és kezeli az adatokat. A backendet \textit{Java Spring Boot} \cite{spring_boot} keretrendszer segítségével építem fel, ami biztosítja az üzleti logika végrehajtását és az adatok kezelését. A frontend felelős a felhasználói felület megjelenítéséért és kezeléséért. Ehhez az \textit{Angular} \cite{angular} keretrendszert alkalmazom, ami modern és komponensalapú megközelítést biztosít.
 
-A webalkalmazás fejlesztése során fontos szempont volt az alapvető technológiai döntések meghozatala. Az alkalmazásom három fő komponensre épül: adatbázis, backend és frontend. Az adatbázis rétegként MySQL-t\cite{MySQL} használok, mely hatékonyan tárolja és kezeli az adatokat. A backendet Java Spring Boot\cite{spring_boot} keretrendszer segítségével építem fel, ami biztosítja az üzleti logika végrehajtását és az adatok kezelését. A frontend felelős a felhasználói felület megjelenítéséért és kezeléséért. Ehhez az Angular\cite{angular} keretrendszert alkalmazom, ami modern és komponensalapú megközelítést biztosít.\\
-\\
-Ezek a technológiák összehangoltan működnek, hogy egy erőteljes, hatékony és felhasználóbarát webalkalmazást hozzanak létre. A MySQL\cite{MySQL} adatbázis, a Java Spring Boot\cite{spring_boot} backend és az Angular\cite{angular} frontend kombinációja lehetővé teszi számomra, hogy magas színvonalú alkalmazást fejlesszek ki. Ez megfelel a felhasználók elvárásainak és az iparági követelményeknek.
+Ezek a technológiák összehangoltan működnek, hogy egy erőteljes, hatékony és felhasználóbarát webalkalmazást hozzanak létre. A \textit{MySQL} \cite{MySQL} adatbázis, a \textit{Java Spring Boot} \cite{spring_boot} backend és az \textit{Angular} \cite{angular} frontend kombinációja lehetővé teszi számomra, hogy magas színvonalú alkalmazást fejlesszek ki. Ez megfelel a felhasználók elvárásainak és az iparági követelményeknek.
 
 \begin{figure}[h]
 \centering
@@ -19,15 +18,11 @@ Ezek a technológiák összehangoltan működnek, hogy egy erőteljes, hatékony
 
 \Section{Perzisztens tárolás}
 
-% Fájlrendszer: a dolgozatok, bírálatok, ... helye, tárolása, névkonvenciók.
+A webalkalmazás fájlrendszere a dolgozatok, prezentációk, bírálatok, záróvizsga jegyzőkönyvek illetve tételek, és e-mailek tárolását szolgálja. Az alkalmazásban a fájlok tárolásához különböző jegyzékstruktúrákat használok  fájltípusok szerint. A fájlok elérésének szempontjából az alkalmazás egyedi azonosítót (továbbiakban: 'id') és Univerzálisan Egyedi Azonosítót (továbbiakban: 'uuid') használ. Az id az adatbázisban tárolt entitások egyedi azonosítója, míg az uuid egy véletlenszerűen generált, egyedi azonosító, amelyet a fájlokhoz rendelek. Használhattam volna csak az id-t is viszont biztonságtechnikai szempontból a uuid mellett döntöttem. Ezáltal a uuid megnehezíti az illetéktelen hozzáférést a fájlokhoz, és növeli az adatbiztonságot azáltal, hogy komplikáltabbá teszi a manuális fájl elérését. A uuid használata más szempontból is előnyösnek bizonyult: Amikor a hallgató feltölti a szakdolgozatot, az alkalmazás egy uuid-t rendel hozzá, amely garantálja, hogy a fájl neve egyedülálló legyen. Ez különösen hasznos ebben az esetben, ha az összes szakdolgozat egy közös jegyzékben található, így elkerülhető a névütközés.
 
-% Adatmodellről annyit, hogy relációs séma szerint lesz, relációs adatbázissal később.
-
-A webalkalmazás fájlrendszere a dolgozatok, prezentációk, bírálatok, záróvizsga jegyzőkönyvek illetve tételek, és e-mailek tárolását szolgálja. Az alkalmazásban a fájlok tárolásához különböző jegyzékstruktúrákat használok  fájltípusok szerint. A fájlok elérésének szempontjából az alkalmazás egyedi azonosítót (továbbiakban: 'id') és Univerzálisan Egyedi Azonosítót (továbbiakban: 'uuid') használ. Az id az adatbázisban tárolt entitások egyedi azonosítója, míg az uuid egy véletlenszerűen generált, egyedi azonosító, amelyet a fájlokhoz rendelek. Használhattam volna csak az id-t is viszont biztonságtechnikai szempontból a uuid mellett döntöttem. Ezáltal a uuid megnehezíti az illetéktelen hozzáférést a fájlokhoz, és növeli az adatbiztonságot azáltal, hogy komplikáltabbá teszi a manuális fájl elérését. A uuid használata más szempontból is előnyösnek bizonyult: Amikor a hallgató feltölti a szakdolgozatot, az alkalmazás egy uuid-t rendel hozzá, amely garantálja, hogy a fájl neve egyedülálló legyen. Ez különösen hasznos ebben az esetben, ha az összes szakdolgozat egy közös jegyzékben található, így elkerülhető a névütközés.\\
-\\
 Az alábbiakban felsorolom a jegyzékstruktúrákat és az egyes fájltípusok tárolásának módját:
 
-A dolgozatok hordozható dokumentum formátum (továbbiakban: 'pdf') és tömörített fájlformátum (továbbiakban: 'zip') kerülnek tárolásra. A fájlok elnevezéseiben több helyen is szerepelnek a következő adatok:
+A dolgozatok hordozható dokumentum formátum (továbbiakban: 'PDF') és tömörített fájlformátum (továbbiakban: 'zip') kerülnek tárolásra. A fájlok elnevezéseiben több helyen is szerepelnek a következő adatok:
 
 \begin{itemize}
 \item \texttt{UUID}: az egyedi azonosító \texttt{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX} formában, ahol az \texttt{X} helyén kisbetű vagy számjegy szerepel.
@@ -37,7 +32,7 @@ A dolgozatok hordozható dokumentum formátum (továbbiakban: 'pdf') és tömör
 
 \begin{enumerate}
 
-\item{Dolgozatok dokumentációjai (pdfs):}
+\item{Dolgozatok dokumentációjai (\textit{pdfs}):}
 
 A dolgozatok dokumentációját a \textit{pdfs} nevű jegyzékben tárolom. 
 A fájl feltöltésekor generálódik egy uuid, mely az első részét képezi a fájl nevének, majd ezt követi a hallgató által megadott elnevezés része.
@@ -46,7 +41,7 @@ A fájl feltöltésekor generálódik egy uuid, mely az első részét képezi a
 
 \begin{itemize}
 
-\item \texttt{Egyedi\_fájlnév}: az egyedi fájlnév amit a hallgató ad meg általában például \texttt{dolgozat}
+\item\texttt{Egyedi\_fájlnév}: az egyedi fájlnév amit a hallgató ad meg általában, például \texttt{dolgozat}.
 
 \end{itemize}
 
@@ -55,7 +50,7 @@ Például: 3c39562a-fe6a-4783-9ab4-05d875017d70\_dolgozat.pdf
 
 \item{Dolgozatok mellékletei (zip):}
 
-A szakdolgozatok mellékleteit az \textit{attachment} jegyzékben raktározom. A fájl elnevezése ugyanaz mint a dokumentációnál.
+A szakdolgozatok mellékleteit az \textit{attachment} jegyzékben raktározom. A fájl elnevezése ugyanaz, mint a dokumentációnál.
 
 Például: 14e18814-1246-43cc-85e9-f4443c26f54e\_dolgozat\_melléklet.zip
 
@@ -67,33 +62,34 @@ Például: 653c8797-8a8e-4472-91eb-9d7175a86891\_dolgozat\_prezentációja.pptx
 
 \item{Bírálatok (reviews):}
 
-A bírálatokat word formátumban tárolom le egy külön \textit{reviews} jegyzékben. A fájlnév szerkezete a következő: először az "Review" szó áll, majd a feltöltés dátuma, a hallgató neve, és végül egy uuid következik:
+A bírálatokat word formátumban tárolom le egy külön \textit{reviews} jegyzékben. A fájlnév szerkezete a következő: először a "Review" szó áll, majd a feltöltés dátuma, a hallgató neve, és végül egy uuid következik:
 
 \texttt{Review\_<date>\_<name>\_<UUID>.docx}, melyben
 
 \begin{itemize}
 \item \texttt{date}: a dátum az \texttt{YYYY\_MM\_DD} formátumban, ahol az \texttt{YYYY} az évet, a \texttt{MM} a hónapot, a \texttt{DD} a napot jelöli,
 
-
 \end{itemize}
 
-Például: Review\_2024\_03\_20\_Minta Hallgató\_2c16f8fe-8127-4795\\-827c-65690513c2cc.docx
+Például:
+
+Review\_2024\_03\_20\_Minta Hallgató\_2c16f8fe-8127-4795-827c-65690513c2cc.docx
 
 
 \item{Záróvizsga Jegyzőkönyvek (zv):}
 
-A záróvizsga jegyzőkönyveket is word formátumban tárolom a \textit{zv} jegyzékben. Az elnevezési konvenció hasonló az bírálathoz viszont a feltöltés dátuma nem jelenik meg benne.
+A záróvizsga jegyzőkönyveket is word formátumban tárolom a \textit{zv} jegyzékben. Az elnevezési konvenció hasonló a bírálathoz, viszont a feltöltés dátuma nem jelenik meg benne. Például: 
 
-Például: Záróvizsga\_Minta\_Hallgató\_ab2d2f15-5701-4fc4-8022-07e877c7432f.docx
+Záróvizsga\_Minta\_Hallgató\_ab2d2f15-5701-4fc4-8022-07e877c7432f.docx
 
 \item{Záróvizsga tételek (topics):}
 
-A záróvizsga tételeket txt formátumban tárolom a könnyebb módosíthatóság érdekében a \textit{topics} jegyzékben. A szövegfájlba beillesztettem a záróvizsga tételeket az Alkalmazott Matematikai Intézeti tanszék honlapjáról. 
+A záróvizsga tételeket txt formátumban tárolom a könnyebb módosíthatóság érdekében a \textit{topics} jegyzékben. (A szövegfájlba beillesztettem a záróvizsga tételeket az Alkalmazott Matematikai Intézeti tanszék honlapjáról.)
 
 
 \item{E-mail (email):}
 
-Az e-maileket a \textit{email} jegyzékben txt formátumban tárolom, hogy könnyebben módosíthassam azokat. Öt különálló szöveg fájlt hoztam létre a következő célokra: elfelejtett jelszó (forgotten\_password), bíráló felkérése (request\_review), bírálati jegyzőkönyv elküldése (review), záróvizsga létrehozása (zv\_create) és záróvizsga jegyzőkönyv elküldése (zv\_report). Ezáltal könnyen kezelhetővé teszem az egyes folyamatokhoz kapcsolódó dokumentumokat.
+Az e-maileket az \textit{email} jegyzékben txt formátumban tárolom, hogy könnyebben módosíthassam azokat. Öt különálló szövegfájlt hoztam létre a következő célokra: elfelejtett jelszó (forgotten\_password), bíráló felkérése (request\_review), bírálati jegyzőkönyv elküldése (review), záróvizsga létrehozása (zv\_create) és záróvizsga jegyzőkönyv elküldése (zv\_report). Ezáltal könnyen kezelhetővé teszem az egyes folyamatokhoz kapcsolódó dokumentumokat.
 
 \end{enumerate}
 
@@ -101,34 +97,31 @@ A perzisztens tárolás során az alkalmazás adatmodelljét relációs séma sz
 
 \Section{Backend}
 
-A backend rész az alkalmazás egyik kulcsfontosságú része, amely az adatok kezelését, üzleti logikájának végrehajtását és az ügyfélkérések feldolgozását végzi. Ebben a részben bemutatom az alkalmazás Data Access Object (továbbiakban: 'DAO'), Entitás , Service és Vezérlő rétegeit.
+A backend rész az alkalmazás egyik kulcsfontosságú része, amely az adatok kezelését, üzleti logikájának végrehajtását és az ügyfélkérések feldolgozását végzi. Ebben a részben bemutatom az alkalmazás \textit{Data Access Object} (továbbiakban: \textit{DAO}) \cite{DAO}, Entitás, \textit{Service} és \textit{Controller} rétegeit.
 
 \SubSection{DAO}
 
-A DAO\cite{DAO} réteg egy tervezési minta, amelyet szoftverfejlesztés során alkalmaznak, különösen az adatok perzisztens tárolásának és hozzáférésének kezelésére. A Spring Boot\cite{spring_boot} alkalmazásokban is gyakran használják a DAO\cite{DAO} réteget az adatbázis műveletek kiszolgálására. Néhány fő ok, hogy miért szükséges:
+A \textit{DAO} \cite{DAO} réteg egy tervezési minta, amelyet szoftverfejlesztés során alkalmaznak, különösen az adatok perzisztens tárolásának és hozzáférésének kezelésére. A \textit{Spring Boot} \cite{spring_boot} alkalmazásokban is gyakran használják a \textit{DAO} \cite{DAO} réteget az adatbázis műveletek kiszolgálására. Néhány fő ok, hogy miért szükséges:
 
 \begin{itemize}
 
-\item{} A DAO\cite{DAO} réteg segít elválasztani az üzleti logikát az adathoz való hozzáférés rétegétől. Ezáltal könnyebbé válik a kód karbantarthatósága és kiterjeszthetősége. 
+\item{} A \textit{DAO} réteg segít elválasztani az üzleti logikát az adathoz való hozzáférés rétegétől. Ezáltal könnyebbé válik a kód karbantarthatósága és kiterjeszthetősége. 
 
 \item{} Az üzleti logika nem közvetlenül függ az adatbázis technológiájától vagy a konkrét adatmodelltől, ami könnyebb tesztelést és kód újrafelhasználást tesz lehetővé. 
 
-\item{} A DAO\cite{DAO} réteg lehetővé teszi az adatbázis műveletek optimalizálását. 
+\item{} A \textit{DAO} réteg lehetővé teszi az adatbázis műveletek optimalizálását. 
 
-\item{} Ha az adatbázis vagy az adatmodell változik, a DAO\cite{DAO} réteg módosítása ezt a változást kezelheti, anélkül hogy az üzleti logikát érintené. 
+\item{} Ha az adatbázis vagy az adatmodell változik, a \textit{DAO} réteg módosítása ezt a változást kezelheti, anélkül hogy az üzleti logikát érintené. 
 
-\item{} Ha az alkalmazásnak későbbiekben változnia kell az adatbázis technológiájában (pl. MySQL-ről PostgreSQL-re), a DAO\cite{DAO} réteg könnyen cserélhető anélkül, hogy az alkalmazás más részeiben jelentős módosításokat kellene végrehajtani.
+\item{} Ha az alkalmazásnak későbbiekben változnia kell az adatbázis technológiájában (pl. \textit{MySQL}-ről \cite{MySQL} \textit{PostgreSQL-re} \cite{PostgreSQL}), a \textit{DAO} réteg könnyen cserélhető anélkül, hogy az alkalmazás más részeiben jelentős módosításokat kellene végrehajtani.
 
 \end{itemize}
 
-A webalkalmazásban található SQL query-k olyan mezőket kérnek le egyes táblákból, amelyek az adott lekérdezéshez szükségesek lehetnek. Azokra az adatokra amelyekre nincs szükség egy adott lekérdezés során a 'null as' kulcsszóval látom el.\\
+A webalkalmazásban található \textit{SQL} lekérdezések olyan mezőket kérnek le egyes táblákból, amelyek az adott lekérdezéshez szükségesek lehetnek. Azokra az adatokra amelyekre nincs szükség egy adott lekérdezés során a \textit{null as} kulcsszóval látom el.\\
 \\
-A Spring JDBC Template-t\cite{JdbcTemplate} is használhatom az SQL lekérdezések végrehajtására, és ennek segítségével is könnyedén érhetem el az adatbázist. A JDBC templatet viszont a service osztályban valósítom meg.
+A \textit{Spring JDBC Template}-t \cite{JdbcTemplate} is használhatom az \textit{SQL} lekérdezések végrehajtására, és ennek segítségével is könnyedén érhetem el az adatbázist. A \textit{JDBC template}-t viszont a \textit{Service} osztályban valósítom meg.
 
-
-% Lehet ezekhez is osztálydiagram
-
-\SubSection{Entity}
+\SubSection{Entitások}
 
 \begin{figure}[ht]
 	\includegraphics[width=\textwidth]{images/Adatmodell.pdf}
@@ -137,118 +130,117 @@ A Spring JDBC Template-t\cite{JdbcTemplate} is használhatom az SQL lekérdezés
 \end{figure}
 
 
-Először létrehoztam a Java\cite{java} osztályokat az adatbázistáblákhoz, amelyeket JPA entitásokként definiáltam. Ezek az osztályok reprezentálják az adatbázistáblákat és tartalmazzák a tábla attribútumait. Konfiguráltam a Spring Boot\cite{spring_boot} alkalmazást, hogy csatlakozzon az adatbázishoz és használja a JPA-t az adatok kezelésére. Ehhez a application.properties fájlban megadtam az adatbázis kapcsolódási információit és konfigurációit. A Spring Data JPA segítségével Repository interfészeket hoztam létre, amelyek a JPA entitásokhoz kapcsolódnak. Ezek a interfészek kiterjesztik a Spring Data CrudRepository vagy JpaRepository interfészeket, amelyek előre definiált adatműveleteket nyújtanak az entitásokhoz. Minden entitás osztályra alkalmaztam az @Entity annotációt, hogy jelezzem, hogy az adott osztály egy JPA entitás, és kapcsolódik egy adatbázistáblához.
+Először létrehoztam a \textit{Java} \cite{java} osztályokat az adatbázistáblákhoz, amelyeket Java Persistence API (továbbiakban: JPA) \cite{Java Persistence API} entitásokként definiáltam. Ezek az osztályok reprezentálják az adatbázistáblákat és tartalmazzák a tábla attribútumait. Konfiguráltam a \textit{Spring Boot} \cite{spring_boot} alkalmazást, hogy csatlakozzon az adatbázishoz és használja a \textit{JPA}-t \cite{Java Persistence API} az adatok kezelésére. Ehhez a \textit{application.properties} fájlban megadtam az adatbázis kapcsolódási információit és konfigurációit. A \textit{Spring Data JPA} \cite{Spring Data JPA} segítségével \textit{Repository} interfészeket hoztam létre, amelyek a \textit{JPA} entitásokhoz kapcsolódnak. Ezek a interfészek kiterjesztik a \textit{Spring Data} \textit{CrudRepository} vagy \textit{JpaRepository} interfészeket, amelyek előre definiált adatműveleteket nyújtanak az entitásokhoz. Minden entitás osztályra alkalmaztam az \textit{@Entity} annotációt, hogy jelezzem, hogy az adott osztály egy \textit{JPA} entitás, és kapcsolódik egy adatbázistáblához.
 
 
-Minden entitáshoz létrehoztam getter-setter metódusokat az attribútumok kezelésére és beállítására, valamint egy toString metódust az objektumok olvasható formában történő megjelenítésére.
+Minden entitáshoz létrehoztam \textit{getter-setter} metódusokat az attribútumok kezelésére és beállítására, valamint egy \textit{toString} metódust az objektumok olvasható formában történő megjelenítésére.
 
-\subsubsection{User}
+\subsubsection{User entitás}
 
-A \textit{User} entitásban vagyis a User.java fájlban található a felhasználó osztály. Ebben az osztályban határozom meg, hogyan kerülnek az adatok a \textit{User} táblába az adatbázisban. Az \textit{id} mező az adatbázisban az egyedi azonosítókat tárolja, amelyek segítségével azonosítani lehet egy adott felhasználót a rendszerben. Ezt a mezőt az adatbázis automatikusan generálja a "GenerationType.AUTO" stratégiát alkalmazva. A többi entitás azonosító mezőjénél is a "GenerationType.AUTO" stratégiát használom az elsődleges kulcs generálásához. A \textit{User} entitás kapcsolatban áll a \textit{Thesis}, a \textit{Review} és a \textit{Session} táblákkal. A \textit{role} mező egy enum attribútum, amely lehetővé teszi a különböző felhasználói szerepkörök (például adminisztrátor, hallgató stb.) könnyebb azonosítását és kezelését az alkalmazásban. A \textit{username}, a \textit{fullname} és az \textit{email} segíti a felhasználók azonosítását és kommunikációját az alkalmazásban. A \textit{neptun\_code}, \textit{birthday}, \textit{birth\_place}, \textit{mothers\_maiden\_name} és a \textit{pedigree\_number} mezők hozzájárulnak a hallgató könnyebb beazonosításához, valamint elengedhetetlen adatok lesznek később a záróvizsga jegyzőkönyv generálásához. A \textit{workplace}, a \textit{title} és a \textit{position} a többi szerepkör meghatározásához járulnak hozzá. A \textit{password} mező tárolja a felhasználó jelszavát, amelyet az adatbázisban hash-elt formában tárolok, így a tényleges jelszavak nem láthatóak a rendszerben.
+A \textit{User} entitásban vagyis a \textit{User.java} fájlban található a felhasználó osztály. Ebben az osztályban határozom meg, hogyan kerülnek az adatok a \textit{User} táblába az adatbázisban. Az \textit{id} mező az adatbázisban az egyedi azonosítókat tárolja, amelyek segítségével azonosítani lehet egy adott felhasználót a rendszerben. Ezt a mezőt az adatbázis automatikusan generálja a \textit{GenerationType.AUTO} stratégiát alkalmazva. A többi entitás azonosító mezőjénél is a \textit{GenerationType.AUTO} stratégiát használom az elsődleges kulcs generálásához. A \textit{User} entitás kapcsolatban áll a \textit{Thesis}, a \textit{Review} és a \textit{Session} táblákkal. A \textit{role} mező egy enum attribútum, amely lehetővé teszi a különböző felhasználói szerepkörök (például adminisztrátor, hallgató stb.) könnyebb azonosítását és kezelését az alkalmazásban. A \textit{username}, a \textit{fullname} és az \textit{email} segíti a felhasználók azonosítását és kommunikációját az alkalmazásban. A \textit{neptun\_code}, \textit{birthday}, \textit{birth\_place}, \textit{mothers\_maiden\_name} és a \textit{pedigree\_number} mezők hozzájárulnak a hallgató könnyebb beazonosításához, valamint elengedhetetlen adatok lesznek később a záróvizsga jegyzőkönyv generálásához. A \textit{workplace}, a \textit{title} és a \textit{position} a többi szerepkör meghatározásához járulnak hozzá. A \textit{password} mező tárolja a felhasználó jelszavát, amelyet az adatbázisban hash-elt formában tárolok, így a tényleges jelszavak nem láthatóak a rendszerben.
 
 
-\subsubsection{Thesis}
+\subsubsection{Thesis entitás}
 
-A \textit{Thesis} entitás az alkalmazásban olyan információkat tárol, amelyek az egyetemi hallgatók által írt szakdolgozatokra vonatkoznak. Az \textit{id} mező a \textit{Thesis} táblában egyedi azonosítót jelöl, amely segíti az adatbázisban tárolt szakdolgozatok egyértelmű azonosítását és kezelését. A \textit{Thesis} tábla összeköttetésben áll az adatbázisban szereplő összes entitással. A \textit{session\_id} mező egy idegen kulcs, amely a \textit{Session} tábla \textit{id} mezőjére mutat. A két tábla között egy-több kapcsolat áll fenn, mivel egy záróvizsgához több szakdolgozat is tartozhat. A relációt Java-ban a @ManyToOne és @OneToMany annotációval valósítottam meg. A kapcsolatot a @JoinColum annotációval egy mezőre képeztem le ez esetben ez a \textit{session\_id} mező lenne. Az idegenkulcsok kezelése hasonló a fent bemutatott példához más entitásoknál is. A \textit{user\_id}, \textit{supervisor\_id} és a \textit{consultant\_id} mezők is idegenkulcsok melyek a \textit{User} tábla \textit{id} mezőjére mutatnak. Itt is egy-több kapcsolatot valósítottam meg, mivel egy hallgatónak, témavezetőnek és konzulensnek lehet több szakdolgozata. A \textit{topic\_id} adattag a \textit{Topic} tábla \textit{id} mezőjére mutat és egy-több kapcsolatot implementáltam itt is. A \textit{title}, \textit{faculty}, \textit{department}, \textit{speciality}, \textit{language}, \textit{has\_msc\_apply}, \textit{submission\_date}, \textit{answer} mezők a szakdolgozatok könnyebb beazonosítására szolgálnak. Az \textit{is\_under\_review} a folyamatban lévő bírálatokat szeretné reprezentálni, míg a \textit{reviews\_remaining} mező a hátralévő bírálatokat tartja számon, amely alapesetben beállításra kerül 2-es értékkel.
+A \textit{Thesis} entitás az alkalmazásban olyan információkat tárol, amelyek az egyetemi hallgatók által írt szakdolgozatokra vonatkoznak. Az \textit{id} mező a \textit{Thesis} táblában egyedi azonosítót jelöl, amely segíti az adatbázisban tárolt szakdolgozatok egyértelmű azonosítását és kezelését. A \textit{Thesis} tábla összeköttetésben áll az adatbázisban szereplő összes entitással. A \textit{session\_id} mező egy idegen kulcs, amely a \textit{Session} tábla \textit{id} mezőjére mutat. A két tábla között egy-több kapcsolat áll fenn, mivel egy záróvizsgához több szakdolgozat is tartozhat. A relációt \textit{Java}-ban \cite{Java} a \textit{@ManyToOne} és \textit{@OneToMany} annotációval valósítottam meg. A kapcsolatot a \textit{@JoinColumn} annotációval egy mezőre képeztem le ez esetben ez a \textit{session\_id} mező lenne. Az idegenkulcsok kezelése hasonló a fent bemutatott példához más entitásoknál is. A \textit{user\_id}, \textit{supervisor\_id} és a \textit{consultant\_id} mezők is idegenkulcsok melyek a \textit{User} tábla \textit{id} mezőjére mutatnak. Itt is egy-több kapcsolatot valósítottam meg, mivel egy hallgatónak, témavezetőnek és konzulensnek lehet több szakdolgozata. A \textit{topic\_id} adattag a \textit{Topic} tábla \textit{id} mezőjére mutat és egy-több kapcsolatot implementáltam itt is. A \textit{title}, \textit{faculty}, \textit{department}, \textit{speciality}, \textit{language}, \textit{has\_msc\_apply}, \textit{submission\_date}, \textit{answer} mezők a szakdolgozatok könnyebb beazonosítására szolgálnak. Az \textit{is\_under\_review} a folyamatban lévő bírálatokat szeretné reprezentálni, míg a \textit{reviews\_remaining} mező a hátralévő bírálatokat tartja számon, amely alapesetben beállításra kerül 2-es értékkel.
 
-\subsubsection{Topic}
+\subsubsection{Topic entitás}
 
 A \textit{Topic} entitás a záróvizsgán húzott tételeket tartalmazza. Az \textit{id} mező a \textit{Topic} táblában egyedi azonosítót jelöl, amely a tétel sorszámát tárolja. A \textit{topic} mezőben pedig a záróvizsga tételek szöveges formátumban találhatóak meg. Ennél szükség volt a String típusnál nagyobb kapacitásra, mivel a záróvizsga témák leírása ennél hosszabb. Ennek megfelelően a \textit{topic} attribútum típusát VARCHAR(7500) karakterre növeltem, hogy elegendő helyet biztosítsak a témák részletes leírásához.
 
-\subsubsection{Review}
+\subsubsection{Review entitás}
 
-Az \textit{Review} entitás az alkalmazásban az egyetemi szakdolgozatok értékeléseit tárolja. A szakdolgozat értékeléseket különböző szempontok alapján történik, és ezeket az adatokat rögzítem az entitásban. A táblában az \textit{id} egyedi azonosítóként szerepel. A \textit{reviewer\_id} egy idegenkulcs, amely a \textit{User} tábla \textit{id} mezőjére mutat és egy-több kapcsolatot hoztam ehhez létre. A \textit{thesis\_id} mező szintén egy idegenkulcs, amely a \textit{Thesis} tábla \textit{id} mezőjére mutat. Emellett az \textit{invitation\_date}, \textit{score}, \textit{description}, \textit{city} és \textit{submission\_date} mezők szolgálnak az értékelések egyértelmű azonosítására és részletezésére. A \textit{description} mező esetében felmerült az adatméret korlátozottsága, ezért a @ColumnDefinition annotáció segítségével kiküszöböltem a problémát, beállítva a mező típusát LONGTEXT-re, ezáltal lehetővé téve a bírálatok részletes leírásának tárolását.
+Az \textit{Review} entitás az alkalmazásban az egyetemi szakdolgozatok értékeléseit tárolja. A szakdolgozat értékeléseket különböző szempontok alapján történik, és ezeket az adatokat rögzítem az entitásban. A táblában az \textit{id} egyedi azonosítóként szerepel. A \textit{reviewer\_id} egy idegenkulcs, amely a \textit{User} tábla \textit{id} mezőjére mutat és egy-több kapcsolatot hoztam ehhez létre. A \textit{thesis\_id} mező szintén egy idegenkulcs, amely a \textit{Thesis} tábla \textit{id} mezőjére mutat. Emellett az \textit{invitation\_date}, \textit{score}, \textit{description}, \textit{city} és \textit{submission\_date} mezők szolgálnak az értékelések egyértelmű azonosítására és részletezésére. A \textit{description} mező esetében felmerült az adatméret korlátozottsága, ezért a \textit{@ColumnDefinition} annotáció segítségével kiküszöböltem a problémát, beállítva a mező típusát LONGTEXT-re, ezáltal lehetővé téve a bírálatok részletes leírásának tárolását.
 
-\subsubsection{File}
+\subsubsection{File entitás}
 
 A \textit{File} entitás az alkalmazásban a fájlok tárolását szolgálja a szakdolgozatokhoz és egyéb kapcsolódó dokumentumokhoz. Az \textit{id} mező a \textit{File} entitásban egyedi azonosítóként szolgál, amely segíti az adott fájl egyértelmű azonosítását az adatbázisban. A \textit{thesis\_id}-t idegenkulcsként hoztam létre amely a \textit{Thesis} tábla \textit{id} mezőjével áll kapcsolatban. Egy-több kapcsolatot valósítottam meg, mivel egy szakdolgozathoz több fájl is rendelhető. A \textit{name}, \textit{upload\_time} és \textit{uuid} mezők a fájlok egyértelműbb beazonosítására szolgálnak. A \textit{uuid}, ahogy a perzisztens tárolásnál említettem segít elkerülni az azonos nevű vagy azonos tartalmú fájlok ütközését, valamint könnyen lehetőséget nyújt az adatok azonosítására és kezelésére.
 
-\subsubsection{Session}
+\subsubsection{Session entitás}
 
 A \textit{Session} entitás az alkalmazásban a záróvizsgák adatait tárolja. Az \textit{id} mező a \textit{Session} entitásban egyedi azonosítóként szolgál, amely lehetővé teszi az adott záróvizsga egyértelmű azonosítását az adatbázisban. A \textit{secretary\_id} és a \textit{chairman\_id} idegenkulcsok, amelyek segítségével könnyen beazonosítható a jegyző és az elnök személye. A \textit{members} és a \textit{students} külön táblákba hoztam létre, mivel több-több kapcsolatot valósítottam meg a \textit{User} és a \textit{Session} entitás között. A két táblában a felhasználó és a záróvizsga azonosítóját tárolom. A \textit{date}, \textit{start\_hour}, \textit{end\_hour}, \textit{location}, \textit{description} és a \textit{code} adattagok a záróvizsgák egyértelműbb beazonosítására szolgálnak illetve ezek a záróvizsga jegyzőkönyv generálásához elengedhetetlen adattagok.
 
 \newpage
-\subsection{Service}
+\subsection{Service osztályok}
 
-A Spring Boot alkalmazásban a Service osztályok általában az üzleti logika rétegét képviselik. Ezek az osztályok felelősek az üzleti folyamatok végrehajtásáért, adatfeldolgozásért és egyéb műveletekért, amelyeket az alkalmazás végrehajt.
+A \textit{Spring Boot} \cite{spring_boot} alkalmazásban a \textit{Service} osztályok általában az üzleti logika rétegét képviselik. Ezek az osztályok felelősek az üzleti folyamatok végrehajtásáért, adatfeldolgozásért és egyéb műveletekért, amelyeket az alkalmazás végrehajt.
 
-\subsubsection{UserService}
+\subsubsection{UserService osztály}
 
-A UserService osztály a felhasználók kezeléséért és az ahhoz kapcsolódó műveletek végrehajtásáért felelős. Az addUser metódus lehetővé teszi, hogy új felhasználót adjunk hozzá az adatbázishoz. Itt beállítottam, hogy a jelszó hash-elt formában kerüljön be az adatbázisba, felhasználva a getEncodedPassword metódust. Az updateUsers metódussal felülírhatjuk a felhasználók egyes adatait. A user-t megkapom frontendről és annak az egyedi azonosítója alapján lehet frissíteni az egyes adattagokat. Ha a felhasználó szerepköre hallgató akkor beállítottam, hogy a beosztás mező üres legyen. A deleteUserbyId metódussal törölhetünk felhasználót az egyedi azonosítója alapján az adatbázisból. Ezenkívül létrehoztam különböző metódusokat, amelyek az adott felhasználók beazonosítására szolgálnak. Így meg tudjuk őket jeleníteni egy táblázatban illetve a drop-down listában is. A felhasználók beazonosíthatóak név, egyedi azonosító és szerepkör alapján.
-Ezekhez felhasználom a dao rétegben írt lekérdezéseket, amelyek segítségével biztosítom az adatok védelmét. A findStudentsByLoggedInReviewer függvényre a Thesis status lap miatt van szükség, mivel szerettem volna úgy elkészíteni az oldalt, hogy a bíráló és a témavezető is csak azt a hallgatót lássa, akinek bírálatot kell írni. Az init metódusokkal inicializálok különböző szerepkörökből felhasználókat azért, hogy amikor elindul az alkalmazás ezek már létrejöjjenek azonnal. Ez sokban segítette néhány funkció tesztelését, hogy nem kellett mindig létrehozni felhasználót, szakdolgozatot stb.-t hogy egyből ki tudjak próbálni egy új funkciót. A jelszóváltoztatást segítő metódusokat is itt hoztam létre. Készítettem először is egy getEncodedPassword metódust, amelyben használom a PasswordEncoder osztály passwordEncoder metódusát annak érdekében, hogy a jelszó titkosítva legyen hash formátumban az adatbázisban.
+A \textit{UserService} osztály a felhasználók kezeléséért és az ahhoz kapcsolódó műveletek végrehajtásáért felelős. Az \textit{addUser} metódus lehetővé teszi, hogy új felhasználót adjunk hozzá az adatbázishoz. Itt beállítottam, hogy a jelszó hash-elt formában kerüljön be az adatbázisba, felhasználva a \textit{getEncodedPassword} metódust. Az \textit{updateUsers} metódussal felülírhatjuk a felhasználók egyes adatait. A \textit{user}-t megkapom frontendről és annak az egyedi azonosítója alapján lehet frissíteni az egyes adattagokat. Ha a felhasználó szerepköre hallgató akkor beállítottam, hogy a beosztás mező üres legyen. A \textit{deleteUserbyId} metódussal törölhetünk felhasználót az egyedi azonosítója alapján az adatbázisból. Ezenkívül létrehoztam különböző metódusokat, amelyek az adott felhasználók beazonosítására szolgálnak. Így meg tudjuk őket jeleníteni egy táblázatban illetve a drop-down listában is. A felhasználók beazonosíthatóak név, egyedi azonosító és szerepkör alapján.
+Ezekhez felhasználom a \textit{DAO} \cite{DAO} rétegben írt lekérdezéseket, amelyek segítségével biztosítom az adatok védelmét. A \textit{findStudentsByLoggedInReviewer} függvényre a \textit{Thesis status} lap miatt van szükség, mivel szerettem volna úgy elkészíteni az oldalt, hogy a bíráló és a témavezető is csak azt a hallgatót lássa, akinek bírálatot kell írni. Az \textit{init} metódusokkal inicializálok különböző szerepkörökből felhasználókat azért, hogy amikor elindul az alkalmazás ezek már létrejöjjenek azonnal. Ez sokban segítette néhány funkció tesztelését, hogy nem kellett mindig létrehozni felhasználót, szakdolgozatot hogy egyből ki tudjak próbálni egy új funkciót. A jelszóváltoztatást segítő metódusokat is itt hoztam létre. Készítettem először is egy \textit{getEncodedPassword} metódust, amelyben használom a \textit{PasswordEncoder} osztály \textit{passwordEncoder} metódusát annak érdekében, hogy a jelszó titkosítva legyen hash formátumban az adatbázisban.
 
-\subsubsection{ThesesService}
+\subsubsection{ThesesService osztály}
 
-A ThesesService osztály felelős a szakdolgozatokkal kapcsolatos műveletek végrehajtásáért és az azokhoz kapcsolódó adatbázis-műveletek kezeléséért. Az addTheses updateTheses és a deleteThesesbyId metódusok funkciója nem tér el a userService-ben látottakhoz képest annyi, hogy most szakdolgozatokkal végezhető el ez a művelet. Itt is megtalálhatóak különböző metódusok, amelyek a szakdolgozat pontos beazonosítására szolgálnak akár egyedi azonosító alapján és a felhasználó egyedi azonosítója alapján is.
+A \textit{ThesesService} osztály felelős a szakdolgozatokkal kapcsolatos műveletek végrehajtásáért és az azokhoz kapcsolódó adatbázis-műveletek kezeléséért. Az \textit{addTheses}, \textit{updateTheses} és a \textit{deleteThesesbyId} metódusok funkciója nem tér el a \textit{userService}-ben látottakhoz képest annyi, hogy most szakdolgozatokkal végezhető el ez a művelet. Itt is megtalálhatóak különböző metódusok, amelyek a szakdolgozat pontos beazonosítására szolgálnak akár egyedi azonosító alapján és a felhasználó egyedi azonosítója alapján is.
 
-\subsubsection{TopicService}
+\subsubsection{TopicService osztály}
 
-A TopicService osztály felelős a záróvizsga tételekkel kapcsolatos műveletek végrehajtásáért és az azokhoz kapcsolódó adatbázis-műveletek kezeléséért. Az addTopics metódus segítségével új záróvizsga tételt lehet hozzáadni egy szakdolgozathoz. A chooseTopic eljárásban valósítottam meg egy jdbcTemplattel a tételhúzást. Amikor a felületen megtörténik a folyamat, akkor az adatbázisban a Thesis tábla topic\_id és topic\_score mezője frissül. A getTopics metódussal egy listába kapom vissza a záróvizsga tételeket. Az initTopics metódussal inicializálom a tételeket. Ezeket egy tömbben tárolom el. Azért mert amikor újból indítom az alkalmazást akkor mindig legenerálódik ismételten a 27 db tétel ezért írtam rá egy sql querry-t, amely megszámolja hogy mennyi szakdolgozat van és ha még nincs szakdolgozat akkor inicializálja a tételeket.
+A \textit{TopicService} osztály felelős a záróvizsga tételekkel kapcsolatos műveletek végrehajtásáért és az azokhoz kapcsolódó adatbázis-műveletek kezeléséért. Az \textit{addTopics} metódus segítségével új záróvizsga tételt lehet hozzáadni egy szakdolgozathoz. A chooseTopic eljárásban valósítottam meg egy \textit{JDBC template}-el \cite{JdbcTemplate} a tételhúzást. Amikor a felületen megtörténik a folyamat, akkor az adatbázisban a Thesis tábla \textit{topic\_id} és \textit{topic\_score} mezője frissül. A \textit{getTopics} metódussal egy listába kapom vissza a záróvizsga tételeket. Az \textit{initTopics} metódussal inicializálom a tételeket. Ezeket egy tömbben tárolom el. Azért mert amikor újból indítom az alkalmazást akkor mindig legenerálódik ismételten a 27 db tétel ezért írtam rá egy \textit{SQL} \cite{SQL} lekérdezést, amely megszámolja, hogy mennyi szakdolgozat van, és ha még nincs szakdolgozat akkor inicializálja a tételeket.
 
-\subsubsection{FileService}%%%%%%%%%%%%%assemblewithstudent-et át kell írni backenden
+\subsubsection{FileService osztály}
 
-A FileService felelős a fájlok kezeléséért, beleértve a feltöltést, letöltést, fájlnevek lekérdezését és törlését. Az assembleFileWithThesis metódus összerendezi a fájlt a megadott szakdolgozattal. Ellenőrzi, hogy a fájl és a szakdolgozat megtalálható-e az adatbázisban. Ha megtalálhatóak, akkor hozzárendeli a fájlt a szakdolgozathoz. A findThesesByLoggedInStudent metódus az éppen a rendszerbe belépett felhasználó egyedi azonosítóját kapja meg. Ez alapján végig iterál a szakdolgozatokon és vizsgálja, hogy az adott dolgozathoz tartozik-e fájl, ha nem akkor a fájlfeltöltéses felületen megjelenik az adott felhasználó szakdolgozata a legördülő listában. A getFilenameByUUID metódus az adatbázisból keresi és visszaadja a fájl nevét a uuid alapján. Erre fájl letöltésnél van szükség. A getFile metódus visszaadja a fájlt a megadott fájlnév alapján. A deleteFileById metódus uuid alapján töröl az adatbázisból fájlokat. Az uploadFile metódussal feltölti a felhasználó a megadott fájlt. A fájl típusától függően megfelelő mappákba menti a fájlt, és beállítja a fájl nevét és egyéb adatait az adatbázisban.
+A \textit{FileService} felelős a fájlok kezeléséért, beleértve a feltöltést, letöltést, fájlnevek lekérdezését és törlését. Az \textit{assembleFileWithThesis} metódus összerendezi a fájlt a megadott szakdolgozattal. Ellenőrzi, hogy a fájl és a szakdolgozat megtalálható-e az adatbázisban. Ha megtalálhatóak, akkor hozzárendeli a fájlt a szakdolgozathoz. A \textit{findThesesByLoggedInStudent} metódus az éppen a rendszerbe belépett felhasználó egyedi azonosítóját kapja meg. Ez alapján végig iterál a szakdolgozatokon és vizsgálja, hogy az adott dolgozathoz tartozik-e fájl, ha nem akkor a fájlfeltöltéses felületen megjelenik az adott felhasználó szakdolgozata a legördülő listában. A \textit{getFilenameByUUID} metódus az adatbázisból keresi és visszaadja a fájl nevét a uuid alapján. Erre fájl letöltésnél van szükség. A \textit{getFile} metódus visszaadja a fájlt a megadott fájlnév alapján. A \textit{deleteFileById} metódus \textit{uuid} alapján töröl az adatbázisból fájlokat. Az \textit{uploadFile} metódussal feltölti a felhasználó a megadott fájlt. A fájl típusától függően megfelelő mappákba menti a fájlt, és beállítja a fájl nevét és egyéb adatait az adatbázisban.
 
-\subsubsection{EmailSenderService}
+\subsubsection{EmailSenderService osztály}
 
-Ez az osztály felelős az e-mail küldés funkcióért, amihez egy külön e-mail címet hoztam létre. Először is hozzáadtam a pom.xml fájlban a megfelelő függőséget. Utána létrehoztam egy mailConfiguration, amely egy konfigurációs osztály. Ebben az osztályban létrehoztam a getJavaMailSender metódust, amelyben beállítom a JavaMailSenderImpl példányát, amely a tényleges e-mail küldésért felelős. Ebben megadom a Gmail SMTP szerver adatait, valamint az SMTP hitelesítéshez szükséges felhasználónevet és jelszót.Ezután létrehoztam egy emailSenderService osztályt, ahol az e-mail küldést valósítottam meg. A sendEmailWithAttachments metódus egy olyan e-mailt küld, amelynek van csatolmánya. A paraméterei a címzett e-mail címe (toEmail), a levél tárgya (subject), a levél szövege (body) és a csatolt fájl elérési útvonala (pathToAttachment) amelyet String típusú listában adtam meg. Ez a metódus létrehoz egy MimeMessage objektumot, amelyet a JavaMailSender segítségével állít be. A csatolt fájlt a FileSystemResource segítségével adja hozzá a levélhez. Ha a csatolt fájl nem található, akkor kivételt dob. Végül a mailSender.send(message) hívással elküldi az e-mailt, majd a konzolra kiírja, hogy sikeresen kiküldésre került az e-mail. A sendEmail metódus egy olyan e-mailt küld, amelynek nincs csatolmánya. Paraméterei ugyanazok, mint a sendEmailWithAttachment metódusnak, csak itt nincs pathToAttachment paraméter. A funkciója ugyanaz, csak csatolmány nélkül küldi el az e-mailt.
+Ez az osztály felelős az e-mail küldés funkcióért, amihez egy külön e-mail címet hoztam létre. Először is hozzáadtam a \textit{pom.xml} fájlban a megfelelő függőséget. Utána létrehoztam egy \textit{mailConfiguration}, amely egy konfigurációs osztály. Ebben az osztályban létrehoztam a \textit{getJavaMailSender} metódust, amelyben beállítom a \textit{JavaMailSenderImpl} példányát, amely a tényleges e-mail küldésért felelős. Ebben megadom a Gmail \textit{Simple Mail Transfer Protocol} (továbbiakban: \textit{SMTP}) \cite{SMTP} szerver adatait, valamint az \textit{SMTP} hitelesítéshez szükséges felhasználónevet és jelszót. Ezután létrehoztam egy \textit{emailSenderService} osztályt, ahol az e-mail küldést valósítottam meg. A \textit{sendEmailWithAttachments} metódus egy olyan e-mailt küld, amelynek van csatolmánya. A paraméterei a címzett e-mail címe (\textit{toEmail}), a levél tárgya (\textit{subject}), a levél szövege (\textit{body}) és a csatolt fájl elérési útvonala (\textit{pathToAttachment}) amelyet \textit{String} típusú listában adtam meg. Ez a metódus létrehoz egy \textit{MimeMessage} objektumot, amelyet a \textit{JavaMailSender} segítségével állít be. A csatolt fájlt a \textit{FileSystemResource} segítségével adja hozzá a levélhez. Ha a csatolt fájl nem található, akkor kivételt dob. Végül a \textit{mailSender.send(message)} hívással elküldi az e-mailt, majd a konzolra kiírja, hogy sikeresen kiküldésre került az e-mail. A \textit{sendEmail} metódus egy olyan e-mailt küld, amelynek nincs csatolmánya. Paraméterei ugyanazok, mint a \textit{sendEmailWithAttachment} metódusnak, csak itt nincs \textit{pathToAttachment} paraméter. A funkciója ugyanaz, csak csatolmány nélkül küldi el az e-mailt.
 
-\subsubsection{ForgottenPasswordService}
+\subsubsection{ForgottenPasswordService osztály}
 
-Ez az osztály kezeli az elfelejtett jelszóval és a beállításával kapcsolatos folyamatokat, például az új jelszó kérést és az e-mailen keresztüli jelszóvisszaállító token küldését. A forgottenPasswordToken metódus egy felhasználóhoz generál egy jwt tokent, amelyet a felhasználó e-mailben fog megkapni. Ezt beállítottam hogy 10 percig legyen érvényes. Az isValidPassword metódus az új jelszó beállításához szükséges. Az új jelszó megadásához meg kell adni a régit is ezt ellenőrzi ez a metódus. Az elfelejtett jelszó eseténél létrehoztam egy isValidToken metódust is, ami a megadott tokent, hogy az egyezik-e az e-mailben kiküldöttel. A setNewPassword metódus lehetővé teszi a felhasználó számára, hogy új jelszót állítson be a kapott token segítségével. Ellenőrzi, hogy a token érvényes-e, majd megváltoztatja a felhasználó jelszavát a megadott újra. A setNewPasswordtwo metódus lehetővé teszi a felhasználó számára, hogy új jelszót állítson be a régi jelszóval. A sendForgottenPasswordTokenByEmail metódus egy e-mailt küld a felhasználónak, amely tartalmazza a jelszóvisszaállító token-t. Az e-mail tartalmazza a token-t és egy leírást, hogy meddig érvényes a token. Ha a felhasználó nem található meg a megadott felhasználónév alapján, akkor egy UsernameNotFoundException kivételt dob.
+Ez az osztály kezeli az elfelejtett jelszóval és a beállításával kapcsolatos folyamatokat, például az új jelszó kérést és az e-mailen keresztüli jelszóvisszaállító token küldését. A \textit{forgottenPasswordToken} metódus egy felhasználóhoz generál egy jwt tokent, amelyet a felhasználó e-mailben fog megkapni. Ezt beállítottam hogy 10 percig legyen érvényes. Az \textit{isValidPassword} metódus az új jelszó beállításához szükséges. Az új jelszó megadásához meg kell adni a régit is ezt ellenőrzi ez a metódus. Az elfelejtett jelszó eseténél létrehoztam egy \textit{isValidToken} metódust is, ami a megadott tokent, hogy az egyezik-e az e-mailben kiküldöttel. A \textit{setNewPassword} metódus lehetővé teszi a felhasználó számára, hogy új jelszót állítson be a kapott token segítségével. Ellenőrzi, hogy a token érvényes-e, majd megváltoztatja a felhasználó jelszavát a megadott újra. A \textit{setNewPasswordTwo} metódus lehetővé teszi a felhasználó számára, hogy új jelszót állítson be a régi jelszóval. A \textit{sendForgottenPasswordTokenByEmail} metódus egy e-mailt küld a felhasználónak, amely tartalmazza a jelszóvisszaállító tokent. Az e-mail tartalmazza a tokent és egy leírást, hogy meddig érvényes a token. Ha a felhasználó nem található meg a megadott felhasználónév alapján, akkor egy \textit{UsernameNotFoundException} kivételt dob.
 
 \subsubsection{JWT alapú autentikáció és azonosítás kezelése}
 
-JWT alapú autentikációs és azonosítási rendszer kifejezetten fontos szerepet tölt be az alkalmazásban, biztosítva a felhasználók biztonságos hozzáférését és azonosítását. JwtRequest és JwtResponse osztályok az autentikációs kérés és válasz objektumokat reprezentálják. A JwtRequest tartalmazza a felhasználónevet és a jelszót, míg a JwtResponse tartalmazza a felhasználót és a JWT tokent. Az autentikációs problémák érdekében létrehoztam egy külön osztályt amely kezeli az autentikációs hibákat. Amennyiben a kliens nem rendelkezik megfelelő hitelesítő adatokkal vagy érvénytelen tokent küld, a rendszer HTTP 401 Unauthorized választ küld vissza. A JwtRequestFilter osztályban amikor egy kérés érkezik, kinyeri belőle a JWT tokent a fejlécből, majd ellenőrzi annak érvényességét. Ha a token érvényes, akkor beállítja a felhasználói azonosítást a Spring Security SecurityContextHolder objektumban. A WebSecurityConfiguration konfigurációs osztály konfigurálja a Spring Security-t. Beállítja, hogy mely végpontok érhetők el mindenki számára, és melyek csak hitelesített felhasználók számára. Hozzáadja a JwtRequestFilter-t a Spring Security láncolatához. A JwtService szolgáltatásosztály felelős az autentikációs folyamat teljes körű kezeléséért. Itt valósul meg a felhasználók azonosítása, az autentikáció során a JWT tokenek generálása és validálása. 
+A JSON Web Tokens (továbbiakban: JWT) \cite{JSON Web Tokens} alapú autentikációs és azonosítási rendszer kifejezetten fontos szerepet tölt be az alkalmazásban, biztosítva a felhasználók biztonságos hozzáférését és azonosítását. \textit{JwtRequest} és \textit{JwtResponse} osztályok az autentikációs kérés és válasz objektumokat reprezentálják. A \textit{JwtRequest} tartalmazza a felhasználónevet és a jelszót, míg a \textit{JwtResponse} tartalmazza a felhasználót és a \textit{JWT} tokent. Az autentikációs problémák érdekében létrehoztam egy külön osztályt amely kezeli az autentikációs hibákat. Amennyiben a kliens nem rendelkezik megfelelő hitelesítő adatokkal vagy érvénytelen tokent küld, a rendszer \textit{HTTP} 401 \textit{Unauthorized} választ küld vissza. A \textit{JwtRequestFilter} osztályban amikor egy kérés érkezik, kinyeri belőle a \textit{JWT} tokent a fejlécből, majd ellenőrzi annak érvényességét. Ha a token érvényes, akkor beállítja a felhasználói azonosítást a \textit{Spring Security SecurityContextHolder} objektumban. A \textit{WebSecurityConfiguration} konfigurációs osztály konfigurálja a \textit{Spring Security}-t. Beállítja, hogy mely végpontok érhetők el mindenki számára, és melyek csak hitelesített felhasználók számára. Hozzáadja a \textit{JwtRequestFilter}-t a \textit{Spring Security} láncolatához. A \textit{JwtService} szolgáltatásosztály felelős az autentikációs folyamat teljes körű kezeléséért. Itt valósul meg a felhasználók azonosítása, az autentikáció során a \textit{JWT} tokenek generálása és validálása. 
 
 
-\subsubsection{ReviewService}
+\subsubsection{ReviewService osztály}
 
-A ReviewService a bíráló és a témavezető által készített bírálatok kezeléséért felelős a rendszerben. Az addReview metódus felel a bírálatok adatbázisba mentéséért. Itt külön beállításra kerülnek a remaining\_review és az is\_under\_review mezők amelyek a még hátra lévő és a folyamatban lévő bírálatokat kezelik. A getReviewData metódus a bírálatok kigyűjtésére szolgál. A findThesesByUserIdAndReviewerId metódus a szakdolgozatokat keresi meg témavezető és bírálói azonosító alapján. Ez hasonló okok miatt lett létre hozva mint a findThesesByUserId metódus a FileService-ben. A findReviewByThesisId metódus a szakdolgozat egyedi azonosítója alapján keresi meg a bírálatot. A Proba metódusban történik a bírálat word dokumentummá generálása. Itt először hozzáadtam a megfelelő függőséget a pom.xml-ben. A felhasználó amint megadja az adatokat kliensoldalon az elmegy a szerver felé, ami feldolgozza ezeket az adatokat és ezek alapján egy word dokumentumot készít. A metódus paraméterként egy objektumot kap, amely tartalmazza a bírálat részleteit. Az objektumot String formátumra alakítja, majd feldolgozza és kinyeri belőle a szükséges információkat, mint például a hallgató nevét, a dolgozat címét, a bíráló nevét, a bírálat részletes leírását stb. Az Apache POI segítségével létrehoz egy üres Word dokumentumot.
-Beállítja a dokumentum fejlécét, amely tartalmazza az egyetem nevét és logóját. Beilleszti a dokumentumba a felhasználók által megadott információkat, mint például a hallgató nevét, a dolgozat címét, a bíráló nevét, a bírálatot stb. Ezeket a részleteket formázott szövegként adja hozzá a dokumentumhoz. A generált Word dokumentumot elmenti egy kijelölt könyvtárba. A fájlnevet a dokumentumhoz kapcsolódó adatokból generálja, például a hallgató nevét és egy uuid-t is tartalmazza. A metódus elmenti a generált Word dokumentum adatait az adatbázisba. Az adatbázisban tárolja a fájl nevét, feltöltési idejét és egyedi azonosítóját, hogy később könnyen visszakereshető legyen. A fájl mentése után a Word dokumentum generálása során számos formázási lehetőséget alkalmazok a szöveg és egyéb elemek megjelenítéséhez. Ezek közé tartozik a setText, setFontSize, setFontFamily metódusok használata, amelyekkel beállíthatom a szöveg stílusát, betűméretét és betűtípusát. Emellett lehetőségem van új bekezdéseket létrehozni addBreak a szöveg tagolásához, valamint képeket is beilleszthetek a dokumentumba. A táblázatokat is könnyedén formázhatom, például a cellák méretét vagy szegélyeit állíthatom be. Emellett a táblázatok celláinak láthatóságát is szabályozhatom, hogy megfeleljenek az adott formai követelményeknek. Ezen funkciók segítségével teljes körűen testreszabhatom és formázhatom a generált Word dokumentumokat, hogy azok megfeleljenek az elvárásoknak és esztétikusak legyenek. A táblázatok esetében létrehoztam egy külön függvényt a méretük beállítására. Ennek köszönhetően könnyen változtathatom a táblázatok méretét az alkalmazás különböző részein.
+A \textit{ReviewService} a bíráló és a témavezető által készített bírálatok kezeléséért felelős a rendszerben. Az \textit{addReview} metódus felel a bírálatok adatbázisba mentéséért. Itt külön beállításra kerülnek a \textit{remaining\_review} és az \textit{is\_under\_review} mezők amelyek a még hátra lévő és a folyamatban lévő bírálatokat kezelik. A \textit{getReviewData} metódus a bírálatok kigyűjtésére szolgál. A \textit{findThesesByUserIdAndReviewerId} metódus a szakdolgozatokat keresi meg témavezető és bírálói azonosító alapján. Ez hasonló okok miatt lett létre hozva mint a \textit{findThesesByUserId} metódus a \textit{FileService}-ben. A \textit{findReviewByThesisId} metódus a szakdolgozat egyedi azonosítója alapján keresi meg a bírálatot. A Proba metódusban történik a bírálat Microsoft Word dokumentummá generálása. Itt először hozzáadtam a megfelelő függőséget a \textit{pom.xml}-ben. A felhasználó amint megadja az adatokat kliensoldalon az elmegy a szerver felé, ami feldolgozza ezeket az adatokat és ezek alapján egy word dokumentumot készít. A metódus paraméterként egy objektumot kap, amely tartalmazza a bírálat részleteit. Az objektumot \textit{String} formátumra alakítja, majd feldolgozza és kinyeri belőle a szükséges információkat, mint például a hallgató nevét, a dolgozat címét, a bíráló nevét, a bírálat részletes leírását stb. Az \textit{Apache POI} \cite{Apache POI} segítségével létrehoz egy üres Word dokumentumot.
+Beállítja a dokumentum fejlécét, amely tartalmazza az egyetem nevét és logóját. Beilleszti a dokumentumba a felhasználók által megadott információkat, mint például a hallgató nevét, a dolgozat címét, a bíráló nevét, a bírálatot stb. Ezeket a részleteket formázott szövegként adja hozzá a dokumentumhoz. A generált Word dokumentumot elmenti egy kijelölt könyvtárba. A fájlnevet a dokumentumhoz kapcsolódó adatokból generálja, például a hallgató nevét és egy uuid-t is tartalmazza. A metódus elmenti a generált Word dokumentum adatait az adatbázisba. Az adatbázisban tárolja a fájl nevét, feltöltési idejét és egyedi azonosítóját, hogy később könnyen visszakereshető legyen. A fájl mentése után a Word dokumentum generálása során számos formázási lehetőséget alkalmazok a szöveg és egyéb elemek megjelenítéséhez. Ezek közé tartozik a \textit{setText}, \textit{setFontSize}, \textit{setFontFamily} metódusok használata, amelyekkel beállíthatom a szöveg stílusát, betűméretét és betűtípusát. Emellett lehetőségem van új bekezdéseket létrehozni addBreak a szöveg tagolásához, valamint képeket is beilleszthetek a dokumentumba. A táblázatokat is könnyedén formázhatom, például a cellák méretét vagy szegélyeit állíthatom be. Emellett a táblázatok celláinak láthatóságát is szabályozhatom, hogy megfeleljenek az adott formai követelményeknek. Ezen funkciók segítségével teljes körűen testreszabhatom és formázhatom a generált Word dokumentumokat, hogy azok megfeleljenek az elvárásoknak és esztétikusak legyenek. A táblázatok esetében létrehoztam egy külön függvényt a méretük beállítására. Ennek köszönhetően könnyen változtathatom a táblázatok méretét az alkalmazás különböző részein.
 
-\subsubsection{GenerateDocxService}
+\subsubsection{GenerateDocxService osztály}
 
-A generateDocxService osztály felelős a záróvizsga jegyzőkönyv generálásáért. A függvény egy Object típusú paramétert kap ugyanúgy, majd ebből a paraméterből kinyeri a szükséges adatokat, mint például a hallgató nevét, a szakdolgozat címét, a bizottság tagjainak adatait stb. Ezeket az adatokat felhasználva létrehoz egy Word dokumentumot, amelyben formázott módon jeleníti meg a jegyzőkönyvet. A dokumentumban címeket, bekezdéseket, táblázatokat és egyéb formázott szövegeket helyez el a megfelelő helyeken a jegyzőkönyv struktúrájának megfelelően. A végeredmény egy Word fájl lesz, amely tartalmazza a generált záróvizsga jegyzőkönyvet.
+A \textit{generateDocxService} osztály felelős a záróvizsga jegyzőkönyv generálásáért. A függvény egy \textit{Object} típusú paramétert kap ugyanúgy, majd ebből a paraméterből kinyeri a szükséges adatokat, mint például a hallgató nevét, a szakdolgozat címét, a bizottság tagjainak adatait stb. Ezeket az adatokat felhasználva létrehoz egy Word dokumentumot, amelyben formázott módon jeleníti meg a jegyzőkönyvet. A dokumentumban címeket, bekezdéseket, táblázatokat és egyéb formázott szövegeket helyez el a megfelelő helyeken a jegyzőkönyv struktúrájának megfelelően. A végeredmény egy Word fájl lesz, amely tartalmazza a generált záróvizsga jegyzőkönyvet.
 
-\subsubsection{SessionService}
+\subsubsection{SessionService osztály}
 
-A SessionService a Session entitással kapcsolatos üzleti logikát valósítja meg. A findSessionById metódus lehetővé teszi egy záróvizsga entitás keresését az azonosító alapján. Az addSessions metódus a záróvizsga felvitelét végzi el. Először lementi a záróvizsgát az adatbázisba, ezután e-maileket küld az összes érintett félnek (tagok, hallgatók, elnök, jegyző, stb.) az emailSenderService osztály sendEmail metódus segítségével. A további metódusok arra szolgálnak, hogy az eddigi záróvizsgákat lekérjük a rendszerből.
+A \textit{SessionService} a \textit{Session} entitással kapcsolatos üzleti logikát valósítja meg. A \textit{findSessionById} metódus lehetővé teszi egy záróvizsga entitás keresését az azonosító alapján. Az addSessions metódus a záróvizsga felvitelét végzi el. Először lementi a záróvizsgát az adatbázisba, ezután e-maileket küld az összes érintett félnek (tagok, hallgatók, elnök, jegyző, stb.) az \textit{emailSenderService} osztály \textit{sendEmail} metódus segítségével. A további metódusok arra szolgálnak, hogy az eddigi záróvizsgákat lekérjük a rendszerből.
 
-\subsubsection{StatusService}
+\subsubsection{StatusService osztály}
 
-A StatusService a szakdolgozatok állapotának kezelésével és azokhoz kapcsolódó folyamatok végrehajtásával foglalkozik. A getNeccessaryData metódus lekéri azokat az adatokat, amelyek szükségesek a szakdolgozatok állapotának és azokhoz kapcsolódó folyamatoknak a kezeléséhez. Ez a metódus a Thesis Statuts és Report Status felületek miatt lett létrehozva. A metódus lefuttatja a megfelelő adatbázis-lekérdezést a FileDao segítségével, majd feldolgozza az eredményeket és visszaadja egy listában. A findFilesByThesesId metódus megkeresi egy adott szakdolgozathoz tartozó bírálatokat és azokat elküldi egy e-mailben a hallgatónak. Először lekéri a megfelelő szakdolgozatot az azonosítója alapján. Ezután lekéri a szakdolgozathoz tartozó hallgató adatait és a kinyert e-mail címre elküldi a szakdolgozathoz tartozó bírálatokat egy e-mailben.
+A \textit{StatusService} a szakdolgozatok állapotának kezelésével és azokhoz kapcsolódó folyamatok végrehajtásával foglalkozik. A \textit{getNeccessaryData} metódus lekéri azokat az adatokat, amelyek szükségesek a szakdolgozatok állapotának és azokhoz kapcsolódó folyamatoknak a kezeléséhez. Ez a metódus a \textit{Thesis Statuts} és \textit{Report Status} felületek miatt lett létrehozva. A metódus lefuttatja a megfelelő adatbázis-lekérdezést a \textit{FileDao} segítségével, majd feldolgozza az eredményeket és visszaadja egy listában. A \textit{findFilesByThesesId} metódus megkeresi egy adott szakdolgozathoz tartozó bírálatokat és azokat elküldi egy e-mailben a hallgatónak. Először lekéri a megfelelő szakdolgozatot az azonosítója alapján. Ezután lekéri a szakdolgozathoz tartozó hallgató adatait és a kinyert e-mail címre elküldi a szakdolgozathoz tartozó bírálatokat egy e-mailben.
 
 
-\subsubsection{ReportstatusService}
+\subsubsection{ReportstatusService osztály}
 
-A ReportStatusService a szakdolgozatok állapotának jelentésével kapcsolatos üzleti logikát valósítja meg. A requestForReview metódus a bírálónak küld felkérést egy szakdolgozat bírálatra. A bíráló felkérése után rögtön e-mail megy ki a bírálónak benne a szakdolgozat címével. Ezután a szakdolgozat állapota az is\_under\_review mezőben megváltozik igaz értékre. A findThesesUnderReview metódus visszaadja az összes olyan szakdolgozatot, amely jelenleg bírálat alatt áll, azaz az is\_under\_review mező értéke igaz. Ez lehetővé teszi a rendszer számára, hogy kezelje és megjelenítse ezeket a szakdolgozatokat a jegyző és az elnök számára. A findReviewedTheses metódus visszaadja az összes olyan szakdolgozatot, amely már átesett a bírálaton. 
+A \textit{ReportStatusService} a szakdolgozatok állapotának jelentésével kapcsolatos üzleti logikát valósítja meg. A \textit{requestForReview} metódus a bírálónak küld felkérést egy szakdolgozat bírálatra. A bíráló felkérése után rögtön e-mail megy ki a bírálónak benne a szakdolgozat címével. Ezután a szakdolgozat állapota az \textit{is\_under\_review} mezőben megváltozik igaz értékre. A \textit{findThesesUnderReview} metódus visszaadja az összes olyan szakdolgozatot, amely jelenleg bírálat alatt áll, azaz az \textit{is\_under\_review} mező értéke igaz. Ez lehetővé teszi a rendszer számára, hogy kezelje és megjelenítse ezeket a szakdolgozatokat a jegyző és az elnök számára. A \textit{findReviewedTheses} metódus visszaadja az összes olyan szakdolgozatot, amely már átesett a bírálaton. 
 
 
 \subsection{Vezérlők}
 
-% Kontrollernek is hívják.
 
-A vezérlő osztályok a Spring keretrendszerben az alkalmazás üzleti logikájának és az HTTP kérések kezelésének központi pontjai. Ezek az osztályok felelősek a bejövő HTTP kérések fogadásáért, feldolgozásáért és a megfelelő válasz létrehozásáért. A vezérlő osztályok a @RestController annotációval vannak ellátva, és HTTP kéréseket kezelő metódusokat tartalmaznak, melyek különböző útvonalakra vannak mappelve. A vezérlő osztályok meghatározzák az alkalmazás által kezelt útvonalakat. Ezek az útvonalak az HTTP kérésekhez vannak hozzárendelve, és megadják, hogy mely metódusokat kell meghívni az adott kérésre érkező adatok kezelésére. A vezérlő osztályok fogadják és feldolgozzák a bejövő HTTP kéréseket. Ezek a kérések lehetnek GET, POST, PUT, DELETE stb. típusúak, és a megfelelő metódusok hívódnak meg azok kezelésére. Például GET kérésekkel lekérdezhetők a felhasználók adatai, POST kérésekkel új felhasználók hozhatók létre, PUT kérésekkel módosíthatók a felhasználók adatai, DELETE kérésekkel pedig törölhetők a felhasználók. A TopicsController részben használtam még egy PostConstruct annotációt is. A @PostConstruct annotációval ellátott metódus az osztály példányosítása után hívódik meg. Ebben az esetben a initTopics() metódus meghívása történik, amely a topicService inicializálását és beállítását végzi el. Ez azért fontos, mert biztosítja, hogy a témák inicializálása megtörténjen a TopicsController példányosítása után, még mielőtt bármely más kérést kezelnénk a controllerben. A vezérlő osztályok hívják az service réteget, hogy végrehajtsák az alkalmazás üzleti logikáját. Ez lehet adatok lekérdezése, módosítása vagy más üzleti folyamatok végrehajtása. A vezérlő osztályok felelősek a megfelelő válasz létrehozásáért az adott HTTP kérésre. Ez lehet HTML oldal renderelése (ha a @Controller annotációt használjuk), vagy JSON válasz küldése (ha a @RestController annotációt használjuk). A vezérlő osztályok gyakran végzik az adatok validációját, és kezelik a különböző hibákat, amelyek a HTTP kérések feldolgozása során jelentkezhetnek.\\
-\\
-A rendszerben összesen kilenc vezérlő osztályt hoztam létre, melyek mindegyike különböző funkciókat lát el és kezeli a kapcsolódó HTTP kéréseket. Ezek a vezérlők az alábbiak:
+A vezérlő osztályok a \textit{Spring} keretrendszerben az alkalmazás üzleti logikájának és az \textit{HTTP} kérések kezelésének központi pontjai. Ezek az osztályok felelősek a bejövő \textit{HTTP} kérések fogadásáért, feldolgozásáért és a megfelelő válasz létrehozásáért. A vezérlő osztályok a \textit{@RestController} annotációval vannak ellátva, és \textit{HTTP} kéréseket kezelő metódusokat tartalmaznak, melyek különböző útvonalakra vannak mappelve. A vezérlő osztályok meghatározzák az alkalmazás által kezelt útvonalakat. Ezek az útvonalak az \textit{HTTP} kérésekhez vannak hozzárendelve, és megadják, hogy mely metódusokat kell meghívni az adott kérésre érkező adatok kezelésére. A vezérlő osztályok fogadják és feldolgozzák a bejövő \textit{HTTP} kéréseket. Ezek a kérések lehetnek GET, POST, PUT, DELETE stb. típusúak, és a megfelelő metódusok hívódnak meg azok kezelésére. Például GET kérésekkel lekérdezhetők a felhasználók adatai, POST kérésekkel új felhasználók hozhatók létre, PUT kérésekkel módosíthatók a felhasználók adatai, DELETE kérésekkel pedig törölhetők a felhasználók. A TopicsController részben használtam még egy \textit{PostConstruct} annotációt is. A \textit{@PostConstruct} annotációval ellátott metódus az osztály példányosítása után hívódik meg. Ebben az esetben a \textit{initTopics} metódus meghívása történik, amely a \textit{topicService} inicializálását és beállítását végzi el. Ez azért fontos, mert biztosítja, hogy a témák inicializálása megtörténjen a \textit{TopicsController} példányosítása után, még mielőtt bármely más kérést kezelnénk a vezérlőben. A vezérlő osztályok hívják az \textit{Service} réteget, hogy végrehajtsák az alkalmazás üzleti logikáját. Ez lehet adatok lekérdezése, módosítása vagy más üzleti folyamatok végrehajtása. A vezérlő osztályok felelősek a megfelelő válasz létrehozásáért az adott \textit{HTTP} kérésre. Ez lehet \textit{HTML} oldal renderelése (ha a \textit{@Controller} annotációt használjuk), vagy JSON válasz küldése (ha a \textit{@RestController} annotációt használjuk). A vezérlő osztályok gyakran végzik az adatok validációját, és kezelik a különböző hibákat, amelyek a \textit{HTTP} kérések feldolgozása során jelentkezhetnek.
+
+A rendszerben összesen kilenc vezérlő osztályt hoztam létre, melyek mindegyike különböző funkciókat lát el és kezeli a kapcsolódó \textit{HTTP} kéréseket. Ezek a vezérlők az alábbiak:
 \begin{itemize}
 
-\item{UsersController}
-\item{ThesisController}
-\item{FileController}
-\item{GenerateDocxController}
-\item{JwtController}
-\item{ReportStatusController}
-\item{ReviewController}
-\item{SessionController}
-\item{TopicsController}
+\item{\textit{UsersController}},
+\item{\textit{ThesisController}},
+\item{\textit{FileController}},
+\item{\textit{GenerateDocxController}},
+\item{\textit{JwtController}},
+\item{\textit{ReportStatusController}},
+\item{\textit{ReviewController}},
+\item{\textit{SessionController}},
+\item{\textit{TopicsController}}.
 
 \end{itemize}
 
 \begin{figure}[ht]
 	\includegraphics[width=\textwidth]{images/Classdiagram/Osztálydiagram.pdf}
-	\caption{A bírálatokhoz és szakdolgozatokhoz tartozó DAO, szervíz és kontroller osztályok}
+	\caption{A bírálatokhoz és szakdolgozatokhoz tartozó \textit{DAO}, Service és vezérlő osztályok}
 	\label{fig:Osztálydiagram}
 \end{figure}
 Az ábrán a szakdolgozat és bírálat entitásokat láthatjuk. \ref{fig:Entitások}
@@ -260,67 +252,64 @@ Az ábrán a szakdolgozat és bírálat entitásokat láthatjuk. \ref{fig:Entit�
 
 \Section{A REST API áttekintése}
 
-A Representational State Transfer Application Programming Interface (továbbiakban: REST API)\cite{REST API} egy olyan szoftveres architekturális stílus, amelyet webes szolgáltatások kialakítására használnak. Az API-k különböző platformokon keresztül teszik lehetővé az alkalmazások közötti kommunikációt. A REST API-k\cite{REST API} az erőforrásokat (pl. adatbázis rekordokat) reprezentálják és kezelik, a HTTP\cite{http} protokoll különböző metódusainak (GET, POST, PUT, DELETE stb.) segítségével.
+A \textit{Representational State Transfer Application Programming Interface} (továbbiakban: \textit{REST API}) \cite{REST API} egy olyan szoftveres architekturális stílus, amelyet webes szolgáltatások kialakítására használnak. Az \textit{API}-k különböző platformokon keresztül teszik lehetővé az alkalmazások közötti kommunikációt. A \textit{REST API}-k \cite{REST API} az erőforrásokat (pl. adatbázis rekordokat) reprezentálják és kezelik, a \textit{HTTP} \cite{http} protokoll különböző metódusainak (GET, POST, PUT, DELETE stb.) segítségével.
 
-A backend és frontend összekapcsolása úgy történik, hogy a backend kiszolgálja az adatokat a frontend felé, amely a felhasználói felületet megjeleníti és a felhasználó interakcióit kezeli. Ezt úgy valósítják meg, hogy a frontend kliens oldalon HTTP\cite{http} kéréseket indít a backend felé, amelyekre a szerver válaszol.\\
+A backend és frontend összekapcsolása úgy történik, hogy a backend kiszolgálja az adatokat a frontend felé, amely a felhasználói felületet megjeleníti és a felhasználó interakcióit kezeli. Ezt úgy valósítják meg, hogy a frontend kliens oldalon \textit{HTTP} kéréseket indít a backend felé, amelyekre a szerver válaszol.\\
 
 Itt láthatjuk hogy az egyes kéréstípusokhoz például milyen REST API végpontok tartoznak:
 
 \begin{enumerate}
 
 \item{\textbf{GET:}}
-A GET kérések általában adatok lekérésére szolgálnak. Például, a backend a /getThesesListToDisplay végpontján keresztül teszi elérhetővé a szakdolgozatok listáját a frontend számára. Ezenkívül, a frontend a /findThesesById végpontot is használhatja egy adott szakdolgozat részleteinek lekérésére egyedi azonosító alapján.
+A GET kérések általában adatok lekérésére szolgálnak. Például, a backend a \textit{/getThesesListToDisplay} végpontján keresztül teszi elérhetővé a szakdolgozatok listáját a frontend számára. Ezenkívül, a frontend a \textit{/findThesesById} végpontot is használhatja egy adott szakdolgozat részleteinek lekérésére egyedi azonosító alapján.
 
-\item{\textbf{POST kérés:}}
-A POST kérések új adatok beküldésére szolgálnak a szerver számára. Például, a frontend az /addThesis végpontra küldheti a felhasználó által hozzáadni kívánt dolgozat adatait. A backend a kapott adatok alapján hozzáadja az új szakdolgozatot az adatbázishoz, majd visszaküldi az új tézist a frontendnek.
+\item{\textbf{POST:}}
+A POST kérések új adatok beküldésére szolgálnak a szerver számára. Például, a frontend az \textit{/addThesis} végpontra küldheti a felhasználó által hozzáadni kívánt dolgozat adatait. A backend a kapott adatok alapján hozzáadja az új szakdolgozatot az adatbázishoz, majd visszaküldi az új tézist a frontendnek.
 
 \item{\textbf{PUT:}}
-A PUT kérések meglévő adatok frissítésére szolgálnak a szerveren. Például, a frontend az /updateThesis végpontra küldheti a felhasználó által szerkesztett szakdolgozat adatait. A backend frissíti az adatbázisban a megfelelő thesis rekordot az új adatokkal, majd visszaküldi a frissített dolgozatot a frontendnek.
+A PUT kérések meglévő adatok frissítésére szolgálnak a szerveren. Például, a frontend az \textit{/updateThesis} végpontra küldheti a felhasználó által szerkesztett szakdolgozat adatait. A backend frissíti az adatbázisban a megfelelő thesis rekordot az új adatokkal, majd visszaküldi a frissített dolgozatot a frontendnek.
 
-\item{\textbf{DELETE kérés:}}
-A DELETE kérések adatok törlésére szolgálnak a szerveren. A frontend a /deleteThesis végpontra küldheti a felhasználó által törölni kívánt szakdolgozat azonosítóját. A backend az egyedi azonosító alapján törli az adatbázisból a szakdolgozatot.
+\item{\textbf{DELETE:}}
+A DELETE kérések adatok törlésére szolgálnak a szerveren. A frontend a \textit{/deleteThesis} végpontra küldheti a felhasználó által törölni kívánt szakdolgozat azonosítóját. A backend az egyedi azonosító alapján törli az adatbázisból a szakdolgozatot.
 
 \end{enumerate}
 
 
 \Section{Frontend}
 
-Az Angular\cite{angular} frontend fejlesztésének középpontjában a komponensek és servicek állnak. A komponensek az alkalmazás felhasználói felület részeit képviselik, míg a szolgáltatások központosítják az alkalmazás logikáját és funkcionalitását. A frontend fejlesztés során ezeket az építőköveket kombinálom, hogy részletes és felhasználóbarát webalkalmazást hozzak létre.
+Az \textit{Angular} \cite{angular} frontend fejlesztésének középpontjában a komponensek és szervízek állnak. A komponensek az alkalmazás felhasználói felület részeit képviselik, míg a szolgáltatások központosítják az alkalmazás logikáját és funkcionalitását. A frontend fejlesztés során ezeket az építőköveket kombinálom, hogy részletes és felhasználóbarát webalkalmazást hozzak létre.
 
-Elsőként szeretném bemutatni az alkalmazás fő modulját. Az AppModule egy Angular\cite{angular} modul, amely felelős az alkalmazás fő komponenseinek, szolgáltatásainak és moduljainak konfigurálásáért és összekapcsolásáért. \\
+Elsőként szeretném bemutatni az alkalmazás fő modulját. Az \textit{AppModule} egy \textit{Angular} modul, amely felelős az alkalmazás fő komponenseinek, szolgáltatásainak és moduljainak konfigurálásáért és összekapcsolásáért. \\
 \\Fontos tulajdonságai:
 
 \begin{itemize}
 
 \item{Deklarációk:} A declarations tömbben felsorolom az összes komponenst és direktívát, amelyeket az alkalmazásban használok. Ezek közé tartoznak például a felhasználó felvitele, záróvizsga létrehozása stb. komponensek. 
 
-\item{Importálások:} Az imports tömbben felsorolom azokat a modulokat, amelyeket az alkalmazás használ. Ezek között találhatók a Ng2OrderModule (a rendezésért felelős modul), AppRoutingModule (az alkalmazás útvonalainak kezeléséért felelős modul), NgxPaginationModule (a lapok számozásáért felelős modul) és a HttpClientModule (a HTTP\cite{http} kérésekhez szükséges modul), valamint más modulok, például az Angular Material moduljai.
+\item{Importálások:} Az imports tömbben felsorolom azokat a modulokat, amelyeket az alkalmazás használ. Ezek között találhatók a \textit{Ng2OrderModule} (a rendezésért felelős modul), \textit{AppRoutingModule} (az alkalmazás útvonalainak kezeléséért felelős modul), \textit{NgxPaginationModule} (a lapok számozásáért felelős modul) és a \textit{HttpClientModule} (a \textit{HTTP} kérésekhez szükséges modul), valamint más modulok, például az \textit{Angular Material} moduljai.
 
 \end{itemize}
 
-Az AppRoutingModule egy külön modul, amely a fő alkalmazás útvonalait kezeli. A RouterModule.forRoot(routes) segítségével konfigurálom az alkalmazás útvonalait a routes tömb segítségével, ahol minden útvonalhoz megadom, hogy melyik komponenshez tartozzon. Ez azért fontos, mert az Angular\cite{angular} útvonalak segítségével navigálja a felhasználókat az alkalmazásban.
-
-% Angular Service-ek bemutatása.
+Az \textit{AppRoutingModule} egy külön modul, amely a fő alkalmazás útvonalait kezeli. A \textit{RouterModule.forRoot(routes)} segítségével konfigurálom az alkalmazás útvonalait a routes tömb segítségével, ahol minden útvonalhoz megadom, hogy melyik komponenshez tartozzon. Ez azért fontos, mert az \textit{Angular} útvonalak segítségével navigálja a felhasználókat az alkalmazásban.
 
 \subsection{Servicek}
 
-Az Angular\cite{angular} service-ek olyan osztályok, amelyek segítenek a frontend alkalmazás és a szerveroldali  szolgáltatások közötti adatátvitelben és kommunikációban. Az Angular alkalmazások gyakran kommunikálnak a szerverrel, hogy adatokat kérjenek, frissítsenek vagy mentsenek. Ehhez az Angular\cite{angular} service-ek HTTP\cite{http} kéréseket hajtanak végre a backend API felé, például GET, POST, PUT vagy DELETE kéréseket küldenek a szervernek a szükséges adatokkal. Ezenkívül az Angular\cite{angular} szolgáltatások lehetővé teszik az adatok megosztását és átvitelét a különböző komponensek között is. Például egy szolgáltatásban tárolt adatokat egy vagy több komponens használhatja, ami lehetővé teszi az alkalmazás különböző részeinek adatainak szinkronizálását és koherenciáját.\\
-\\Ezekből 12 darabot hoztam létre:
+Az \textit{Angular} service-ek olyan osztályok, amelyek segítenek a frontend alkalmazás és a szerveroldali  szolgáltatások közötti adatátvitelben és kommunikációban. Az \textit{Angular} alkalmazások gyakran kommunikálnak a szerverrel, hogy adatokat kérjenek, frissítsenek vagy mentsenek. Ehhez az \textit{Angular} service-ek \textit{HTTP} kéréseket hajtanak végre a backend \textit{API} felé, például GET, POST, PUT vagy DELETE kéréseket küldenek a szervernek a szükséges adatokkal. Ezenkívül az \textit{Angular} szolgáltatások lehetővé teszik az adatok megosztását és átvitelét a különböző komponensek között is. Például egy szolgáltatásban tárolt adatokat egy vagy több komponens használhatja, ami lehetővé teszi az alkalmazás különböző részeinek adatainak szinkronizálását és koherenciáját. Ezekből 12 darabot hoztam létre:
 
 \begin{itemize}
 
-\item{AddDocxService}
-\item{AddFileService}
-\item{AddSessionService}
-\item{AddThesisService}
-\item{AddTopicService}
-\item{AddUserService}
-\item{AuthService}
-\item{DocumentService}
-\item{FindAllUserService}
-\item{ListThesisService}
-\item{ReportStatusService}
-\item{LoginService}
+\item{\textit{AddDocxService}},
+\item{\textit{AddFileService}},
+\item{\textit{AddSessionService}},
+\item{\textit{AddThesisService}},
+\item{\textit{AddTopicService}},
+\item{\textit{AddUserService}},
+\item{\textit{AuthService}},
+\item{\textit{DocumentService}},
+\item{\textit{FindAllUserService}},
+\item{\textit{ListThesisService}},
+\item{\textit{ReportStatusService}},
+\item{\textit{LoginService}}.
 
 \end{itemize}
 
@@ -328,104 +317,102 @@ Az Angular\cite{angular} service-ek olyan osztályok, amelyek segítenek a front
 
 \subsection{Komponensek}
 
-Az Angular alkalmazásokban a komponensek az építőkövek, amelyek létrehozzák az alkalmazás felhasználói felületét és meghatározzák, hogy az hogyan viselkedik és milyen módon reagál a felhasználói interakciókra. A komponensek négy fő részből állnak: a TypeScript (.ts) fájlból, a spec TypeScript (.spec.ts) fájlból, a HTML fájlból és a CSS fájlból. A TypeScript fájl a komponens logikáját és viselkedését definiálja, míg a spec TypeScript fájl a komponens teszteléséhez szükséges specifikációkat tartalmazza. Az HTML fájl tartalmazza a komponens megjelenítéséhez szükséges struktúrát és sablonokat, míg a CSS fájl a stílusokat és formázást definiálja a komponens számára. A TypeScript és a HTML fájlok interaktív felhasználói felületet biztosítanak, míg a CSS fájl az esztétikai megjelenést és a formázást szabályozza. A komponensek felelősek az adatok megjelenítéséért, a felhasználói interakciók kezeléséért és az alkalmazás üzleti logikájának koordinálásáért.\\
-\\
-Ezekből 18-at hoztam létre:
+Az \textit{Angular} alkalmazásokban a komponensek az építőkövek, amelyek létrehozzák az alkalmazás felhasználói felületét és meghatározzák, hogy az hogyan viselkedik és milyen módon reagál a felhasználói interakciókra. A komponensek négy fő részből állnak: a \textit{TypeScript (.ts)} fájlból, a spec \textit{TypeScript (.spec.ts)} fájlból, a \textit{HTML} fájlból és a \textit{CSS} fájlból. A \textit{TypeScript} fájl a komponens logikáját és viselkedését definiálja, míg a \textit{spec} \textit{TypeScript} fájl a komponens teszteléséhez szükséges specifikációkat tartalmazza. Az \textit{HTML} fájl tartalmazza a komponens megjelenítéséhez szükséges struktúrát és sablonokat, míg a \textit{CSS} fájl a stílusokat és formázást definiálja a komponens számára. A \textit{TypeScript} és a \textit{HTML} fájlok interaktív felhasználói felületet biztosítanak, míg a CSS fájl az esztétikai megjelenést és a formázást szabályozza. A komponensek felelősek az adatok megjelenítéséért, a felhasználói interakciók kezeléséért és az alkalmazás üzleti logikájának koordinálásáért. Ezeket részletezem a következőkben:
 
 \subsubsection{AddUsersComponent}
 
-Az AddUsersComponent egy Angular komponens, amely felelős a felhasználók felviteléért az alkalmazásban. Ebben a komponensben a felhasználókhoz kapcsolódó adatokat gyűjtöm össze és továbbítom az AddUsersService szolgáltatáshoz. Az adatok felvitelénél különös figyelmet szenteltem, hogy az egyes szerepkörök esetén a beosztás mező csak az adott szerepkörrel rendelkező felhasználókhoz jelenjen meg. Ennek érdekében hoztam létre az onRoleChange függvényt. Az adatok helyes felvitelét validatorok segítségével oldottam meg, ahol létrehoztam egyedieket is, annak érdekében hogy ne kelljen minden mezőt minden szerepkör esetén kitölteni. Az e-mail validációját egy reguláris kifejezéssel, vagy regexszel oldottam meg. A regex egy olyan szövegmintázat, amely lehetővé teszi a szövegben való keresést vagy illesztést egy meghatározott mintához. Ez a reguláris kifejezés ellenőrzi, hogy az e-mail cím megfelelő formátumú-e a következő szerkezet szerint: felhasznalonev@domain.com. A helyes form beküldés esetén sweetalert2 csomag importálásával dizájnos figyelmeztető szöveget helyeztem el. Amennyiben a felhasználó nem megfelelő jogosultsággal rendelkezik, a komponens nem jeleníti meg az oldalt, hanem figyelmeztetést ad a felhasználónak, majd átirányítja a bejelentkező oldalra. Ezt az ngOnInit függvényben állítottam be, ahol egy roleMatch függvény alapján vizsgálom az éppen bejelentkezett felhasználót, hogy jogosultságot kaphat-e az oldalhoz. Amennyiben nem, továbbirányítom egy másik oldalra. Ezt a folyamatot minden lapnál elvégeztem.\\
-\\A komponens HTML része:\\
+Az \textit{AddUsersComponent} egy \textit{Angular} komponens, amely felelős a felhasználók felviteléért az alkalmazásban. Ebben a komponensben a felhasználókhoz kapcsolódó adatokat gyűjtöm össze és továbbítom az \textit{AddUsersService} szolgáltatáshoz. Az adatok felvitelénél különös figyelmet szenteltem, hogy az egyes szerepkörök esetén a beosztás mező csak az adott szerepkörrel rendelkező felhasználókhoz jelenjen meg. Ennek érdekében hoztam létre az \textit{onRoleChange} függvényt. Az adatok helyes felvitelét validatorok segítségével oldottam meg, ahol létrehoztam egyedieket is, annak érdekében hogy ne kelljen minden mezőt minden szerepkör esetén kitölteni. Az e-mail validációját egy reguláris kifejezéssel oldottam meg. Ez egy olyan szövegmintázat, amely lehetővé teszi a szövegben való keresést vagy illesztést egy meghatározott mintához. Ez a reguláris kifejezés ellenőrzi, hogy az e-mail cím megfelelő formátumú-e a következő szerkezet szerint: \textit{felhasznalonev@domain.com}. A helyes form beküldés esetén \textit{sweetalert2} csomag importálásával dizájnos figyelmeztető szöveget helyeztem el. Amennyiben a felhasználó nem megfelelő jogosultsággal rendelkezik, a komponens nem jeleníti meg az oldalt, hanem figyelmeztetést ad a felhasználónak, majd átirányítja a bejelentkező oldalra. Ezt az \textit{ngOnInit} függvényben állítottam be, ahol egy \textit{roleMatch} függvény alapján vizsgálom az éppen bejelentkezett felhasználót, hogy jogosultságot kaphat-e az oldalhoz. Amennyiben nem, továbbirányítom egy másik oldalra. Ezt a folyamatot minden lapnál elvégeztem.\\
+\\A komponens \textit{HTML} része:\\
 \\
-Az adatok felviteléhez egy container-t hoztam létre, amely tartalmazza az űrlapot. Az űrlap egy card elemen belül található, ami további stílusokat ad az űrlaphoz. Az ngSubmit eseményvezérlő a form küldésekor hívódik meg, és a addFormData függvényt hívja meg az űrlap értékeivel. A [formGroup] direktíva az addUserForm FormGroup-hoz köti az űrlapot, amely a ts fájl-ban lett definiálva. A formon belül a mezők formControlName direktívával kapcsolódnak a FormGroup-hoz. Az input mezők, választógombok és dátumválasztók mellett használok *ngIf strukturális direktívát is, hogy a mezők csak bizonyos feltételek teljesülésekor jelenjenek meg. Betekintést nyertem az Angular Material használatába, amely lehetővé teszi számomra, hogy az alkalmazásban modern és összhangban lévő felhasználói felületet hozzak létre. Az űrlap alján egy gomb található, amely a form elküldésére szolgál, és csak akkor aktív, ha az űrlap érvényes állapotban van. 
+Az adatok felviteléhez egy tárolót hoztam létre, amely tartalmazza az űrlapot. Az űrlap egy \textit{card} elemen belül található, ami további stílusokat ad az űrlaphoz. Az \textit{ngSubmit} eseményvezérlő a form küldésekor hívódik meg, és a \textit{addFormData} függvényt hívja meg az űrlap értékeivel. A \textit{formGroup} direktíva az \textit{addUserForm} \textit{FormGroup}-hoz köti az űrlapot, amely a ts fájl-ban lett definiálva. A formon belül a mezők \textit{formControlName} direktívával kapcsolódnak a \textit{FormGroup}-hoz. Az input mezők, választógombok és dátumválasztók mellett használok \textit{*ngIf} strukturális direktívát is, hogy a mezők csak bizonyos feltételek teljesülésekor jelenjenek meg. Betekintést nyertem az \textit{Angular Material} használatába, amely lehetővé teszi számomra, hogy az alkalmazásban modern és összhangban lévő felhasználói felületet hozzak létre. Az űrlap alján egy gomb található, amely a form elküldésére szolgál, és csak akkor aktív, ha az űrlap érvényes állapotban van. 
 
 \subsubsection{AddThesesesComponent}
 
-Az AddThesesesComponent egy Angular komponens, amely felelős a szakdolgozatok felviteléért az alkalmazásban. Ez a komponens funkcióját tekintve megegyezik az előzővel. Létrehoztam külön függvényeket a drop-down listákhoz amelyek role alapján kiválogatják a témavezetőket, hallgatókat és konzulenseket.  Az űrlap tartalmaz mezőket a szakdolgozat címéhez, tanszékhez, specializációhoz, nyelvhez, hallgatóhoz és témavezetőhöz. Az űrlap ugyanúgy validációval rendelkezik, és csak a megfelelő adatok megadása esetén engedi a form elküldését. Az addFormData függvény az űrlap adatait elküldi a szervernek, majd megjeleníti a sikeres üzenetet, és átirányítja a felhasználót a fájlfeltöltés oldalra. Ha hiba történik az adatok küldése közben, akkor hibaüzenet jelenik meg a felhasználónak.\\
+Az \textit{AddThesesesComponent} egy \textit{Angular} komponens, amely felelős a szakdolgozatok felviteléért az alkalmazásban. Ez a komponens funkcióját tekintve megegyezik az előzővel. Létrehoztam külön függvényeket a legördülő listákhoz amelyek role alapján kiválogatják a témavezetőket, hallgatókat és konzulenseket.  Az űrlap tartalmaz mezőket a szakdolgozat címéhez, tanszékhez, specializációhoz, nyelvhez, hallgatóhoz és témavezetőhöz. Az űrlap ugyanúgy validációval rendelkezik, és csak a megfelelő adatok megadása esetén engedi a form elküldését. Az \textit{addFormData} függvény az űrlap adatait elküldi a szervernek, majd megjeleníti a sikeres üzenetet, és átirányítja a felhasználót a fájlfeltöltés oldalra. Ha hiba történik az adatok küldése közben, akkor hibaüzenet jelenik meg a felhasználónak.\\
 \\
-A komponens HTML része:\\
+A komponens \textit{HTML} része:\\
 \\
-Az AddThesesesComponent HTML részletében ugyanúgy egy űrlapot hoztam létre, amely lehetővé teszi a felhasználó számára, hogy új szakdolgozatot adjon hozzá a rendszerhez. Az űrlap strukturált módon felépített, és tartalmazza a szükséges mezőket a szakdolgozat részletes leírásához. A mezők kötelező kitöltését ellenőrző validációk biztosítják, hogy a felhasználó csak akkor tudja elküldeni az űrlapot, ha minden szükséges adatot helyesen megadott. Amennyiben valamelyik mező hiányos vagy hibás adatot tartalmaz, a felhasználót figyelmeztető szövegek jelennek meg a megfelelő mező mellett. Az űrlapot egy "Felvitel" gomb zárja, amely csak akkor aktív, ha az összes mező helyesen van kitöltve. Ezt a gombot használva a felhasználó elküldi az űrlapot, és a rendszer rögzíti az új szakdolgozat adatait.
+Az \textit{AddThesesesComponent} \textit{HTML} részletében ugyanúgy egy űrlapot hoztam létre, amely lehetővé teszi a felhasználó számára, hogy új szakdolgozatot adjon hozzá a rendszerhez. Az űrlap strukturált módon felépített, és tartalmazza a szükséges mezőket a szakdolgozat részletes leírásához. A mezők kötelező kitöltését ellenőrző validációk biztosítják, hogy a felhasználó csak akkor tudja elküldeni az űrlapot, ha minden szükséges adatot helyesen megadott. Amennyiben valamelyik mező hiányos vagy hibás adatot tartalmaz, a felhasználót figyelmeztető szövegek jelennek meg a megfelelő mező mellett. Az űrlapot egy "Felvitel" gomb zárja, amely csak akkor aktív, ha az összes mező helyesen van kitöltve. Ezt a gombot használva a felhasználó elküldi az űrlapot, és a rendszer rögzíti az új szakdolgozat adatait.
 
 \subsubsection{AddDocxComponent}
 
-Az AddDocxComponent komponensben a bírálat írásának felülete került implementálásra. A komponens kezdeti betöltésekor az ngOnInit függvényen keresztül meghívja a getStudentsToDropdown metódust a bejelentkezett felhasználóhoz tartozó hallgatók lekérésére. Az űrlap tartalmaz egy lenyíló listát, amely segítségével a felhasználó kiválaszthatja a hallgatót, akinek a dokumentumot létre szeretné hozni. A hallgató kiválasztása után az onSelectStudent metódus hívásával betöltődik az adott hallgatóhoz tartozó szakdolgozat. Az űrlap egyes mezőinek kötelező kitöltését ellenőrző validációk biztosítják, hogy a felhasználó csak akkor tudja elküldeni az űrlapot, ha minden szükséges adatot helyesen megadott. Az űrlapot elküldve az addFormData metódus hívódik meg, amely létrehozza és letölti a generált dokumentumot a szerverről. Ha a letöltés sikeres volt, akkor a felhasználó értesítést kap a sikerességről, ellenkező esetben pedig hibaüzenet jelenik meg.\\
+Az \textit{AddDocxComponent} komponensben a bírálat írásának felülete került implementálásra. A komponens kezdeti betöltésekor az \textit{ngOnInit} függvényen keresztül meghívja a \textit{getStudentsToDropdown} metódust a bejelentkezett felhasználóhoz tartozó hallgatók lekérésére. Az űrlap tartalmaz egy lenyíló listát, amely segítségével a felhasználó kiválaszthatja a hallgatót, akinek a dokumentumot létre szeretné hozni. A hallgató kiválasztása után az \textit{onSelectStudent} metódus hívásával betöltődik az adott hallgatóhoz tartozó szakdolgozat. Az űrlap egyes mezőinek kötelező kitöltését ellenőrző validációk biztosítják, hogy a felhasználó csak akkor tudja elküldeni az űrlapot, ha minden szükséges adatot helyesen megadott. Az űrlapot elküldve az \textit{addFormData} metódus hívódik meg, amely létrehozza és letölti a generált dokumentumot a szerverről. Ha a letöltés sikeres volt, akkor a felhasználó értesítést kap a sikerességről, ellenkező esetben pedig hibaüzenet jelenik meg.\\
 \\
-A komponens HTML része:\\
+A komponens \textit{HTML} része:\\
 \\
-Az AddDocxComponent komponenshez tartozó HTML űrlap segítségével a felhasználó kiválaszthat egy hallgatót, hozzárendelhet egy szakdolgozatot, megírhatja a bírálatot egy textarean belül, valamint  egy érdemjegyet adhat a szakdolgozatra. A textareat css fájl-ban módosítottam annak érdekében hogy dinamikus legyen a méretezése a felületen.
+Az \textit{AddDocxComponent} komponenshez tartozó \textit{HTML} űrlap segítségével a felhasználó kiválaszthat egy hallgatót, hozzárendelhet egy szakdolgozatot, megírhatja a bírálatot egy \textit{textarea}-n belül, valamint  egy érdemjegyet adhat a szakdolgozatra. A \textit{textarea}-t \textit{CSS} fájlban módosítottam annak érdekében hogy dinamikus legyen a méretezése a felületen.
 
 \subsubsection{AddSessionComponent}
 
-Az AddSessionComponent komponens a záróvizsgák hozzáadását teszi lehetővé az alkalmazásban. Ez a komponens funkcióját tekintve megegyezik az utóbbival. Az űrlap beküldését az addFormData metódus teszi lehetővé. A sikeres beküldést követően ugyanúgy egy sikeres üzenet jelenik meg, míg ellenkező esetben egy hibás üzenet. A form helyes beküldését ugyanúgy validátorok ellenőrzik. A drop-down listákat ugyanúgy külön függvényben valósítottam meg. A form elküldése után felugrik egy modal, amely figyelmezteti a felhasználót az e-mailek kiküldésére.\\
+Az \textit{AddSessionComponent} komponens a záróvizsgák hozzáadását teszi lehetővé az alkalmazásban. Ez a komponens funkcióját tekintve megegyezik az utóbbival. Az űrlap beküldését az \textit{addFormData} metódus teszi lehetővé. A sikeres beküldést követően ugyanúgy egy sikeres üzenet jelenik meg, míg ellenkező esetben egy hibás üzenet. A form helyes beküldését ugyanúgy validátorok ellenőrzik. A legördülő listákat ugyanúgy külön függvényben valósítottam meg. A form elküldése után felugrik egy modal, amely figyelmezteti a felhasználót az e-mailek kiküldésére.\\
 \\
-A komponens HTML része:\\
+A komponens \textit{HTML} része:\\
 \\
-A html kód hasonló az előzőekhez. Amikor a felhasználó rányom a submit gombra meghívódik a waiting függvény, amíg az e-mailek kiküldésre kerülnek.
+A \textit{HTML} kód hasonló az előzőekhez. Amikor a felhasználó rányom a "submit" gombra meghívódik a waiting függvény, amíg az e-mailek kiküldésre kerülnek.
 
 
 \subsubsection{AuthComponent}
 
-Az auth.guard.ts fájl tartalmaz egy AuthGuard nevű osztályt, amely egy átfogó szolgáltatás, és implementálja a CanActivate interfészt. Ennek a célja, hogy ellenőrizze a felhasználó be van-e jelentkezve az alkalmazásba, és rendelkezik-e a megfelelő jogosultságokkal az adott útvonal eléréséhez. Ha a felhasználó be van jelentkezve és rendelkezik a megfelelő jogosultságokkal, akkor az útvonal elérhető lesz számára, különben hibaüzenetet kap. Az auth.interceptor.ts fájl egy HTTP interceptor-t tartalmaz, amely az összes HTTP kérést megelőzi. A célja, hogy hozzáadja a JWT tokent az autorizációs fejléchez minden olyan kérésben, amely nem rendelkezik a No-Auth fejléccel. Ezenkívül a catchError operátor segítségével az interceptor figyeli a válaszokat, és kezeli az esetleges hibákat. Ha a válasz státuszkódja 401 vagy 403, a felhasználót a megfelelő helyre irányítja, és megjeleníti a megfelelő hibaüzenetet.
+Az \textit{auth.guard.ts} fájl tartalmaz egy \textit{AuthGuard} nevű osztályt, amely egy átfogó szolgáltatás, és implementálja a \textit{CanActivate} interfészt. Ennek a célja, hogy ellenőrizze a felhasználó be van-e jelentkezve az alkalmazásba, és rendelkezik-e a megfelelő jogosultságokkal az adott útvonal eléréséhez. Ha a felhasználó be van jelentkezve és rendelkezik a megfelelő jogosultságokkal, akkor az útvonal elérhető lesz számára, különben hibaüzenetet kap. Az auth.interceptor.ts fájl egy \textit{HTTP interceptor}-t tartalmaz, amely az összes \textit{HTTP} kérést megelőzi. A célja, hogy hozzáadja a \textit{JWT} tokent az autorizációs fejléchez minden olyan kérésben, amely nem rendelkezik a \textit{No-Auth} fejléccel. Ezenkívül a \textit{catchError} operátor segítségével az interceptor figyeli a válaszokat, és kezeli az esetleges hibákat. Ha a válasz státuszkódja 401 vagy 403, a felhasználót a megfelelő helyre irányítja, és megjeleníti a megfelelő hibaüzenetet.
 
 
 \subsubsection{FindAllUsersComponent}
 
-A FindAllUsersComponent nevű komponens felelős az összes felhasználó megjelenítéséért és kezeléséért. A komponens feladatai közé tartozik az összes felhasználó lekérése, a keresés funkciók megvalósítása, a felhasználók szerkesztése és törlése. A findAllUsers metódus segítségével a komponens inicializálásakor az összes felhasználó adatát lekéri és megjeleníti a rendszer. A keresési funkciók, mint például searchForStudent, searchForNeptunCode, searchForEmail, searchForWorkplace, lehetővé teszik a felhasználók szűrését az adott kritériumok alapján.  Az updateUsers metódus segítségével a felhasználók adatait frissíthetjük, és a deleteUser metódus segítségével törölni lehet a kiválasztott felhasználót. Az onRoleChange metódus a felhasználói szerepkör változását figyeli, és beállítja a megfelelő megjelenítést a pozíció mezőnek. Bíráló esetén input mező, témavezető, jegyző és elnök esetén pedig legördülő listát adtan hozzá a megjelenítéshez. Az adatok rendezését és oldalankénti megjelenítését is kezelem a key, reverse és p változók segítségével. Az alertWithError metódus figyeli és kezeli az esetleges hibákat, és megjeleníti a megfelelő hibaüzenetet.\\
+A \textit{FindAllUsersComponent} nevű komponens felelős az összes felhasználó megjelenítéséért és kezeléséért. A komponens feladatai közé tartozik az összes felhasználó lekérése, a keresés funkciók megvalósítása, a felhasználók szerkesztése és törlése. A \textit{findAllUsers} metódus segítségével a komponens inicializálásakor az összes felhasználó adatát lekéri és megjeleníti a rendszer. A keresési funkciók, mint például \textit{searchForStudent}, \textit{searchForNeptunCode}, \textit{searchForEmail}, \textit{searchForWorkplace}, lehetővé teszik a felhasználók szűrését az adott kritériumok alapján.  Az \textit{updateUsers} metódus segítségével a felhasználók adatait frissíthetjük, és a \textit{deleteUser} metódus segítségével törölni lehet a kiválasztott felhasználót. Az \textit{onRoleChange} metódus a felhasználói szerepkör változását figyeli, és beállítja a megfelelő megjelenítést a pozíció mezőnek. Bíráló esetén input mező, témavezető, jegyző és elnök esetén pedig legördülő listát adtan hozzá a megjelenítéshez. Az adatok rendezését és oldalankénti megjelenítését is kezelem a \textit{key}, \textit{reverse} és \textit{p} változók segítségével. Az \textit{alertWithError} metódus figyeli és kezeli az esetleges hibákat, és megjeleníti a megfelelő hibaüzenetet.\\
 \\
-A komponens HTML része:\\
+A komponens \textit{HTML} része:\\
 \\
-A html kódban a kereséseket containerekben helyeztem el. A felhasználók adatait egy táblázatban jelenítem meg, ahol az oszlop fejlécénél lehetőség van rendezni is az adatokat. A táblázat fejléce után beállítom hogy egy lapon hány felhasználó szerepeljen. A táblázathoz külön hozzáadtam még két gombot, amelyek az adott felhasználó adatainak módosítására és törlésére szolgálnak. A módosítást egy felugró modal-ban implementáltam.
+A \textit{HTML} kódban a kereséseket containerekben helyeztem el. A felhasználók adatait egy táblázatban jelenítem meg, ahol az oszlop fejlécénél lehetőség van rendezni is az adatokat. A táblázat fejléce után beállítom hogy egy lapon hány felhasználó szerepeljen. A táblázathoz külön hozzáadtam még két gombot, amelyek az adott felhasználó adatainak módosítására és törlésére szolgálnak. A módosítást egy felugró modal-ban implementáltam.
 
 
 \subsubsection{HeaderComponent}
 
-A Header komponens felelős a navigációs sáv megjelenítéséért az alkalmazásban. Az isLoggedIn metódus visszaadja, hogy a felhasználó be van-e jelentkezve vagy sem. A bejelentkezési állapotot a AuthService szolgáltatás isLoggedIn metódusa alapján határozza meg. A logout metódus felelős a felhasználó kijelentkeztetéséért. Először meghívja a AuthService clear() metódusát, amely törli a felhasználó adatait a bejelentkezési tárolóból. Ezután átirányítja a felhasználót a főoldalra a Router segítségével.\\
+A \textit{Header} komponens felelős a navigációs sáv megjelenítéséért az alkalmazásban. Az \textit{isLoggedIn} metódus visszaadja, hogy a felhasználó be van-e jelentkezve vagy sem. A bejelentkezési állapotot a \textit{AuthService} szolgáltatás \textit{isLoggedIn} metódusa alapján határozza meg. A logout metódus felelős a felhasználó kijelentkeztetéséért. Először meghívja a \textit{AuthService} \textit{clear} metódusát, amely törli a felhasználó adatait a bejelentkezési tárolóból. Ezután átirányítja a felhasználót a főoldalra a \textit{Router} segítségével.\\
 \\
-A HTML kódban a navigációs sáv megjelenítése, a bejelentkezés és kijelentkezés gomb elhelyezése van implementálva.
+A \textit{HTML} kódban a navigációs sáv megjelenítése, a "bejelentkezés" és "kijelentkezés" gomb elhelyezése van implementálva.
 
 
 \subsubsection{ListSessionsComponent}
 
-Ez a komponens a listázza a záróvizsgákat Az AddSessionService segítségével lekéri a záróvizsgák adatait. Az ngOnInit metódusban hívódik meg a listSessions metódus, amely betölti és megjeleníti a záróvizsgákat. A resp változón végigiterálok és elvégzem a dátum formázáshoz szükséges teendőket. Az adatok rendezését és oldalankénti megjelenítését is kezelem a key, reverse és p változók segítségével.\\
+Ez a komponens a listázza a záróvizsgákat Az \textit{AddSessionService} segítségével lekéri a záróvizsgák adatait. Az \textit{ngOnInit} metódusban hívódik meg a \textit{listSessions} metódus, amely betölti és megjeleníti a záróvizsgákat. A \textit{resp} változón végigiterálok és elvégzem a dátum formázáshoz szükséges teendőket. Az adatok rendezését és oldalankénti megjelenítését is kezelem a \textit{key}, \textit{reverse} és \textit{p} változók segítségével.\\
 \\
-A komponens HTML része:\\
+A komponens \textit{HTML} része:\\
 \\
-A html kódban egy táblázatban jelenítem meg a záróvizsgák adatait.  A hallgatók és a tagok listája egy belső span elemmel van megvalósítva, hogy megfelelően megjelenítsem a hallgatók és tagok nevét, valamint az utolsó elem után ne jelenjen meg vessző. A pagination-controls elem az oldalszámok megjelenítését biztosítja a lapozószámként.
+A \textit{HTML} kódban egy táblázatban jelenítem meg a záróvizsgák adatait.  A hallgatók és a tagok listája egy belső \textit{span} elemmel van megvalósítva, hogy megfelelően megjelenítsem a hallgatók és tagok nevét, valamint az utolsó elem után ne jelenjen meg vessző. A \textit{pagination-controls} elem az oldalszámok megjelenítését biztosítja a lapozószámként.
 
 \subsubsection{ListThesesesComponent}
 
-A komponens listázza a szakdolgozatok adatait. A getThesesList segítségével lekéri a szakdolgozatok listáját a megjelenítéshez. Itt ugyanúgy végigiterálok a resp változón és elvégzem a dátum helyes formázását. Felhasználók által megadott kritériumok alapján lehetőséget biztosítok a szakdolgozatok keresésére cím, beküldési dátum és hallgató neve alapján. A jegyző itt adhatja meg, hogy a hallgató milyen tételt húzott a záróvizsgán és hogy milyen érdemjegyet kapott rá. Lehetőséget biztosítok a szakdolgozatok szerkesztésére és törlésére az adatbázisból. A szakdolgozat módosításánál ugyanúgy legördülő lista segítségével változtathatjuk meg a hallgatót, a témavezetőt és akár a konzulenst is. A szakdolgozat törlésére is lehetőség van amelyre a deleteTheses függvényt hoztam létre. Lehetőség van a táblázatban megjelenő szakdolgozatok rendezésére. \\
+A komponens listázza a szakdolgozatok adatait. A \textit{getThesesList} segítségével lekéri a szakdolgozatok listáját a megjelenítéshez. Itt ugyanúgy végigiterálok a resp változón és elvégzem a dátum helyes formázását. Felhasználók által megadott kritériumok alapján lehetőséget biztosítok a szakdolgozatok keresésére cím, beküldési dátum és hallgató neve alapján. A jegyző itt adhatja meg, hogy a hallgató milyen tételt húzott a záróvizsgán és hogy milyen érdemjegyet kapott rá. Lehetőséget biztosítok a szakdolgozatok szerkesztésére és törlésére az adatbázisból. A szakdolgozat módosításánál ugyanúgy legördülő lista segítségével változtathatjuk meg a hallgatót, a témavezetőt és akár a konzulenst is. A szakdolgozat törlésére is lehetőség van amelyre a \textit{deleteTheses} függvényt hoztam létre. Lehetőség van a táblázatban megjelenő szakdolgozatok rendezésére. \\
 \\
-A komponens HTML része:\\
+A komponens \textit{HTML} része:\\
 \\
-A html kódban a kereséseket ugyanúgy containerek segítségével hoztam létre.
-Külön kihívást nyújtott a dátum alapján keresés, amelyet a datepicker segítségével oldottam meg. Az adatokat ugyanúgy egy táblázatban jelenítem meg, ahol lehetőség van rendezésre. Ezenkívül elhelyeztem gombokat a módosítás, törlés és tétel húzás funkciókhoz is. A táblázatban a kitöltetlen adatokat kiküszöböltem egy *ngif direktívával és írtam egy elseBlock-ot. A módosítást és a tétel húzást egy felugró ablakban valósítottam meg. Ahol input mezőket date-pickert és legördülő listát is volt alkalmam alkalmazni.
+A \textit{HTML} kódban a kereséseket ugyanúgy containerek segítségével hoztam létre.
+Külön kihívást nyújtott a dátum alapján keresés, amelyet a \textit{datepicker} segítségével oldottam meg. Az adatokat ugyanúgy egy táblázatban jelenítem meg, ahol lehetőség van rendezésre. Ezenkívül elhelyeztem gombokat a módosítás, törlés és tétel húzás funkciókhoz is. A táblázatban a kitöltetlen adatokat kiküszöböltem egy \textit{*ngif} direktívával és írtam egy \textit{elseBlock}-ot. A módosítást és a tétel húzást egy felugró ablakban valósítottam meg, ahol input mezőket \textit{date-picker}-t és legördülő listát is volt alkalmam alkalmazni.
 
 
 \subsubsection{LoginComponent}
 
-A LoginComponent komponens a felhasználó bejelentkezésének folyamatát kezeli az  alkalmazásban. A alertWithNewPassword függvény egy értesítést jelenít meg a felhasználónak a sikeres jelszóváltoztatásról. Az alertWithUnauth függvény figyelmeztetést ad a felhasználónak, ha az autentikáció nem sikerült (HTTP 401 hibakód). Az alertWithWrongPassword függvény célja, hogy ha a megadott jelszó helytelen (HTTP 500 hibakód). A login függvény felelős a felhasználó bejelentkezéséért. Elküldi a bejelentkezési adatokat a UserService szolgáltatásnak, majd a válasz alapján továbbítja a felhasználót a megfelelő oldalra. A forgottenPw függvény az elfelejtett jelszó funkcióját kezeli. Elküldi a felhasználó által megadott felhasználónév alapján az e-mailt. A changePw függvény a jelszóváltoztatás funkcióját kezeli. Elküldi az új jelszót és az ellenőrző kódot a UserService szolgáltatásnak, majd értesíti a felhasználót a sikeres jelszóváltoztatásról. A matchPwValidator egy egyedi validációs függvény, ami ellenőrzi, hogy az új jelszó és a megerősítő jelszó egyezik-e a jelszóváltoztatás folyamatában.\\
+A \textit{LoginComponent} komponens a felhasználó bejelentkezésének folyamatát kezeli az  alkalmazásban. A \textit{alertWithNewPassword} függvény egy értesítést jelenít meg a felhasználónak a sikeres jelszóváltoztatásról. Az \textit{alertWithUnauth} függvény figyelmeztetést ad a felhasználónak, ha az autentikáció nem sikerült (\textit{HTTP} 401 hibakód). Az \textit{alertWithWrongPassword} függvény célja, hogy ha a megadott jelszó helytelen (\textit{HTTP} 500 hibakód). A \textit{login} függvény felelős a felhasználó bejelentkezéséért. Elküldi a bejelentkezési adatokat a \textit{UserService} szolgáltatásnak, majd a válasz alapján továbbítja a felhasználót a megfelelő oldalra. A \textit{forgottenPw} függvény az elfelejtett jelszó funkcióját kezeli. Elküldi a felhasználó által megadott felhasználónév alapján az e-mailt. A \textit{changePw} függvény a jelszóváltoztatás funkcióját kezeli. Elküldi az új jelszót és az ellenőrző kódot a \textit{UserService} szolgáltatásnak, majd értesíti a felhasználót a sikeres jelszóváltoztatásról. A \textit{matchPwValidator} egy egyedi validációs függvény, ami ellenőrzi, hogy az új jelszó és a megerősítő jelszó egyezik-e a jelszóváltoztatás folyamatában.\\
 \\
-A komponens HTML része:\\
+A komponens \textit{HTML} része:\\
 \\
 Egy űrlap a bejelentkezéshez, amely tartalmazza a felhasználónév és jelszó mezőket, valamint egy bejelentkezés gombot. Van egy gomb az "Elfelejtett jelszó" funkcióhoz, amely egy modal ablakot nyit meg. Két felugró ablak a "Elfelejtett jelszó" és "Új jelszó beállítása" funkciókhoz. A "Elfelejtett jelszó" modal ablak tartalmaz egy űrlapot a felhasználónév megadásához az új jelszó igényléséhez. Az "Új jelszó beállítása" modal ablak egy űrlapot tartalmaz a felhasználónév, token, új jelszó és az új jelszó megerősítése megadásához.
 
 
 \subsubsection{MyprofileComponent}
 
-A MyprofileComponent egy jelszóváltoztató oldalt valósít meg. A komponens meghívja a szerveroldali metódusokat és azok segítségével hajtja végre a jelszó módosítást. A jelszóváltoztatás funkcióhoz validátor is tartozik, amely ellenőrzi az új jelszó és a megerősítő jelszó egyezőségét. A módosítást egy felugró ablakban valósítottam meg.\\
+A \textit{MyprofileComponent} egy jelszóváltoztató oldalt valósít meg. A komponens meghívja a szerveroldali metódusokat és azok segítségével hajtja végre a jelszó módosítást. A jelszóváltoztatás funkcióhoz validátor is tartozik, amely ellenőrzi az új jelszó és a megerősítő jelszó egyezőségét. A módosítást egy felugró ablakban valósítottam meg.\\
 \\
-A komponens HTML része:\\
+A komponens \textit{HTML} része:\\
 \\
-Az HTML kód egy jelszóváltoztatás űrlapot és egy hozzá tartozó gombot tartalmaz, amely megnyitja a jelszóváltoztatás modal ablakát. A felugró ablakban található egy űrlap, ahol a felhasználó megadhatja jelenlegi és új jelszavát, valamint megerősítheti az új jelszót. Ha az új jelszó és a megerősítő jelszó nem egyezik meg, akkor megjelenik egy felhívó szöveg, amely figyelmezteti a felhasználót.
+Az \textit{HTML} kód egy jelszóváltoztatás űrlapot és egy hozzá tartozó gombot tartalmaz, amely megnyitja a jelszóváltoztatás modal ablakát. A felugró ablakban található egy űrlap, ahol a felhasználó megadhatja jelenlegi és új jelszavát, valamint megerősítheti az új jelszót. Ha az új jelszó és a megerősítő jelszó nem egyezik meg, akkor megjelenik egy felhívó szöveg, amely figyelmezteti a felhasználót.
 
 
 \subsubsection{ReportStatusComponent}
 
-A ReportStatusComponent a szakdolgozatok státuszának nyomonkövetéséért felelős komponens. A komponens a jegyző és elnök szerepköröknek készült elsősorban. Három részre lehet osztani az oldalt a beadott szakdolgozatokra, a folyamatban lévő bírálatokra, és a befejezett bírálatokra. Mindháromhoz létrehoztam egy tömböt és ezekben tárolom le a szükséges adatokat. A requestForReview függvényben lehetőség van a bíráló felkérésére.A komponens különböző segédfüggvényekkel rendelkezik, például az alertWithReview, alertWithError, alertWithFileType, amelyek segítenek kezelni a különböző hibákat vagy értesítéseket. A correctTable metódusban az adatok rendszerezése és formázása történik a megfelelő megjelenítés érdekében. A komponens tartalmaz továbbá metódusokat a fájlok letöltéséhez.\\
+A \textit{ReportStatusComponent} a szakdolgozatok státuszának nyomonkövetéséért felelős komponens. A komponens a jegyző és elnök szerepköröknek készült elsősorban. Három részre lehet osztani az oldalt a beadott szakdolgozatokra, a folyamatban lévő bírálatokra, és a befejezett bírálatokra. Mindháromhoz létrehoztam egy tömböt és ezekben tárolom le a szükséges adatokat. A \textit{requestForReview} függvényben lehetőség van a bíráló felkérésére.A komponens különböző segédfüggvényekkel rendelkezik, például az \textit{alertWithReview}, \textit{alertWithError}, \textit{alertWithFileType}, amelyek segítenek kezelni a különböző hibákat vagy értesítéseket. A \textit{correctTable} metódusban az adatok rendszerezése és formázása történik a megfelelő megjelenítés érdekében. A komponens tartalmaz továbbá metódusokat a fájlok letöltéséhez.\\
 \\
-A komponens HTML része:\\
+A komponens \textit{HTML} része:\\
 \\
 A megjelenítést egy összecsukható listával valósítottam meg a három fő részre.
 \\
@@ -437,40 +424,40 @@ A megjelenítést egy összecsukható listával valósítottam meg a három fő 
 
 \item{} Befejezett bírálatok: Ez a rész a befejezett bírálatok adatait tartalmazza. A táblázat hasonló az előző kettőhöz, de az itt felsorolt szakdolgozatokhoz már hozzá vannak rendelve a bírálatok fájljai is. Emellett lehetőség van a bírálatokhoz tartozó fájlok letöltésére és a bírálatok küldésére e-mailben.\\
 \end{enumerate}
-Ezeken kívül a kód egy modal komponenst is tartalmaz, amely lehetővé teszi a bíráló kiválasztását egy űrlap segítségével. A modal egy legördülő menüt tartalmaz, amelyben a bírálókat lehet választani. Az űrlap elküldése után a kiválasztott bírálóhoz küldött kérelem feldolgozásra kerül.
+Ezeken kívül a kód egy \textit{modal} komponenst is tartalmaz, amely lehetővé teszi a bíráló kiválasztását egy űrlap segítségével. A \textit{modal} egy legördülő menüt tartalmaz, amelyben a bírálókat lehet választani. Az űrlap elküldése után a kiválasztott bírálóhoz küldött kérelem feldolgozásra kerül.
 
 \subsubsection{ThesisStatusComponent}
 
-A ThesisStatusComponent a szakdolgozatok státuszának kezelését végzi. A komponens a hallgató, bíráló és témavezető szerepköröknek készült elsősorban. Ennek a komponensnek a feladata szakdolgozatok megjelenítése és hogy mindegyik szerepkör csak a hozzá tartozó szakdolgozatokat lássa. A funkcióját tekintve hasonló az előzőhöz. Keresési funkciót is implementáltam a szakdolgozatok és  A komponens tartalmazza az adatlekéréseket és az ezekkel kapcsolatos műveleteket, például a fájlok letöltését vagy törlését, a keresést a táblázatban, valamint a felhasználói visszajelzések megjelenítését. Betölti és kezeli a szakdolgozatokhoz és felhasználókhoz kapcsolódó adatokat, valamint a szakdolgozatok fájljait. Lehetővé teszi a szakdolgozatokhoz tartozó fájlok letöltését és törlését. Biztosítja a keresési funkciót a táblázatban.\\
+A \textit{ThesisStatusComponent} a szakdolgozatok státuszának kezelését végzi. A komponens a hallgató, bíráló és témavezető szerepköröknek készült elsősorban. Ennek a komponensnek a feladata szakdolgozatok megjelenítése és hogy mindegyik szerepkör csak a hozzá tartozó szakdolgozatokat lássa. A funkcióját tekintve hasonló az előzőhöz. Keresési funkciót is implementáltam a szakdolgozatok és  A komponens tartalmazza az adatlekéréseket és az ezekkel kapcsolatos műveleteket, például a fájlok letöltését vagy törlését, a keresést a táblázatban, valamint a felhasználói visszajelzések megjelenítését. Betölti és kezeli a szakdolgozatokhoz és felhasználókhoz kapcsolódó adatokat, valamint a szakdolgozatok fájljait. Lehetővé teszi a szakdolgozatokhoz tartozó fájlok letöltését és törlését. Biztosítja a keresési funkciót a táblázatban.\\
 \\
-A komponens HTML része:\\
+A komponens \textit{HTML} része:\\
 \\
-A hmtl kódban containerek-ben helyeztem el a kereséseket. Az adatokat egy táblázatba szúrtam be. Külön létre hoztam gombokat a fájlok letöltésére és törlésére is.
+A \textit{HTML} kódban tárolókban helyeztem el a kereséseket. Az adatokat egy táblázatba szúrtam be. Külön létre hoztam gombokat a fájlok letöltésére és törlésére is.
 
 \subsubsection{UploadPdfZipFilesComponent}
 
-Az UploadPDFZIPFilesComponent felelős a PDF és ZIP fájlok feltöltéséért a rendszerbe. Az onFileSelected metódus figyeli az eseményeket, amikor a felhasználó kiválaszt egy fájlt a feltöltéshez. Ez a metódus ellenőrzi a kiválasztott fájlok típusát és méretét, és megfelelő hibaüzeneteket jelenít meg, ha a kiválasztott fájlok nem felelnek meg a követelményeknek. Ha a fájlok megfelelőek, akkor tárolja azokat a megfelelő változókban a későbbi feltöltéshez. A uploadFile metódus felelős a kiválasztott fájlok feltöltéséért a szerverre. Ez a metódus létrehoz egy FormData objektumot, amely tartalmazza a kiválasztott fájlt, majd a AddFilesService segítségével elküldi azt a szervernek. A feltöltés közben figyeli a fájlok feltöltési folyamatát, és a sikeres feltöltés után összekapcsolja a fájl azonosítóját és a szakdolgozat azonosítóját a szükséges műveletek végrehajtásához. Az alert-el kezdődő metódusok felelősek különböző típusú figyelmeztetések és üzenetek megjelenítéséért a felhasználók számára a feltöltési folyamat során felmerülő eseményekről és hibákról. Végül a komponens tartalmaz egy getTheses metódust is, amely a bejelentkezett felhasználóhoz kapcsolódó szakdolgozatokat kéri le a szerverről a ListThesesesService szolgáltatás segítségével, és azokat tárolja a theses változóban a későbbi felhasználásra.\\
+Az \textit{UploadPDFZIPFilesComponent} felelős a PDF és ZIP fájlok feltöltéséért a rendszerbe. Az \textit{onFileSelected} metódus figyeli az eseményeket, amikor a felhasználó kiválaszt egy fájlt a feltöltéshez. Ez a metódus ellenőrzi a kiválasztott fájlok típusát és méretét, és megfelelő hibaüzeneteket jelenít meg, ha a kiválasztott fájlok nem felelnek meg a követelményeknek. Ha a fájlok megfelelőek, akkor tárolja azokat a megfelelő változókban a későbbi feltöltéshez. A \textit{uploadFile} metódus felelős a kiválasztott fájlok feltöltéséért a szerverre. Ez a metódus létrehoz egy \textit{FormData} objektumot, amely tartalmazza a kiválasztott fájlt, majd a \textit{AddFilesService} segítségével elküldi azt a szervernek. A feltöltés közben figyeli a fájlok feltöltési folyamatát, és a sikeres feltöltés után összekapcsolja a fájl azonosítóját és a szakdolgozat azonosítóját a szükséges műveletek végrehajtásához. Az \textit{alert}-el kezdődő metódusok felelősek különböző típusú figyelmeztetések és üzenetek megjelenítéséért a felhasználók számára a feltöltési folyamat során felmerülő eseményekről és hibákról. Végül a komponens tartalmaz egy \textit{getTheses} metódust is, amely a bejelentkezett felhasználóhoz kapcsolódó szakdolgozatokat kéri le a szerverről a \textit{ListThesesesService} szolgáltatás segítségével, és azokat tárolja a theses változóban a későbbi felhasználásra.\\
 \\
-A komponens HTML része:\\
+A komponens \textit{HTML} része:\\
 \\
-Az HTML kód arra szolgál, hogy lehetővé tegye a felhasználók számára a PDF és ZIP fájlok feltöltését a rendszerbe. Az első rész a PDF fájlok feltöltésére vonatkozik. Először lehetőség van arra, hogy a felhasználó kiválassza azt a szakdolgozatot, amire a fájlokat feltölti. Ezután egy fájlkiválasztó eszköz segítségével kiválaszthatja a feltölteni kívánt PDF fájlt. Miután kiválasztotta a fájlt, a "Feltöltés" gomb megnyomásával kezdeményezheti a feltöltést. A folyamat közben egy előrehaladási sáv jelenik meg, amely mutatja a feltöltés aktuális állapotát. A második rész a ZIP fájlok feltöltésére szolgál. Ugyanazokat a lépéseket kell követni, mint a PDF fájlok esetében: először a szakdolgozat kiválasztása, majd a ZIP fájl kiválasztása és a "Feltöltés" gomb megnyomása. A feltöltési folyamat során egy másik előrehaladási sáv jelenik meg, hogy tájékoztassa a felhasználót a folyamat állapotáról. Az oldal intuitív felületet biztosít a felhasználók számára a fájlok kiválasztásához és feltöltéséhez, miközben visszajelzést nyújt a folyamat állapotáról.
+Az \textit{HTML} kód arra szolgál, hogy lehetővé tegye a felhasználók számára a PDF és ZIP fájlok feltöltését a rendszerbe. Az első rész a PDF fájlok feltöltésére vonatkozik. Először lehetőség van arra, hogy a felhasználó kiválassza azt a szakdolgozatot, amire a fájlokat feltölti. Ezután egy fájlkiválasztó eszköz segítségével kiválaszthatja a feltölteni kívánt PDF fájlt. Miután kiválasztotta a fájlt, a "Feltöltés" gomb megnyomásával kezdeményezheti a feltöltést. A folyamat közben egy előrehaladási sáv jelenik meg, amely mutatja a feltöltés aktuális állapotát. A második rész a ZIP fájlok feltöltésére szolgál. Ugyanazokat a lépéseket kell követni, mint a PDF fájlok esetében: először a szakdolgozat kiválasztása, majd a ZIP fájl kiválasztása és a "Feltöltés" gomb megnyomása. A feltöltési folyamat során egy másik előrehaladási sáv jelenik meg, hogy tájékoztassa a felhasználót a folyamat állapotáról. Az oldal intuitív felületet biztosít a felhasználók számára a fájlok kiválasztásához és feltöltéséhez, miközben visszajelzést nyújt a folyamat állapotáról.
 
-\subsubsection{UploadPptxFilesComponent}
+\subsubsection{UploadPPTXFilesComponent}
 
-Az UploadPPTXFilesComponent komponens azért felelős, hogy lehetővé tegye a felhasználók számára a PowerPoint (.pptx) fájlok feltöltését a rendszerbe. A komponens tartalmaz egy selectedFile változót, amely a kiválasztott fájlt tárolja, valamint egy uploadProgress változót, amely nyomon követi a feltöltés előrehaladását. Az ngOnInit metódus segítségével inicializálom a komponensben használt adatokat, például a rendelkezésre álló szakdolgozatok listáját. Az onFileSelected metódus figyeli a fájlkiválasztó eszköz eseményeit, és ellenőrzi a kiválasztott fájl típusát és méretét. Ha a kiválasztott fájl nem megfelelő típusú vagy túl nagy, figyelmeztetést jelenít meg, és törli a kiválasztott fájlt. Az uploadFile metódus felelős a fájl feltöltésének kezeléséért. Ellenőrzi, hogy van-e kiválasztott fájl és szakdolgozat, majd feltölti a fájlt a szerverre. A folyamat közben nyomon követi az előrehaladást, és megfelelő visszajelzést jelenít meg a felhasználó számára. A getTheses metódus segítségével lekérdezzük a rendelkezésre álló szakdolgozatok listáját, amelyet a felhasználó kiválaszthat a feltöltendő fájlhoz.
+Az \textit{UploadPPTXFilesComponent} komponens azért felelős, hogy lehetővé tegye a felhasználók számára a \textit{PowerPoint} (\textit{.pptx}) fájlok feltöltését a rendszerbe. A komponens tartalmaz egy selectedFile változót, amely a kiválasztott fájlt tárolja, valamint egy \textit{uploadProgress} változót, amely nyomon követi a feltöltés előrehaladását. Az \textit{ngOnInit} metódus segítségével inicializálom a komponensben használt adatokat, például a rendelkezésre álló szakdolgozatok listáját. Az \textit{onFileSelected} metódus figyeli a fájlkiválasztó eszköz eseményeit, és ellenőrzi a kiválasztott fájl típusát és méretét. Ha a kiválasztott fájl nem megfelelő típusú vagy túl nagy, figyelmeztetést jelenít meg, és törli a kiválasztott fájlt. Az \textit{uploadFile} metódus felelős a fájl feltöltésének kezeléséért. Ellenőrzi, hogy van-e kiválasztott fájl és szakdolgozat, majd feltölti a fájlt a szerverre. A folyamat közben nyomon követi az előrehaladást, és megfelelő visszajelzést jelenít meg a felhasználó számára. A \textit{getTheses} metódus segítségével lekérdezzük a rendelkezésre álló szakdolgozatok listáját, amelyet a felhasználó kiválaszthat a feltöltendő fájlhoz.
 \\
 \\
-A komponens HTML része:\\
+A komponens \textit{HTML} része:\\
 \\
-Az UploadPPTXFilesComponent HTML kódja a felhasználói felületet definiálja a ppt és pptx fájlok feltöltéséhez. Tartalmazza a szakdolgozat kiválasztását, a fájlkiválasztó gombot, a feltöltés gombot, valamint a feltöltési folyamatot jelző előrehaladó sávot és hibaüzeneteket megjelenítő területet.
+Az \textit{UploadPPTXFilesComponent} \textit{HTML} kódja a felhasználói felületet definiálja a ppt és \textit{pptx} fájlok feltöltéséhez. Tartalmazza a szakdolgozat kiválasztását, a fájlkiválasztó gombot, a feltöltés gombot, valamint a feltöltési folyamatot jelző előrehaladó sávot és hibaüzeneteket megjelenítő területet.
 
 
 \subsubsection{ZvReportComponent}
 
-A ZvReport komponens egy űrlapot kínál a felhasználóknak, ahol megadhatja a szükséges adatokat a záróvizsga jegyzőkönyv összeállításához. A komponens inicializálása során meghívódik a getStudentsToDropdown metódus, ami lekéri az összes hallgatót a rendszerből. A felhasználó választhat egy hallgatót a lenyíló menüből, ami után a onSelectStudent metódus meghívja a getThesesesToDropdown és a getCodeToDropDown metódusokat. A getThesesesToDropdown metódus lekéri az összes szakdolgozatot a kiválasztott diákhoz. A getCodeToDropDown metódus lekéri az összes olyan záróvizsga kódját, amelyben a kiválasztott hallgató részt vett. A questionToDropDownList, gradesToDropDownList és tgradesToDropDownList listák az űrlap különböző legördülő listáit definiálják. Az addFormData metódus felelős az űrlap adatainak feldolgozásáért és az új dokumentum hozzáadásáért a rendszerhez. Az űrlap validálására a addDocxForm FormGroup-ot használom, amely tartalmazza a szükséges ellenőrzéseket a formában szereplő mezők számára.\\
-\\A komponens HTML része:\\
+A \textit{ZvReportComponent} komponens egy űrlapot kínál a felhasználóknak, ahol megadhatja a szükséges adatokat a záróvizsga jegyzőkönyv összeállításához. A komponens inicializálása során meghívódik a \textit{getStudentsToDropdown} metódus, ami lekéri az összes hallgatót a rendszerből. A felhasználó választhat egy hallgatót a lenyíló menüből, ami után a \textit{onSelectStudent} metódus meghívja a \textit{getThesesesToDropdown} és a \textit{getCodeToDropdown} metódusokat. A \textit{getThesesesToDropdown} metódus lekéri az összes szakdolgozatot a kiválasztott diákhoz. A \textit{getCodeToDropdown} metódus lekéri az összes olyan záróvizsga kódját, amelyben a kiválasztott hallgató részt vett. A \textit{questionToDropDownList}, \textit{gradesToDropDownList} és \textit{tgradesToDropDownList} listák az űrlap különböző legördülő listáit definiálják. Az \textit{addFormData} metódus felelős az űrlap adatainak feldolgozásáért és az új dokumentum hozzáadásáért a rendszerhez. Az űrlap validálására a \textit{addDocxForm} \textit{FormGroup}-ot használom, amely tartalmazza a szükséges ellenőrzéseket a formában szereplő mezők számára.\\
+\\A komponens \textit{HTML} része:\\
 \\
-Ez a HTML kód egy űrlapot definiál, amely lehetővé teszi a felhasználók számára, hogy adatokat adjanak meg és azokat továbbítsák az Angular alkalmazásnak. Az űrlap tartalmazza a következő elemeket:
+Ez a \textit{HTML} kód egy űrlapot definiál, amely lehetővé teszi a felhasználók számára, hogy adatokat adjanak meg és azokat továbbítsák az Angular alkalmazásnak. Az űrlap tartalmazza a következő elemeket:
 
 \begin{itemize}
 
@@ -481,6 +468,6 @@ Ez a HTML kód egy űrlapot definiál, amely lehetővé teszi a felhasználók s
 \item{}Egy újabb legördülő lista a feltett kérdések és válaszok kiválasztásához.
 \item{}Két legördülő lista az osztályzatok kiválasztásához, egy a szakdolgozat védésére kapott osztályzathoz és egy a szigorlatra kapott osztályzathoz.
 \item{}Egy szövegdoboz a megjegyzések megadásához.
-\item{}Egy "Generate" gomb, amely elküldi az űrlap adatait az Angular alkalmazásnak. Az űrlap adatainak érvényességét figyelembe veszi, hogy engedélyezze vagy letiltja a gombot a küldés előtt.
+\item{}Egy "Generate" gomb, amely elküldi az űrlap adatait az \textit{Angular} alkalmazásnak. Az űrlap adatainak érvényességét figyelembe veszi, hogy engedélyezze vagy letiltja a gombot a küldés előtt.
 
 \end{itemize}
