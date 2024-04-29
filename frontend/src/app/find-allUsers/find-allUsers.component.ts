@@ -134,6 +134,7 @@ export class FindAllUsersComponent implements OnInit {
 
   searchForStudent() {
     if (this.student == "") {
+      console.log(this.student)
       this.ngOnInit();
     } else {
       console.log(this.data)

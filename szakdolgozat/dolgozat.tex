@@ -7,9 +7,13 @@
 \usepackage{listings}
 \usepackage{styles/cpp}
 \usepackage{styles/python}
+\usepackage{styles/typescript}
 \usepackage[export]{adjustbox}
-
 \usepackage{hyperref}
+
+
+
+\renewcommand{\lstlistingname}{Programkód}
 
 \lstset{
     language=SQL,
@@ -24,9 +28,27 @@
     extendedchars=true,
     literate={á}{{\'a}}1 {é}{{\'e}}1,
     columns=fullflexible,
-    xleftmargin=.3\textwidth, 
-    xrightmargin=.3\textwidth
+    %xleftmargin=.3\textwidth, 
+    %xrightmargin=.3\textwidth
 }
+
+\lstdefinestyle{mySQLstyle}{
+	language=SQL,
+	backgroundcolor=\color{gray!10},
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue},
+	commentstyle=\color{green!40!black},
+	stringstyle=\color{orange},
+	showstringspaces=false,
+	breaklines=true,
+	inputencoding=utf8,
+	extendedchars=true,
+	literate={á}{{\'a}}1 {é}{{\'e}}1,
+	columns=fullflexible,
+	xleftmargin=.3\textwidth,
+	xrightmargin=.3\textwidth
+}
+
 
 \begin{document}
 

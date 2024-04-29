@@ -91,7 +91,6 @@ export class AddDocxComponent implements OnInit {
 
 
   getStudentsToDropdown(userId: number) {
-    // this.findAllUsersService.findUsersByRole(0).subscribe(
     this.findAllUsersService.findStudentsByLoggedInReviewer(userId).subscribe(
       (resp) => {
         console.log(resp)
