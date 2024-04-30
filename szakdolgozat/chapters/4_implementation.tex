@@ -338,8 +338,8 @@ Az \textit{AddThesisComponent} \textit{HTML} részletében ugyanúgy egy űrlapo
 
 \subsubsection{AddReviewComponent}
 
-Az \textit{AddReviewComponent} komponensben a bírálat írásának felülete került implementálásra. A komponens kezdeti betöltésekor az \textit{ngOnInit} függvényen keresztül meghívja a \textit{getStudentsToDropdown} metódust a bejelentkezett felhasználóhoz tartozó hallgatók lekérésére. 
-\begin{typescript}[caption={Hallgatók legördülő listába gyűjtése},captionpos=b]
+Az \textit{AddReviewComponent} komponensben a bírálat írásának felülete került implementálásra. A komponens kezdeti betöltésekor az \textit{ngOnInit} függvényen keresztül meghívja a \textit{getStudentsToDropdown} (\ref{lst:dropdown} programkód) metódust a bejelentkezett felhasználóhoz tartozó hallgatók lekérésére. 
+\begin{typescript}[caption={Hallgatók legördülő listába gyűjtése},captionpos=b,label={lst:dropdown}]
 getStudentsToDropdown(userId: number) {
   this.findAllUsersService.findStudentsByLoggedInReviewer(userId).subscribe(
     (resp) => {
@@ -375,9 +375,9 @@ Az \textit{auth.guard.ts} fájl tartalmaz egy \textit{AuthGuard} nevű osztályt
 
 \subsubsection{FindAllUsersComponent}
 
-A \textit{FindAllUsersComponent} nevű komponens felelős az összes felhasználó megjelenítéséért és kezeléséért. A komponens feladatai közé tartozik az összes felhasználó lekérése, a keresés funkciók megvalósítása, a felhasználók szerkesztése és törlése. A \textit{findAllUsers} metódus segítségével a komponens inicializálásakor az összes felhasználó adatát lekéri és megjeleníti a rendszer. A keresési funkciók, mint például \textit{searchForStudent}, \textit{searchForNeptunCode}, \textit{searchForEmail}, \textit{searchForWorkplace}, lehetővé teszik a felhasználók szűrését az adott kritériumok alapján. 
+A \textit{FindAllUsersComponent} nevű komponens felelős az összes felhasználó megjelenítéséért és kezeléséért. A komponens feladatai közé tartozik az összes felhasználó lekérése, a keresés funkciók megvalósítása, a felhasználók szerkesztése és törlése. A \textit{findAllUsers} metódus segítségével a komponens inicializálásakor az összes felhasználó adatát lekéri és megjeleníti a rendszer. A keresési funkciók, mint például \textit{searchForStudent}, \textit{searchForNeptunCode} (\ref{lst:search} programkód), \textit{searchForEmail}, \textit{searchForWorkplace}, lehetővé teszik a felhasználók szűrését az adott kritériumok alapján. 
 \\
-\begin{typescript}[caption={Keresés Neptun kód alapján},captionpos=b]
+\begin{typescript}[caption={Keresés Neptun kód alapján},captionpos=b,label={lst:search}]
 searchForNeptunCode() {
     if (this.neptunCode == "") {
       this.ngOnInit();
@@ -385,9 +385,9 @@ searchForNeptunCode() {
       console.log(this.data)
       this.data = this.temp.filter((res: any) => {
         return res.neptunCode.toLocaleLowerCase().match(this.neptunCode.toLocaleLowerCase())
-      })
-    }
+    })
   }
+}
 \end{typescript}  
 Az \textit{updateUsers} metódus segítségével a felhasználók adatait frissíthetjük, és a \textit{deleteUser} metódus segítségével törölni lehet a kiválasztott felhasználót. Az \textit{onRoleChange} metódus a felhasználói szerepkör változását figyeli, és beállítja a megfelelő megjelenítést a pozíció mezőnek. Bíráló esetén input mező, témavezető, jegyző és elnök esetén pedig legördülő listát adtan hozzá a megjelenítéshez. Az adatok rendezését és oldalankénti megjelenítését is kezelem a \textit{key}, \textit{reverse} és \textit{p} változók segítségével. Az \textit{alertWithError} metódus figyeli és kezeli az esetleges hibákat, és megjeleníti a megfelelő hibaüzenetet.\\
 \\
@@ -423,11 +423,11 @@ A dátum alapján keresést, a \textit{datepicker} segítségével oldottam meg.
 
 \subsubsection{LoginComponent}
 
-A \textit{LoginComponent} komponens a felhasználó bejelentkezésének folyamatát kezeli az  alkalmazásban. A \textit{alertWithNewPassword} függvény egy értesítést jelenít meg a felhasználónak a sikeres jelszóváltoztatásról. Az \textit{alertWithUnauth} függvény figyelmeztetést ad a felhasználónak, ha az autentikáció nem sikerült (\textit{HTTP} 401 hibakód). 
-\begin{typescript}[caption={A figyelmeztető szöveg beállítása},captionpos=b]
+A \textit{LoginComponent} komponens a felhasználó bejelentkezésének folyamatát kezeli az  alkalmazásban. A \textit{alertWithNewPassword} függvény egy értesítést jelenít meg a felhasználónak a sikeres jelszóváltoztatásról. Az \textit{alertWithUnauth} függvény (\ref{lst:alert} programkód) figyelmeztetést ad a felhasználónak, ha az autentikáció nem sikerült (\textit{HTTP} 401 hibakód). 
+\begin{typescript}[caption={A figyelmeztető szöveg beállítása},captionpos=b, label={lst:alert}]
 alertWithUnauth() {
     Swal.fire("Hiba", 'Unauth 401',  'error');
-  }
+}
 \end{typescript}
 Az \textit{alertWithWrongPassword} függvény célja, hogy ha a megadott jelszó helytelen (\textit{HTTP} 500 hibakód), akkor felugrik egy alert ablak, ami figyelmezteti a felhasználót a hibára. A \textit{login} függvény felelős a felhasználó bejelentkezéséért. Elküldi a bejelentkezési adatokat a \textit{UserService} szolgáltatásnak, majd a válasz alapján továbbítja a felhasználót a megfelelő oldalra. A \textit{forgottenPw} függvény az elfelejtett jelszó funkcióját kezeli. Elküldi a felhasználó által megadott felhasználónév alapján az e-mailt. A \textit{changePw} függvény a jelszóváltoztatás funkcióját kezeli. Elküldi az új jelszót és az ellenőrző kódot a \textit{UserService} szolgáltatásnak, majd értesíti a felhasználót a sikeres jelszóváltoztatásról. A \textit{matchPwValidator} egy egyedi validációs függvény, ami ellenőrzi, hogy az új jelszó és a megerősítő jelszó egyezik-e a jelszóváltoztatás folyamatában.\\
 \\
