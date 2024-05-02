@@ -50,19 +50,19 @@ A fájl feltöltésekor generálódik egy uuid, mely az első részét képezi a
 Például: 3c39562a-fe6a-4783-9ab4-05d875017d70\_dolgozat.pdf
 
 
-\item{Dolgozatok mellékletei (zip):}
+\item{Dolgozatok mellékletei (\textit{zip}):}
 
 A szakdolgozatok mellékleteit az \textit{attachment} jegyzékben raktározom. A fájl elnevezése ugyanolyan, mint a dokumentációnál.
 
 Például: 14e18814-1246-43cc-85e9-f4443c26f54e\_dolgozat\_melléklet.zip
 
-\item{Prezentáció (pptx):}
+\item{Prezentáció (\textit{pptx}):}
 
 A prezentációk eltárolása érdekében is egy külön jegyzéket \textit{ppts} hoztam létre, amelyben a fájlok elnevezése szintén megegyezik a fentebb említett két verzióval.
 
 Például: 653c8797-8a8e-4472-91eb-9d7175a86891\_dolgozat\_prezentációja.pptx
 
-\item{Bírálatok (reviews):}
+\item{Bírálatok (\textit{reviews}):}
 
 A bírálatokat Word formátumban tárolom le egy külön \textit{reviews} jegyzékben. A fájlnév szerkezete a következő: először a "Review" szó áll, majd a feltöltés dátuma, a hallgató neve, és végül egy uuid következik:
 
@@ -78,18 +78,18 @@ Például:
 Review\_2024\_03\_20\_Minta Hallgató\_2c16f8fe-8127-4795-827c-65690513c2cc.docx
 
 
-\item{Záróvizsga Jegyzőkönyvek (zv):}
+\item{Záróvizsga Jegyzőkönyvek (\textit{zv}):}
 
 A záróvizsga jegyzőkönyveket is word formátumban tárolom a \textit{zv} jegyzékben. Az elnevezési konvenció hasonló a bírálathoz, viszont a feltöltés dátuma nem jelenik meg benne. Például: 
 
 Záróvizsga\_Minta\_Hallgató\_ab2d2f15-5701-4fc4-8022-07e877c7432f.docx
 
-\item{Záróvizsga tételek (topics):}
+\item{Záróvizsga tételek (\textit{topics}):}
 
 A záróvizsga tételeket txt formátumban tárolom a könnyebb módosíthatóság érdekében a \textit{topics} jegyzékben. (A szövegfájlba beillesztettem a záróvizsga tételeket az Alkalmazott Matematikai Intézeti tanszék honlapjáról.)
 
 
-\item{E-mail (email):}
+\item{E-mail (\textit{email}):}
 
 Az e-maileket az \textit{email} jegyzékben txt formátumban tárolom, hogy könnyebben módosíthassam azokat. Öt különálló szövegfájlt hoztam létre a következő célokra: elfelejtett jelszó (forgotten\_password), bíráló felkérése (request\_review), bírálati jegyzőkönyv elküldése (review), záróvizsga létrehozása (zv\_create) és záróvizsga jegyzőkönyv elküldése (zv\_report). Ezáltal könnyen kezelhetővé teszem az egyes folyamatokhoz kapcsolódó dokumentumokat.
 
@@ -198,7 +198,7 @@ A JSON Web Tokens (továbbiakban: JWT) \cite{JSON Web Tokens} alapú autentikác
 
 \subsubsection{ReviewService osztály}
 
-A \textit{ReviewService} a bíráló és a témavezető által készített bírálatok kezeléséért felelős a rendszerben. Az \textit{addReview} metódus felel a bírálatok adatbázisba mentéséért. Itt külön beállításra kerülnek a \textit{remaining\_review} és az \textit{is\_under\_review} mezők amelyek a még hátra lévő és a folyamatban lévő bírálatokat kezelik. A \textit{getReviewData} metódus a bírálatok kigyűjtésére szolgál. A \textit{findThesesBySupervisorIdAndReviewerId} metódus a szakdolgozatokat keresi meg témavezető és bírálói azonosító alapján. Ez hasonló okok miatt lett létre hozva mint a \textit{findThesesByUserId} metódus a \textit{FileService}-ben. A \textit{findReviewByThesisId} metódus a szakdolgozat egyedi azonosítója alapján keresi meg a bírálatot. A generateWordDocument metódusban történik a bírálat Microsoft Word dokumentummá generálása. Itt először hozzáadtam a megfelelő függőséget a \textit{pom.xml}-ben. A felhasználó amint megadja az adatokat kliensoldalon az elmegy a szerver felé, ami feldolgozza ezeket az adatokat és ezek alapján egy Word dokumentumot készít. A metódus paraméterként egy objektumot kap, amely tartalmazza a bírálat részleteit. Az objektumot \textit{String} formátumra alakítja, majd feldolgozza és kinyeri belőle a szükséges információkat, mint például a hallgató nevét, a dolgozat címét, a bíráló nevét, a bírálat részletes leírását stb. Az \textit{Apache POI} \cite{Apache POI} segítségével létrehoz egy üres Word dokumentumot.
+A \textit{ReviewService} a bíráló és a témavezető által készített bírálatok kezeléséért felelős a rendszerben. Az \textit{addReview} metódus felel a bírálatok adatbázisba mentéséért. Itt külön beállításra kerülnek a \textit{remaining\_review} és az \textit{is\_under\_review} mezők amelyek a még hátra lévő és a folyamatban lévő bírálatokat kezelik. A \textit{getReviewData} metódus a bírálatok kigyűjtésére szolgál. A \textit{findThesesBySupervisorIdAndReviewerId} metódus a szakdolgozatokat keresi meg témavezető és bírálói azonosító alapján. Ez hasonló okok miatt lett létre hozva mint a \textit{findThesesByUserId} metódus a \textit{FileService}-ben. A \textit{findReviewByThesisId} metódus a szakdolgozat egyedi azonosítója alapján keresi meg a bírálatot. A \textit{generateWordDocument} metódusban történik a bírálat Microsoft Word dokumentummá generálása. Itt először hozzáadtam a megfelelő függőséget a \textit{pom.xml}-ben. A felhasználó amint megadja az adatokat kliensoldalon az elmegy a szerver felé, ami feldolgozza ezeket az adatokat és ezek alapján egy Word dokumentumot készít. A metódus paraméterként egy objektumot kap, amely tartalmazza a bírálat részleteit. Az objektumot \textit{String} formátumra alakítja, majd feldolgozza és kinyeri belőle a szükséges információkat, mint például a hallgató nevét, a dolgozat címét, a bíráló nevét, a bírálat részletes leírását stb. Az \textit{Apache POI} \cite{Apache POI} segítségével létrehoz egy üres Word dokumentumot.
 Beállítja a dokumentum fejlécét, amely tartalmazza az egyetem nevét és logóját. Beilleszti a dokumentumba a felhasználók által megadott információkat, mint például a hallgató nevét, a dolgozat címét, a bíráló nevét, a bírálatot stb. Ezeket a részleteket formázott szövegként adja hozzá a dokumentumhoz. A generált Word dokumentumot elmenti egy kijelölt könyvtárba. A fájlnevet a dokumentumhoz kapcsolódó adatokból generálja, például a hallgató nevét és egy uuid-t is tartalmaz. A metódus elmenti a generált Word dokumentum adatait az adatbázisba. Az adatbázisban tárolja a fájl nevét, feltöltési idejét és egyedi azonosítóját, hogy később könnyen visszakereshető legyen. A fájl mentése után a Word dokumentum generálása során számos formázási lehetőséget alkalmazok a szöveg és egyéb elemek megjelenítéséhez. Ezek közé tartozik a \textit{setText}, \textit{setFontSize}, \textit{setFontFamily} metódusok használata, amelyekkel beállíthatom a szöveg stílusát, betűméretét és betűtípusát. Emellett lehetőségem van új bekezdéseket létrehozni (\textit{addBreak}) a szöveg tagolásához, valamint képeket is beilleszthetek a dokumentumba. A táblázatokat is könnyedén formázhatom, például a cellák méretét vagy szegélyeit állíthatom be. Emellett a táblázatok celláinak láthatóságát is szabályozhatom, hogy megfeleljenek az adott formai követelményeknek. Ezen funkciók segítségével teljes körűen testreszabhatom és formázhatom a generált Word dokumentumokat, hogy azok megfeleljenek az elvárásoknak és esztétikusak legyenek. A táblázatok esetében létrehoztam egy külön függvényt a méretük beállítására. Ennek köszönhetően könnyen változtathatom a táblázatok méretét az alkalmazás különböző részein.
 
 \subsubsection{GenerateReportService osztály}
@@ -239,6 +239,8 @@ A rendszerben összesen kilenc vezérlő osztályt hoztam létre, melyek mindegy
 \item{\textit{TopicController}}.
 
 \end{itemize}
+
+Példaként láthatjuk \aref{fig:Osztálydiagram} ábrán a dolgozatokra és a bírálatokra vonatkozó \textit{Service}, \textit{Controller} és \textit{DAO} osztályok felépítését.
 \begin{figure}[h!]
 	\includegraphics[width=\textwidth]{images/Classdiagram/Osztálydiagram.pdf}
 	\caption{A bírálatokhoz és szakdolgozatokhoz tartozó \textit{DAO}, \textit{Service} és \textit{Controller} osztályok}
@@ -260,7 +262,7 @@ A \textit{Representational State Transfer Application Programming Interface} (to
 
 A backend és frontend összekapcsolása úgy történik, hogy a backend kiszolgálja az adatokat a frontend felé, amely a felhasználói felületet megjeleníti és a felhasználó interakcióit kezeli. Ezt úgy valósítják meg, hogy a frontend kliens oldalon \textit{HTTP} kéréseket indít a backend felé, amelyekre a szerver válaszol.\\
 
-Itt láthatjuk hogy az egyes kéréstípusokhoz például milyen REST API végpontok tartoznak:
+Itt láthatjuk hogy az egyes kéréstípusokhoz például milyen \textit{REST API} végpontok tartoznak:
 
 \begin{enumerate}
 
@@ -319,7 +321,7 @@ Az \textit{Angular} servicek olyan osztályok, amelyek segítenek a frontend alk
 
 \subsection{Komponensek}
 
-Az \textit{Angular} alkalmazásokban a komponensek az építőkövek, amelyek létrehozzák az alkalmazás felhasználói felületét és meghatározzák, hogy az hogyan viselkedik és milyen módon reagál a felhasználói interakciókra. A komponensek négy fő részből állnak. A \textit{TypeScript (.ts)} fájlból, a \textit{spec} \textit{TypeScript (.spec.ts)} fájlból, a \textit{HTML} fájlból és a \textit{CSS} fájlból. A \textit{TypeScript} fájl a komponens logikáját és viselkedését definiálja, míg a \textit{spec} \textit{TypeScript} fájl a komponens teszteléséhez szükséges specifikációkat tartalmazza. A \textit{HTML} fájl tartalmazza a komponens megjelenítéséhez szükséges struktúrát és sablonokat, míg a \textit{CSS} fájl a stílusokat és formázást definiálja a komponens számára. A \textit{TypeScript} és a \textit{HTML} fájlok interaktív felhasználói felületet biztosítanak, míg a CSS fájl az esztétikai megjelenést és a formázást szabályozza. A komponensek felelősek az adatok megjelenítéséért, a felhasználói interakciók kezeléséért és az alkalmazás üzleti logikájának koordinálásáért. Ezeket részletezem a következőkben:
+Az \textit{Angular} alkalmazásokban a komponensek az építőkövek, amelyek létrehozzák az alkalmazás felhasználói felületét és meghatározzák, hogy az hogyan viselkedik és milyen módon reagál a felhasználói interakciókra. A komponensek négy fő részből állnak: a \textit{TypeScript (.ts)} fájlból, a \textit{spec} \textit{TypeScript (.spec.ts)} fájlból, a \textit{HTML} fájlból és a \textit{CSS} fájlból. A \textit{TypeScript} fájl a komponens logikáját és viselkedését definiálja, míg a \textit{spec} \textit{TypeScript} fájl a komponens teszteléséhez szükséges specifikációkat tartalmazza. A \textit{HTML} fájl tartalmazza a komponens megjelenítéséhez szükséges struktúrát és sablonokat, míg a \textit{CSS} fájl a stílusokat és formázást definiálja a komponens számára. A \textit{TypeScript} és a \textit{HTML} fájlok interaktív felhasználói felületet biztosítanak, míg a CSS fájl az esztétikai megjelenést és a formázást szabályozza. A komponensek felelősek az adatok megjelenítéséért, a felhasználói interakciók kezeléséért és az alkalmazás üzleti logikájának koordinálásáért. Ezeket részletezem a következőkben.
 
 \subsubsection{AddUsersComponent}
 
